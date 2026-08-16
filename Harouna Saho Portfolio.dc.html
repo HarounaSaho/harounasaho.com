@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,700&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #002FA7; text-decoration: none; }
+  a:hover { color: #c9720c; }
+  a, button, input, select, textarea, [role="button"] { cursor: none !important; }
+  @keyframes inFromLeft { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+  @keyframes inFromRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
+  @keyframes inFromTop { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+  @keyframes riseUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  @keyframes quickFade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes curtainDown { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @keyframes curtainUp { from { transform: scaleY(1); } to { transform: scaleY(0); } }
+  @keyframes ruleDrift { 0% { transform: translateX(-6%) scaleX(1); } 50% { transform: translateX(6%) scaleX(0.94); } 100% { transform: translateX(-6%) scaleX(1); } }
+  @keyframes ruleDriftAlt { 0% { transform: translateX(5%) scaleX(0.96); } 50% { transform: translateX(-7%) scaleX(1); } 100% { transform: translateX(5%) scaleX(0.96); } }
+  @keyframes traceLine { to { stroke-dashoffset: -2000; } }
+  @keyframes drawStroke { from { stroke-dashoffset: var(--len); } to { stroke-dashoffset: 0; } }
+</style>
+</helmet>
+
+<div style="position: relative; min-height: 100vh; overflow: hidden; background: #ffffff; color: #111111; font-family: Arial, Helvetica, sans-serif; cursor: none;">
+
+  <div style="position: fixed; left: {{ cursorX }}px; top: {{ cursorY }}px; transform: translate(-4px, -4px); pointer-events: none; z-index: 70; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #111111; background: #ffffff; border: 1px solid #111111; padding: 2px 6px; display: {{ cursorDisplay }};">{{ cursorLabel }}</div>
+
+  <sc-if value="{{ marks }}" hint-placeholder-val="{{ true }}">
+    <div style="position: fixed; inset: 0; pointer-events: none; z-index: 60; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #c9720c;">
+      <span style="position: absolute; top: 14px; left: 14px;">+</span>
+      <span style="position: absolute; top: 14px; right: 14px;">+</span>
+      <span style="position: absolute; bottom: 14px; left: 14px;">+</span>
+      <span style="position: absolute; bottom: 14px; right: 14px;">+</span>
+    </div>
+  </sc-if>
+
+  <header style="position: relative; z-index: 40; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; padding: 34px 44px 22px; background: #ffffff;">
+    <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 1px; overflow: hidden;"><div style="width: 100%; height: 1px; background: #111111; animation: {{ ruleAnimA }};"></div></div>
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <a href="#home" onClick="{{ goHome }}" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 21px; letter-spacing: -0.035em; color: #111111;" style-hover="color: #002FA7;">HAROUNA SAHO</a>
+      <a href="#roon" onMouseEnter="{{ roonFlee }}" onClick="{{ goRoon }}" style="{{ roonStyle }}">roon</a>
+    </div>
+    <nav style="display: flex; gap: 26px; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 13px; letter-spacing: -0.02em;">
+      <a href="#art" onClick="{{ goArt }}" style="color: #111111; padding-bottom: 3px; border-bottom: 2px solid transparent;" style-hover="color: #002FA7;">ART</a>
+      <a href="#design" onClick="{{ goDesign }}" style="color: #111111; padding-bottom: 3px; border-bottom: 2px solid transparent;" style-hover="color: #002FA7;">DESIGN</a>
+      <a href="#about" onClick="{{ goAbout }}" style="color: #111111; padding-bottom: 3px; border-bottom: 2px solid transparent;" style-hover="color: #002FA7;">INFO</a>
+    </nav>
+  </header>
+
+  <div ref="{{ homeAreaRef }}" style="position: relative; min-height: calc(100vh - 200px); overflow: hidden;">
+
+    <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+      <section style="animation: quickFade 280ms cubic-bezier(.65,0,.35,1) both; min-height: calc(100vh - 240px); display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; text-align: left; padding: 90px 44px 60px; position: relative; cursor: none;" onMouseDown="{{ startStroke }}" onMouseMove="{{ moveStroke }}" onMouseUp="{{ endStroke }}" onMouseLeave="{{ endStroke }}">
+        <svg ref="{{ svgRef }}" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;">
+          <filter id="pencilTexture">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="n"></feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="3"></feDisplacementMap>
+          </filter>
+          <sc-for list="{{ strokes }}" as="stroke" hint-placeholder-count="0">
+            <path key="{{ stroke.key }}" d="{{ stroke.d }}" fill="none" stroke="{{ stroke.color }}" stroke-width="{{ stroke.width }}" stroke-linecap="round" stroke-linejoin="round" filter="{{ stroke.filter }}" style="{{ stroke.animStyle }}"></path>
+          </sc-for>
+        </svg>
+        <sc-if value="{{ hasFloatingSrc }}" hint-placeholder-val="{{ false }}">
+          <div style="{{ floatingBoxStyle }}"></div>
+        </sc-if>
+        <div style="position: absolute; top: 0; right: 0; display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 10;">
+          <div style="display: flex; gap: 8px;">
+            <button onClick="{{ setToolPencil }}" style="{{ pencilBtnStyle }}">PENCIL</button>
+            <button onClick="{{ setToolEraser }}" style="{{ eraserBtnStyle }}">ERASER</button>
+            <button onClick="{{ clearStrokes }}" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; padding: 8px 14px; border: 1px solid #111111; background: #ffffff; color: #c9720c; cursor: none;">TRASH</button>
+          </div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #c9720c; max-width: 260px; text-align: center;">HELP ME DECORATE</div>
+          <button onClick="{{ animateDoodle }}" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 12px; letter-spacing: -0.02em; padding: 9px 16px; border: 1px solid #111111; background: #111111; color: #ffffff; cursor: none;">{{ animateLabel }}</button>        </div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.22em; color: #c9720c; margin-bottom: 14px;">SEC · 00 / HOME</div>
+        <h1 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 40px; line-height: 1.15; margin: 0 0 22px; max-width: 620px; color: #111111;">Harouna Saho<br /><span style="color: #002FA7;">Artist and Designer</span></h1>
+        <p style="font-size: 15px; line-height: 1.75; color: #111111; margin: 0 0 56px; max-width: 480px;">Art to learn more about myself. Design to learn more about the world.</p>
+        <nav style="display: flex; gap: 44px; align-self: center; margin-top: 260px;">
+          <a href="#art" onClick="{{ goArt }}" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.02em; font-size: 15px; color: #111111;" style-hover="color: #002FA7;">ART</a>
+          <a href="#design" onClick="{{ goDesign }}" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.02em; font-size: 15px; color: #111111;" style-hover="color: #002FA7;">DESIGN</a>
+          <a href="#about" onClick="{{ goAbout }}" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.02em; font-size: 15px; color: #111111;" style-hover="color: #002FA7;">INFO</a>
+        </nav>
+        <a href="#selected-work" style="position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); font-family: 'JetBrains Mono', monospace; font-size: 18px; color: #c9720c;" aria-label="Scroll to selected work">↓</a>
+      </section>
+      <section id="selected-work" style="{{ workSectionStyle }}" ref="{{ workSectionRef }}">
+        <div style="display: flex; align-items: baseline; justify-content: center; gap: 24px; margin-bottom: 56px; max-width: 1100px; width: 100%;">
+          <h2 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 34px; margin: 0; color: #ffffff;">Selected Work</h2>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(260px, 380px)); gap: 60px; max-width: 900px; width: 100%; justify-content: center;">
+          <sc-for list="{{ homeTiles }}" as="tile" hint-placeholder-count="4">
+            <a href="{{ tile.href }}" onClick="{{ tile.open }}" style="display: block; color: #ffffff;">
+              <div style="aspect-ratio: 1 / 1; background: repeating-linear-gradient(45deg, rgba(255,255,255,0.14) 0 8px, rgba(255,255,255,0.06) 8px 16px); border: 1px solid #ffffff; display: flex; align-items: center; justify-content: center;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #ffffff;">SQUARE CROP</span>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: baseline; justify-content: center; margin-top: 14px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #f0e15a;">{{ tile.tag }}</span>
+                <span style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.02em; font-size: 17px;">{{ tile.title }}</span>
+              </div>
+            </a>
+          </sc-for>
+        </div>
+        <a href="#art" onClick="{{ goArt }}" style="margin-top: 56px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: #f0e15a;">SEE FULL ARCHIVE →</a>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isDesignIndex }}" hint-placeholder-val="{{ true }}">
+      <section style="animation: inFromLeft 550ms cubic-bezier(.65,0,.35,1) both; padding: 70px 44px 90px; max-width: 940px;">
+        <a href="#home" onClick="{{ goHome }}" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em;">← HOME</a>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.22em; color: #c9720c; margin: 34px 0 26px;">SEC · 01 / DESIGN</div>
+        <h1 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 50px; line-height: 1.05; margin: 0 0 18px;">Product design.</h1>
+        <p style="max-width: 520px; font-size: 14px; line-height: 1.7; color: #111111; margin: 0 0 54px;">A smaller, growing shelf, not organized as an archive.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 22px;">
+          <a href="#sidonia" onClick="{{ openSidonia }}" style="flex: 1 1 340px; border: 1px solid #111111; padding: 26px 26px 30px; color: #111111; display: block;" style-hover="border-color: #002FA7;">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #c9720c; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">SUMMER 2026 <span style="color: #111111;">&#128274; LOCKED</span></div>
+            <h2 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 22px; margin: 0 0 12px;">Sidonia AI</h2>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; margin-bottom: 14px;">HEAD OF DESIGN AND GROWTH</div>
+            <p style="font-size: 14px; line-height: 1.65; color: #111111; margin: 0 0 18px;">Interface and identity work for an agent platform - mostly making complex state legible.</p>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #002FA7;">OPEN →</div>
+          </a>
+          <a href="#ring" onClick="{{ openRing }}" style="flex: 1 1 340px; border: 1px solid #111111; padding: 26px 26px 30px; color: #111111; display: block;" style-hover="border-color: #002FA7;">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #c9720c; margin-bottom: 14px;">2024 - 2025</div>
+            <h2 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 22px; margin: 0 0 12px;">Ring, concept</h2>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; margin-bottom: 14px;">WEARABLE AI · SELF&#8209;INITIATED</div>
+            <p style="font-size: 14px; line-height: 1.65; color: #111111; margin: 0 0 18px;">A voice-first ring with no screen: industrial study, gesture set, and a small system of haptic replies.</p>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #002FA7;">OPEN →</div>
+          </a>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isProject }}" hint-placeholder-val="{{ false }}">
+      <section style="animation: inFromLeft 550ms cubic-bezier(.65,0,.35,1) both; padding: 70px 44px 90px; max-width: 940px;">
+        <a href="#design" onClick="{{ goDesign }}" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em;">← DESIGN</a>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.22em; color: #c9720c; margin: 34px 0 18px;">{{ project.sec }}</div>
+        <h1 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 50px; line-height: 1.05; margin: 0 0 22px;">{{ project.title }}</h1>
+        <p style="max-width: 560px; font-size: 15px; line-height: 1.7; color: #111111; margin: 0 0 44px;">{{ project.lede }}</p>
+        <sc-if value="{{ project.locked }}" hint-placeholder-val="{{ false }}">
+          <div style="max-width: 560px; border: 1px solid #111111; padding: 26px 26px 30px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #c9720c;">&#128274;</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #c9720c;">PROPRIETARY - UNDER NDA</span>
+            </div>
+            <p style="font-size: 14px; line-height: 1.65; color: #111111; margin: 0;">This project involves confidential product work and can't be shown publicly. Role, dates, and surface are listed below; details are available on request.</p>
+            <table style="width: 100%; border-collapse: collapse; border-top: 1px solid #111111; margin-top: 22px;">
+              <tbody>
+                <tr style="border-bottom: 1px solid #dddddd;">
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em; width: 120px;">ROLE</td>
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px;">{{ project.role }}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #dddddd;">
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em;">DATES</td>
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px;">{{ project.dates }}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em;">SURFACE</td>
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px;">{{ project.surface }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </sc-if>
+        <sc-if value="{{ project.unlocked }}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-wrap: wrap; gap: 60px; align-items: flex-start;">
+          <div style="flex: 1 1 420px; max-width: 560px; display: flex; flex-direction: column; gap: 22px;">
+            <div style="aspect-ratio: 1 / 1; background: repeating-linear-gradient(45deg, #eceef4 0 10px, #f7f8fb 10px 20px); border: 1px solid #111111; display: flex; align-items: center; justify-content: center;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #111111;">{{ project.slotA }}</span>
+            </div>
+            <div style="aspect-ratio: 1 / 1; background: repeating-linear-gradient(45deg, #eceef4 0 10px, #f7f8fb 10px 20px); border: 1px solid #111111; display: flex; align-items: center; justify-content: center;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #111111;">{{ project.slotB }}</span>
+            </div>
+          </div>
+          <div style="flex: 1 1 300px; max-width: 380px;">
+            <table style="width: 100%; border-collapse: collapse; border-top: 1px solid #111111;">
+              <tbody>
+                <tr style="border-bottom: 1px solid #dddddd;">
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em; width: 120px;">ROLE</td>
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px;">{{ project.role }}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #dddddd;">
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em;">DATES</td>
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px;">{{ project.dates }}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #dddddd;">
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em;">SURFACE</td>
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px;">{{ project.surface }}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #dddddd;">
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em;">STATUS</td>
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #c9720c;">{{ project.status }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div style="margin-top: 34px; display: flex; flex-direction: column; gap: 16px;">
+              <sc-for list="{{ project.notes }}" as="note" hint-placeholder-count="3">
+                <p style="font-size: 14px; line-height: 1.65; color: #111111; margin: 0;">{{ note }}</p>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isArtIndex }}" hint-placeholder-val="{{ true }}">
+      <section style="animation: inFromRight 550ms cubic-bezier(.65,0,.35,1) both; padding: 70px 44px 90px;">
+        <a href="#home" onClick="{{ goHome }}" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; display: inline-block; margin-bottom: 30px;">← HOME</a>
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 30px;">
+          <div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.22em; color: #c9720c; margin-bottom: 22px;">SEC · 02 / ART</div>
+            <h1 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 50px; line-height: 1.05; margin: 0; color: #002FA7;">Archive</h1>
+          </div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #c9720c; text-align: right; line-height: 1.7;">{{ workCount }} ENTRIES<br />OIL · ACRYLIC · WOODCARVING</div>
+        </div>
+        <p style="max-width: 560px; font-size: 14px; line-height: 1.7; color: #111111; margin: 0 0 44px;">Concept art for one continuing world - no fixed story, each piece its own scene.</p>
+        <div style="max-width: 560px; margin: 0 0 54px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.22em; color: #c9720c; margin-bottom: 14px;">ARTIST STATEMENT</div>
+          <p style="font-size: 15px; line-height: 1.75; color: #111111; margin: 0;">I paint the same world from a different vantage each time - not to tell its story, but to keep proving it exists. A concept artist builds a place before anyone writes what happens in it; that's the job I've given myself, one canvas at a time.</p>
+        </div>
+        <table style="width: 100%; max-width: 1080px; border-collapse: collapse; font-size: 14px;">
+          <thead>
+            <tr style="border-top: 1px solid #111111; border-bottom: 1px solid #111111;">
+              <th style="text-align: left; padding: 11px 14px 11px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.18em; color: #111111; width: 96px;">CAT</th>
+              <th style="text-align: left; padding: 11px 14px; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.18em; color: #111111;">TITLE</th>
+              <th style="text-align: left; padding: 11px 14px; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.18em; color: #111111; width: 190px;">MEDIUM</th>
+              <th style="text-align: left; padding: 11px 14px; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.18em; color: #111111; width: 70px;">YR</th>
+              <th style="text-align: left; padding: 11px 0 11px 14px; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.18em; color: #111111; width: 250px;">EXHIBITION</th>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{ rows }}" as="row" hint-placeholder-count="8">
+              <tr onClick="{{ row.open }}" data-clickable="true" style="border-bottom: 1px solid #dddddd; cursor: none;" style-hover="background: #f5f6fa;">
+                <td style="padding: 15px 14px 15px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #c9720c;">{{ row.cat }}</td>
+                <td style="padding: 15px 14px; font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.02em; font-size: 19px; color: #002FA7;">{{ row.title }}</td>
+                <td style="padding: 15px 14px; font-size: 13px; color: #111111;">{{ row.medium }}</td>
+                <td style="padding: 15px 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #111111;">{{ row.yr }}</td>
+                <td style="padding: 15px 0 15px 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em;">{{ row.exLabel }}</td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isRoom }}" hint-placeholder-val="{{ true }}">
+      <section style="animation: quickFade 280ms cubic-bezier(.65,0,.35,1) both; padding: 70px 44px 90px;">
+        <a href="#art" onClick="{{ goArt }}" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em;">← ARCHIVE</a>
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin: 30px 0 52px;">
+          <h1 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 44px; line-height: 1.05; margin: 0; color: #002FA7;">{{ room.title }}</h1>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #c9720c; text-align: right; line-height: 1.7;">{{ room.meta }}<br />{{ room.count }} WORKS</div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px 34px;">
+          <sc-for list="{{ room.tiles }}" as="tile" hint-placeholder-count="6">
+            <a href="#work" onClick="{{ tile.open }}" style="display: block; color: #111111;">
+              <div style="aspect-ratio: 1 / 1; background: repeating-linear-gradient(45deg, #eceef4 0 8px, #f7f8fb 8px 16px); border: 1px solid #111111; display: flex; align-items: center; justify-content: center;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #111111;">SQUARE CROP</span>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: baseline; margin-top: 12px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #c9720c;">{{ tile.cat }}</span>
+                <span style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.02em; font-size: 16px;">{{ tile.title }}</span>
+              </div>
+            </a>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isWork }}" hint-placeholder-val="{{ true }}">
+      <section style="animation: quickFade 280ms cubic-bezier(.65,0,.35,1) both; padding: 70px 44px 90px;">
+        <a href="#back" onClick="{{ goBackFromWork }}" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em;">← {{ work.backLabel }}</a>
+        <div style="display: flex; flex-wrap: wrap; gap: 60px; margin-top: 34px; align-items: flex-start;">
+          <div style="flex: 1 1 420px; max-width: 560px;">
+            <div style="aspect-ratio: 1 / 1; background: repeating-linear-gradient(45deg, #eceef4 0 10px, #f7f8fb 10px 20px); border: 1px solid #111111; display: flex; align-items: center; justify-content: center;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #111111;">SQUARE CROP · PAINTING</span>
+            </div>
+          </div>
+          <div style="flex: 1 1 320px; max-width: 400px;">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #c9720c; margin-bottom: 16px;">{{ work.cat }}</div>
+            <h1 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 38px; line-height: 1.05; margin: 0 0 34px; color: #002FA7;">{{ work.title }}</h1>
+            <table style="width: 100%; border-collapse: collapse; border-top: 1px solid #111111;">
+              <tbody>
+                <tr style="border-bottom: 1px solid #dddddd;">
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em; width: 130px;">MEDIUM</td>
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #111111;">{{ work.medium }}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #dddddd;">
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em;">YEAR</td>
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #111111;">{{ work.yr }}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #dddddd;">
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em;">DIMENSIONS</td>
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #c9720c;">{{ work.dims }}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #dddddd;">
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em;">EXHIBITION</td>
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #111111;">{{ work.exLabel }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <p style="font-family: 'Bodoni Moda', serif; font-size: 18px; line-height: 1.55; color: #111111; margin: 34px 0 0;">Concept art for one continuing world - no fixed story, each piece its own scene.</p>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isAbout }}" hint-placeholder-val="{{ true }}">
+      <section style="animation: inFromTop 550ms cubic-bezier(.65,0,.35,1) both; position: relative; background: #f0e15a; overflow: hidden; min-height: calc(100vh - 200px);">
+        <div style="padding: 62px 44px 90px; max-width: 900px;">
+          <a href="#home" onClick="{{ goHome }}" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; display: inline-block; margin-bottom: 34px;">← HOME</a>
+          <div style="display: flex; gap: 22px; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 13px; letter-spacing: -0.02em; margin-bottom: 44px;">
+            <a href="#about" onClick="{{ goAbout }}" style="color: #111111; border-bottom: 2px solid #111111; padding-bottom: 3px;">INFO</a>
+            <a href="#studio" onClick="{{ goStudio }}" style="color: #002FA7; border-bottom: 2px solid transparent; padding-bottom: 3px;">STUDIO</a>
+          </div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.22em; color: #c9720c; margin-bottom: 22px;">SEC · 03 / INFO</div>
+          <h1 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 48px; line-height: 1.08; margin: 0 0 30px; max-width: 700px;">A painter building one world, scene by scene.</h1>
+          <div style="max-width: 560px; font-size: 15px; line-height: 1.75; color: #1a1a1a;">
+            <p style="margin: 0 0 16px;">Harouna Saho is a senior at Yale, painting out of New Haven. He is from The Gambia by way of Norman, Oklahoma, and the distance between those places is most of what the work is about.</p>
+            <p style="margin: 0;">The paintings are concept art for one continuing world. There is no plot and no name for it - each canvas is a scene, and the world gets larger the way a location does, not the way a story does.</p>
+          </div>
+          <div style="margin-top: 44px;">
+            <a href="#cv" style="display: inline-flex; align-items: center; gap: 10px; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 13px; letter-spacing: -0.02em; padding: 12px 18px; border: 1px solid #111111; color: #111111;" style-hover="border-color: #002FA7; color: #002FA7;">
+              <span>VIEW CV</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #c9720c;">PDF</span>
+            </a>
+          </div>
+          <div style="margin-top: 64px; max-width: 520px;">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.22em; margin-bottom: 10px;">CONTACT</div>
+            <table style="width: 100%; border-collapse: collapse; border-top: 1px solid #111111;">
+              <tbody>
+                <tr style="border-bottom: 1px solid rgba(17,17,17,0.25);">
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em; width: 150px;">EMAIL</td>
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px;"><a href="mailto:harouna.saho@yale.edu" style="color: #002FA7;">harouna.saho@yale.edu</a></td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgba(17,17,17,0.25);">
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em;">INSTAGRAM</td>
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px;"><a href="https://instagram.com/" style="color: #002FA7;">@roon.paints</a></td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgba(17,17,17,0.25);">
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em;">STATUS</td>
+                  <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #c9720c;">COMMISSIONS OPEN</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <sc-if value="{{ isStudio }}" hint-placeholder-val="{{ true }}">
+          <div style="position: absolute; inset: 0; background: #002FA7; animation: riseUp 550ms cubic-bezier(.65,0,.35,1) both; overflow-x: hidden; overflow-y: auto;">
+            <div style="padding: 62px 44px 90px; color: #ffffff;">
+              <a href="#about" onClick="{{ goAbout }}" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: #ffffff; display: inline-block; margin-bottom: 34px;">← ABOUT</a>
+              <div style="display: flex; gap: 22px; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 13px; letter-spacing: -0.02em; margin-bottom: 44px;">
+                <a href="#about" onClick="{{ goAbout }}" style="color: #f0e15a; border-bottom: 2px solid transparent; padding-bottom: 3px;">INFO</a>
+                <a href="#studio" onClick="{{ goStudio }}" style="color: #ffffff; border-bottom: 2px solid #ffffff; padding-bottom: 3px;">STUDIO</a>
+              </div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.22em; color: #f0e15a; margin-bottom: 18px;">SEC · 03.1 / STUDIO - LIVE</div>
+              <h1 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 42px; line-height: 1.05; margin: 0 0 10px;">In progress</h1>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #f0e15a; letter-spacing: 0.08em;">STUDIO PICS · TRAVEL NOTES - NEWEST FIRST</div>
+
+              <div style="margin-top: 34px; position: relative;">
+                <div style="position: absolute; left: 0; right: 0; top: 96px; height: 1px; background: rgba(255,255,255,0.45);"></div>
+                <div style="display: flex; align-items: flex-start; gap: 64px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; padding: 0 4px 34px; scrollbar-width: thin;">
+                  <div style="flex: 0 0 auto; scroll-snap-align: start;">
+                    <div style="height: 96px; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 8px;">
+                      <div style="font-family: 'JetBrains Mono', monospace; font-size: 18px; color: #ffffff; letter-spacing: 0.02em;">08.11.26</div>
+                      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #f0e15a; margin-top: 6px;">STUDIO - NEW HAVEN</div>
+                    </div>
+                    <div style="position: relative; height: 1px;"><div style="position: absolute; left: 0; top: -4px; width: 9px; height: 9px; background: #f0e15a;"></div></div>
+                    <div style="display: flex; gap: 22px; padding-top: 30px; align-items: flex-start;">
+                  <article style="flex: 0 0 340px; scroll-snap-align: start; background: rgba(255,255,255,0.96); color: #111111; padding: 22px 24px 26px; box-shadow: 0 18px 40px rgba(0,0,0,0.28);">
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #c9720c; margin-bottom: 14px;">UPD · UNDERPAINTING</div>
+                    <h2 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 19px; margin: 0 0 14px;">Salt Road, II</h2>
+                    <div style="aspect-ratio: 1 / 1; background: repeating-linear-gradient(45deg, #e7e9f1 0 8px, #f6f7fb 8px 16px); border: 1px solid #111111; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+                      <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #111111;">STUDIO PHOTO</span>
+                    </div>
+                    <p style="font-size: 13px; line-height: 1.6; color: #111111; margin: 0 0 14px;">Second pass on the ground, still cold. The horizon line moved four inches down.</p>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #c9720c;">60 × 60 in · OIL ON LINEN</div>
+                  </article>
+                  <article style="flex: 0 0 340px; scroll-snap-align: start; background: rgba(255,255,255,0.96); color: #111111; padding: 22px 24px 26px; box-shadow: 0 18px 40px rgba(0,0,0,0.28);">
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #c9720c; margin-bottom: 14px;">UPD · WALL VIEW</div>
+                    <h2 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 19px; margin: 0 0 14px;">Studio wall, east</h2>
+                    <div style="aspect-ratio: 1 / 1; background: repeating-linear-gradient(45deg, #e7e9f1 0 8px, #f6f7fb 8px 16px); border: 1px solid #111111; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+                      <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #111111;">STUDIO PHOTO</span>
+                    </div>
+                    <p style="font-size: 13px; line-height: 1.6; color: #111111; margin: 0 0 14px;">Three scenes hung together for the first time to check they share one light.</p>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #c9720c;">3 CANVASES · 60 in</div>
+                  </article>
+                    </div>
+                  </div>
+                  <div style="flex: 0 0 auto; scroll-snap-align: start;">
+                    <div style="height: 96px; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 8px;">
+                      <div style="font-family: 'JetBrains Mono', monospace; font-size: 18px; color: #ffffff; letter-spacing: 0.02em;">07.29.26</div>
+                      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #f0e15a; margin-top: 6px;">STUDIO - NEW HAVEN</div>
+                    </div>
+                    <div style="position: relative; height: 1px;"><div style="position: absolute; left: 0; top: -4px; width: 9px; height: 9px; background: #f0e15a;"></div></div>
+                    <div style="display: flex; gap: 22px; padding-top: 30px; align-items: flex-start;">
+                  <article style="flex: 0 0 340px; scroll-snap-align: start; background: rgba(255,255,255,0.96); color: #111111; padding: 22px 24px 26px; box-shadow: 0 18px 40px rgba(0,0,0,0.28);">
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #c9720c; margin-bottom: 14px;">UPD · COLOR TEST</div>
+                    <h2 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 19px; margin: 0 0 14px;">Nine skies for one horizon</h2>
+                    <div style="aspect-ratio: 1 / 1; background: repeating-linear-gradient(45deg, #e7e9f1 0 8px, #f6f7fb 8px 16px); border: 1px solid #111111; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+                      <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #111111;">STUDIO PHOTO</span>
+                    </div>
+                    <p style="font-size: 13px; line-height: 1.6; color: #111111; margin: 0 0 14px;">Gouache studies pinned in a row to fix the light before the large canvas starts.</p>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #c9720c;">9 × (8 × 8 in) · GOUACHE</div>
+                  </article>
+                    </div>
+                  </div>
+                  <div style="flex: 0 0 auto; scroll-snap-align: start;">
+                    <div style="height: 96px; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 8px;">
+                      <div style="font-family: 'JetBrains Mono', monospace; font-size: 18px; color: #ffffff; letter-spacing: 0.02em;">07.14.26</div>
+                      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #f0e15a; margin-top: 6px;">TRAVEL - BANJUL, THE GAMBIA</div>
+                    </div>
+                    <div style="position: relative; height: 1px;"><div style="position: absolute; left: 0; top: -4px; width: 9px; height: 9px; background: #f0e15a;"></div></div>
+                    <div style="display: flex; gap: 22px; padding-top: 30px; align-items: flex-start;">
+                  <article style="flex: 0 0 340px; scroll-snap-align: start; background: rgba(255,255,255,0.96); color: #111111; padding: 22px 24px 26px; box-shadow: 0 18px 40px rgba(0,0,0,0.28);">
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #c9720c; margin-bottom: 14px;">NOTE · FIELD</div>
+                    <h2 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 19px; margin: 0 0 14px;">River light, midday</h2>
+                    <div style="aspect-ratio: 1 / 1; background: repeating-linear-gradient(45deg, #e7e9f1 0 8px, #f6f7fb 8px 16px); border: 1px solid #111111; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+                      <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #111111;">TRAVEL PHOTO</span>
+                    </div>
+                    <p style="font-size: 13px; line-height: 1.6; color: #111111; margin: 0 0 14px;">The water is the same value as the sky for about an hour. Almost nothing to paint but that.</p>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #c9720c;">12 FRAMES · 35 MM</div>
+                  </article>
+                  <article style="flex: 0 0 340px; scroll-snap-align: start; background: rgba(255,255,255,0.96); color: #111111; padding: 22px 24px 26px; box-shadow: 0 18px 40px rgba(0,0,0,0.28);">
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #c9720c; margin-bottom: 14px;">NOTE · SKETCHBOOK</div>
+                    <h2 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 19px; margin: 0 0 14px;">Ferry queue</h2>
+                    <div style="aspect-ratio: 1 / 1; background: repeating-linear-gradient(45deg, #e7e9f1 0 8px, #f6f7fb 8px 16px); border: 1px solid #111111; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+                      <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #111111;">SCAN</span>
+                    </div>
+                    <p style="font-size: 13px; line-height: 1.6; color: #111111; margin: 0 0 14px;">Pencil notes on how people stand when they are used to waiting. Going into the next scene.</p>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #c9720c;">6 PP · 5.5 × 8.5 in</div>
+                  </article>
+                    </div>
+                  </div>
+                  <div style="flex: 0 0 auto; scroll-snap-align: start;">
+                    <div style="height: 96px; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 8px;">
+                      <div style="font-family: 'JetBrains Mono', monospace; font-size: 18px; color: #ffffff; letter-spacing: 0.02em;">07.02.26</div>
+                      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #f0e15a; margin-top: 6px;">STUDIO - NEW HAVEN</div>
+                    </div>
+                    <div style="position: relative; height: 1px;"><div style="position: absolute; left: 0; top: -4px; width: 9px; height: 9px; background: #f0e15a;"></div></div>
+                    <div style="display: flex; gap: 22px; padding-top: 30px; align-items: flex-start;">
+                  <article style="flex: 0 0 340px; scroll-snap-align: start; background: rgba(255,255,255,0.96); color: #111111; padding: 22px 24px 26px; box-shadow: 0 18px 40px rgba(0,0,0,0.28);">
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #c9720c; margin-bottom: 14px;">UPD · STRETCHER BUILD</div>
+                    <h2 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 19px; margin: 0 0 14px;">Frame, 72 in</h2>
+                    <div style="aspect-ratio: 1 / 1; background: repeating-linear-gradient(45deg, #e7e9f1 0 8px, #f6f7fb 8px 16px); border: 1px solid #111111; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+                      <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #111111;">STUDIO PHOTO</span>
+                    </div>
+                    <p style="font-size: 13px; line-height: 1.6; color: #111111; margin: 0 0 14px;">Cross-braced poplar for the next scene - largest square the studio door allows.</p>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #c9720c;">72 × 72 in · TOL ± 0.125 in</div>
+                  </article>
+                    </div>
+                  </div>
+                  <div style="flex: 0 0 auto; scroll-snap-align: start;">
+                    <div style="height: 96px; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 8px;">
+                      <div style="font-family: 'JetBrains Mono', monospace; font-size: 18px; color: #ffffff; letter-spacing: 0.02em;">06.18.26</div>
+                      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #f0e15a; margin-top: 6px;">TRAVEL - NORMAN, OKLAHOMA</div>
+                    </div>
+                    <div style="position: relative; height: 1px;"><div style="position: absolute; left: 0; top: -4px; width: 9px; height: 9px; background: #f0e15a;"></div></div>
+                    <div style="display: flex; gap: 22px; padding-top: 30px; align-items: flex-start;">
+                  <article style="flex: 0 0 340px; scroll-snap-align: start; background: rgba(255,255,255,0.96); color: #111111; padding: 22px 24px 26px; box-shadow: 0 18px 40px rgba(0,0,0,0.28);">
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #c9720c; margin-bottom: 14px;">NOTE · FIELD</div>
+                    <h2 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 19px; margin: 0 0 14px;">Flat country, long shadow</h2>
+                    <div style="aspect-ratio: 1 / 1; background: repeating-linear-gradient(45deg, #e7e9f1 0 8px, #f6f7fb 8px 16px); border: 1px solid #111111; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+                      <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #111111;">TRAVEL PHOTO</span>
+                    </div>
+                    <p style="font-size: 13px; line-height: 1.6; color: #111111; margin: 0 0 14px;">Went back for a week. The scale of the sky here keeps ending up in the paintings.</p>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #c9720c;">20 FRAMES · 35 MM</div>
+                  </article>
+                    </div>
+                  </div>
+                  <div style="flex: 0 0 44px;"></div>
+                </div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #f0e15a;">SCROLL →  EARLIER ENTRIES TO THE RIGHT</div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isRoon }}" hint-placeholder-val="{{ false }}">
+      <section style="animation: quickFade 280ms cubic-bezier(.65,0,.35,1) both; padding: 90px 44px 120px; max-width: 720px;">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.22em; color: #c9720c; margin-bottom: 22px;">SEC · 00 / ROON - CAUGHT</div>
+        <h1 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; letter-spacing: -0.035em; text-transform: uppercase; font-size: 50px; line-height: 1.05; margin: 0 0 22px;">You caught it.</h1>
+        <p style="font-size: 15px; line-height: 1.75; color: #111111; margin: 0 0 40px; max-width: 520px;">Wow, you're dedicated.</p>
+        <table style="width: 100%; max-width: 460px; border-collapse: collapse; border-top: 1px solid #111111;">
+          <tbody>
+            <tr style="border-bottom: 1px solid #dddddd;">
+              <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em; width: 150px;">DODGES</td>
+              <td style="padding: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #c9720c;">{{ roonDodges }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 40px;">
+          <a href="#studio" onClick="{{ goStudio }}" style="display: inline-flex; align-items: center; gap: 10px; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 13px; letter-spacing: -0.02em; padding: 12px 20px; border: 1px solid #002FA7; color: #002FA7;" style-hover="background: #002FA7; color: #ffffff;">
+            <span>SNEAK PEEK - WHAT I'M WORKING ON</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em;">→</span>
+          </a>
+        </div>
+        <div style="margin-top: 26px;"><a href="#about" onClick="{{ goAbout }}" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em;">← INFO</a></div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ curtainDown }}" hint-placeholder-val="{{ false }}">
+      <div style="position: fixed; inset: 0; z-index: 80; background: #0a0a0a; transform-origin: top center; animation: curtainDown 550ms cubic-bezier(.65,0,.35,1) both;"></div>
+    </sc-if>
+    <sc-if value="{{ curtainUp }}" hint-placeholder-val="{{ false }}">
+      <div style="position: fixed; inset: 0; z-index: 80; background: #0a0a0a; transform-origin: bottom center; animation: curtainUp 550ms cubic-bezier(.65,0,.35,1) both;"></div>
+    </sc-if>
+  </div>
+
+  <footer style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; align-items: baseline; position: relative; padding: 24px 44px 40px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #c9720c; letter-spacing: 0.08em;">
+    <div style="position: absolute; left: 0; right: 0; top: 0; height: 1px; overflow: hidden;"><div style="width: 100%; height: 1px; background: #111111; animation: {{ ruleAnimB }};"></div></div>
+    <div>NEW HAVEN, CT</div>
+    <div>SHEET 1 OF 1 · TRIM 1440 × 960 px</div>
+    <div>© 2026 H. SAHO</div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showRegistrationMarks&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Technical layer&quot;},&quot;animatedRules&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Technical layer&quot;}}">
+const WORKS = [
+  { cat: "HS·002", title: "Ferryman at Low Tide", medium: "Oil on linen", yr: "2022", ex: "THE LONG WALK", dims: "48 × 48 in" },
+  { cat: "HS·005", title: "Norman, Interior", medium: "Oil on panel", yr: "2023", ex: null, dims: "24 × 24 in" },
+  { cat: "HS·008", title: "Salt Road", medium: "Oil on linen", yr: "2023", ex: "THE LONG WALK", dims: "60 × 60 in" },
+  { cat: "HS·011", title: "Two Rivers, One Name", medium: "Acrylic on canvas", yr: "2024", ex: "THE LONG WALK", dims: "36 × 36 in" },
+  { cat: "HS·014", title: "The Keeper's Table", medium: "Oil on linen", yr: "2024", ex: "SECOND SEASON", dims: "52 × 52 in" },
+  { cat: "HS·016", title: "Watchtower, Unfinished", medium: "Gouache on paper", yr: "2024", ex: null, dims: "18 × 18 in" },
+  { cat: "HS·019", title: "Harvest Without Rain", medium: "Oil on linen", yr: "2025", ex: "SECOND SEASON", dims: "60 × 60 in" },
+  { cat: "HS·021", title: "Cartographer's Hands", medium: "Oil on panel", yr: "2025", ex: "SECOND SEASON", dims: "30 × 30 in" },
+  { cat: "HS·024", title: "Nine Skies for One Horizon", medium: "Gouache on paper", yr: "2025", ex: "SECOND SEASON", dims: "8 × 8 in" },
+  { cat: "HS·027", title: "Return, Delayed", medium: "Oil on linen", yr: "2026", ex: null, dims: "44 × 44 in" },
+  { cat: "HS·029", title: "The Second Ferry", medium: "Oil on linen", yr: "2026", ex: "SECOND SEASON", dims: "66 × 66 in" },
+  { cat: "HS·031", title: "Field Notes, Gambia", medium: "Acrylic on canvas", yr: "2026", ex: null, dims: "28 × 28 in" }
+];
+
+const SHOWS = {
+  "THE LONG WALK": "YALE SCHOOL OF ART · 2024",
+  "SECOND SEASON": "GREEN HALL GALLERY · 2026"
+};
+
+const PROJECTS = {
+  sidonia: {
+    sec: "SEC · 01.1 / SIDONIA AI",
+    title: "Sidonia AI",
+    lede: "Interface and identity work for an agent platform - mostly making complex state legible.",
+    role: "HEAD OF DESIGN AND GROWTH",
+    dates: "SUMMER 2026",
+    surface: "WEB APP · IDENTITY",
+    status: "ONGOING",
+    locked: true,
+    unlocked: false,
+    slotA: "PRODUCT SHOT",
+    slotB: "STATE DIAGRAM",
+    notes: [
+      "The hard part is that an agent is always mid-thought. Most of the work was finding a resting state for something that never actually rests.",
+      "Identity followed the interface rather than the reverse - the type and spacing rules came out of the densest screen, then went outward."
+    ]
+  },
+  ring: {
+    sec: "SEC · 01.2 / RING",
+    title: "Ring, concept",
+    lede: "A voice-first ring with no screen: industrial study, gesture set, and a small system of haptic replies.",
+    role: "SELF-INITIATED",
+    dates: "2024 - 2025",
+    surface: "WEARABLE · INDUSTRIAL",
+    status: "CONCEPT",
+    locked: false,
+    unlocked: true,
+    slotA: "INDUSTRIAL RENDER",
+    slotB: "GESTURE SHEET",
+    notes: [
+      "No screen means every reply is a texture. Six haptic patterns carry the whole vocabulary - confirm, deny, wait, listening, dropped, done.",
+      "Sized around a 17.3 mm inner diameter, which is where the sensor stack stops being felt from the inside."
+    ]
+  }
+};
+
+class Component extends DCLogic {
+  static __v = 2;
+  state = { page: "home", view: "index", room: null, workCat: null, from: "index", curtain: null, roon: { x: 0, y: 0, r: -8 }, roonDodges: 0,
+    strokes: [], drawing: false, curPoints: null, cursorX: -100, cursorY: -100, cursorVisible: false, tool: "pencil", animating: false, animKey: 0,
+    floatingSrc: null, floatX: 0, floatY: 0, floatSize: 140, workSectionVisible: false };
+
+  workSectionRef(el) {
+    if (!el || this._workObs) return;
+    this._workObs = new IntersectionObserver((entries) => {
+      this.setState({ workSectionVisible: entries[0].isIntersecting });
+    }, { threshold: 0.15 });
+    this._workObs.observe(el);
+  }
+
+  svgRef(el) { this.svgEl = el; }
+
+  rasterizeStrokes() {
+    if (!this.svgEl || !this.state.strokes.length) return null;
+    const rect = this.svgEl.getBoundingClientRect();
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    this.state.strokes.forEach((st) => {
+      (st.d.match(/[\d.]+,[\d.]+/g) || []).forEach((pair) => {
+        const [x, y] = pair.split(",").map(Number);
+        minX = Math.min(minX, x); minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x); maxY = Math.max(maxY, y);
+      });
+    });
+    if (!isFinite(minX)) return null;
+    const pad = 16;
+    minX -= pad; minY -= pad; maxX += pad; maxY += pad;
+    const w = Math.max(20, maxX - minX), h = Math.max(20, maxY - minY);
+    const canvas = document.createElement("canvas");
+    canvas.width = w; canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    ctx.translate(-minX, -minY);
+    this.state.strokes.forEach((st) => {
+      const path = new Path2D(st.d);
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      if (st.filter && st.filter !== "none") {
+        ctx.strokeStyle = st.color || "#111111";
+        ctx.globalAlpha = 0.55;
+        ctx.lineWidth = (st.width || 3) * 0.7;
+        for (let i = 0; i < 4; i++) {
+          ctx.save();
+          ctx.translate((Math.random() - 0.5) * 1.6, (Math.random() - 0.5) * 1.6);
+          ctx.stroke(path);
+          ctx.restore();
+        }
+        ctx.globalAlpha = 1;
+      } else {
+        ctx.strokeStyle = st.color || "#111111";
+        ctx.lineWidth = st.width || 3;
+        ctx.stroke(path);
+      }
+    });
+    const size = Math.max(w, h);
+    return { src: canvas.toDataURL("image/png"), size, cx: rect.left + minX + w / 2, cy: rect.top + minY + h / 2 };
+  }
+
+  startFloating() {
+    const shot = this.rasterizeStrokes();
+    if (!shot) return;
+    const rect = this.svgEl.getBoundingClientRect();
+    const vx = (Math.random() < 0.5 ? -1 : 1) * (1.2 + Math.random());
+    const vy = (Math.random() < 0.5 ? -1 : 1) * (1.2 + Math.random());
+    this._floatBounds = { w: rect.width, h: rect.height };
+    this._floatVel = { vx, vy };
+    this.setState({
+      strokes: [], floatingSrc: shot.src, floatSize: shot.size,
+      floatX: Math.max(0, Math.min(rect.width - shot.size, shot.cx - rect.left - shot.size / 2)),
+      floatY: Math.max(0, Math.min(rect.height - shot.size, shot.cy - rect.top - shot.size / 2))
+    });
+    cancelAnimationFrame(this._floatRaf);
+    const step = () => {
+      const b = this._floatBounds, v = this._floatVel, size = this.state.floatSize;
+      let x = this.state.floatX + v.vx, y = this.state.floatY + v.vy;
+      if (x <= 0 || x >= b.w - size) { v.vx *= -1; x = Math.max(0, Math.min(b.w - size, x)); }
+      if (y <= 0 || y >= b.h - size) { v.vy *= -1; y = Math.max(0, Math.min(b.h - size, y)); }
+      this.setState({ floatX: x, floatY: y });
+      this._floatRaf = requestAnimationFrame(step);
+    };
+    this._floatRaf = requestAnimationFrame(step);
+  }
+
+  pathLength(d) {
+    try {
+      const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      p.setAttribute("d", d);
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.style.position = "absolute"; svg.style.width = "0"; svg.style.height = "0"; svg.style.overflow = "hidden";
+      svg.appendChild(p);
+      document.body.appendChild(svg);
+      const len = p.getTotalLength();
+      document.body.removeChild(svg);
+      return len || 1;
+    } catch (err) { return 400; }
+  }
+
+  animateDoodle() {
+    if (!this.state.strokes.length || this.state.animating) return;
+    this.setState((s) => ({ animating: true, animKey: s.animKey + 1 }));
+    const speed = 900; // px per second
+    let total = 0;
+    this.state.strokes.forEach((st) => { if (!st.isEraser) total += this.pathLength(st.d) / speed; });
+    this._animTimer = setTimeout(() => { this.setState({ animating: false }); this.startFloating(); }, total * 1000 + 200);
+  }
+
+  startStroke(e) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const pt = [e.clientX - rect.left, e.clientY - rect.top];
+    this.setState({ drawing: true, curPoints: [pt] });
+  }
+
+  moveStroke(e) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX, y = e.clientY;
+    this.setState((s) => {
+      if (!s.drawing || !s.curPoints) return null;
+      const next = {};
+      next.curPoints = s.curPoints.concat([[x - rect.left, y - rect.top]]);
+      return next;
+    });
+  }
+
+  endStroke() {
+    if (!this.state.drawing || !this.state.curPoints || this.state.curPoints.length < 2) {
+      this.setState({ drawing: false, curPoints: null });
+      return;
+    }
+    const d = "M" + this.state.curPoints.map((p) => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" L");
+    const isEraser = this.state.tool === "eraser";
+    this.setState((s) => ({
+      strokes: s.strokes.concat([{ d: d, color: isEraser ? "#ffffff" : "#111111", width: isEraser ? 18 : 3, filter: isEraser ? "none" : "url(#pencilTexture)", isEraser: isEraser }]),
+      drawing: false, curPoints: null
+    }));
+  }
+
+  componentDidMount() {
+    this.setState({ curtain: null, curtainAt: 0 });
+    this._onMove = (e) => {
+      const clickable = !!(e.target && e.target.closest && e.target.closest("a, button, [role='button'], input, select, textarea, tr[data-clickable]"));
+      this.setState({ cursorX: e.clientX, cursorY: e.clientY, cursorVisible: true, cursorClickable: clickable });
+    };
+    this._onLeave = () => this.setState({ cursorVisible: false });
+    this._onDown = () => this.setState({ cursorDown: true });
+    this._onUp = () => this.setState({ cursorDown: false });
+    document.addEventListener("mousemove", this._onMove);
+    document.addEventListener("mouseleave", this._onLeave);
+    document.addEventListener("mousedown", this._onDown);
+    document.addEventListener("mouseup", this._onUp);
+  }
+  componentWillUnmount() { clearTimeout(this._t1); clearTimeout(this._t2); clearTimeout(this._animTimer); cancelAnimationFrame(this._floatRaf); if (this._workObs) this._workObs.disconnect(); document.removeEventListener("mousemove", this._onMove); document.removeEventListener("mouseleave", this._onLeave); document.removeEventListener("mousedown", this._onDown); document.removeEventListener("mouseup", this._onUp); }
+
+  top() { try { window.scrollTo(0, 0); } catch (err) {} }
+
+  nav(page, e) {
+    if (e) e.preventDefault();
+    this.top();
+    clearTimeout(this._t1); clearTimeout(this._t2);
+    const reset = { page: page, view: "index", room: null, workCat: null, from: "index", curtain: null };
+    if (page === "home" && this.state.page === "roon") reset.roonDodges = 0;
+    this.setState(reset);
+  }
+
+  openWork(cat, from, room, e) {
+    if (e) e.preventDefault();
+    this.top();
+    this.setState({ page: "art", view: "work", workCat: cat, from: from, room: room, curtain: null });
+  }
+
+  openRoom(name, e) {
+    if (e) e.preventDefault();
+    this.top();
+    this.setState({ page: "art", view: "room", room: name });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const rows = WORKS.map(w => Object.assign({}, w, {
+      exLabel: w.ex || "One-off",
+      open: (e) => w.ex ? this.openRoom(w.ex, e) : this.openWork(w.cat, "index", null, e)
+    }));
+
+    let room = null;
+    if (s.view === "room" && s.room) {
+      const tiles = WORKS.filter(w => w.ex === s.room).map(w => Object.assign({}, w, {
+        open: (e) => this.openWork(w.cat, "room", s.room, e)
+      }));
+      room = { title: s.room, meta: SHOWS[s.room] || "", count: tiles.length, tiles: tiles };
+    }
+
+    let work = null;
+    if (s.view === "work" && s.workCat) {
+      const w = WORKS.find(x => x.cat === s.workCat);
+      if (w) work = Object.assign({}, w, {
+        exLabel: w.ex || "One-off",
+        backLabel: s.from === "room" ? s.room : "ARCHIVE"
+      });
+    }
+
+    const r = s.roon;
+    return {
+      strokes: (() => {
+        const speed = 900;
+        let elapsed = 0;
+        const list = s.drawing && s.curPoints && s.curPoints.length > 1
+          ? s.strokes.concat([{
+              d: "M" + s.curPoints.map((p) => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" L"),
+              color: s.tool === "eraser" ? "#ffffff" : "#111111",
+              width: s.tool === "eraser" ? 18 : 3,
+              filter: s.tool === "eraser" ? "none" : "url(#pencilTexture)"
+            }])
+          : s.strokes;
+        return list.map((st, i) => {
+          if (!s.animating) return Object.assign({}, st, { key: "s" + i, animStyle: {} });
+          if (st.isEraser) return Object.assign({}, st, { key: "s" + i + "-play" + s.animKey, animStyle: {} });
+          const len = this.pathLength(st.d);
+          const dur = Math.max(0.15, len / speed);
+          const style = { "--len": len, strokeDasharray: len, animation: "drawStroke " + dur + "s linear " + elapsed.toFixed(2) + "s both" };
+          elapsed += dur;
+          return Object.assign({}, st, { key: "s" + i + "-play" + s.animKey, animStyle: style });
+        });
+      })(),
+      cursorX: s.cursorX, cursorY: s.cursorY,
+      cursorDisplay: s.cursorVisible ? "block" : "none",
+      cursorLabel: (s.cursorClickable || s.cursorDown) ? "click" : "cursor",
+      startStroke: (e) => this.startStroke(e),
+      moveStroke: (e) => this.moveStroke(e),
+      endStroke: () => this.endStroke(),
+      setToolPencil: () => this.setState({ tool: "pencil" }),
+      setToolEraser: () => this.setState({ tool: "eraser" }),
+      clearStrokes: () => { cancelAnimationFrame(this._floatRaf); this.setState({ strokes: [], floatingSrc: null }); },
+      hasFloatingSrc: !!s.floatingSrc,
+      floatingBoxStyle: s.floatingSrc ? {
+        position: "absolute", left: s.floatX, top: s.floatY, width: s.floatSize, height: s.floatSize,
+        backgroundImage: "url(" + s.floatingSrc + ")", backgroundSize: "contain", backgroundRepeat: "no-repeat",
+        pointerEvents: "none", zIndex: 4
+      } : {},
+      svgRef: (el) => this.svgRef(el),
+      homeAreaRef: (el) => { this._homeArea = el; },
+      animateDoodle: () => this.animateDoodle(),
+      animateLabel: s.animating ? "PLAYING…" : "ANIMATE",
+      pencilBtnStyle: "font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; padding: 8px 14px; border: 1px solid #111111; cursor: none; background: " + (s.tool === "pencil" ? "#111111" : "#ffffff") + "; color: " + (s.tool === "pencil" ? "#ffffff" : "#111111") + ";",
+      eraserBtnStyle: "font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; padding: 8px 14px; border: 1px solid #111111; cursor: none; background: " + (s.tool === "eraser" ? "#111111" : "#ffffff") + "; color: " + (s.tool === "eraser" ? "#ffffff" : "#111111") + ";",
+      roonStyle: Object.assign({
+        fontFamily: "'Caveat', cursive", fontSize: 30, lineHeight: 1, color: "#002FA7",
+        transformOrigin: "center", transition: "left 300ms cubic-bezier(.65,0,.35,1), top 300ms cubic-bezier(.65,0,.35,1), transform 300ms cubic-bezier(.65,0,.35,1)",
+        display: "inline-block", cursor: "none", userSelect: "none", whiteSpace: "nowrap"
+      }, r.fled
+        ? { position: "fixed", left: r.x, top: r.y, zIndex: 90, transform: "rotate(" + r.r + "deg)" }
+        : { position: "relative", transform: "rotate(-8deg)" }),
+      roonFlee: (e) => {
+        const rect = (this._homeArea && this._homeArea.getBoundingClientRect) ? this._homeArea.getBoundingClientRect() : { left: 0, top: 0, width: (typeof window !== "undefined" ? window.innerWidth : 1200), height: (typeof window !== "undefined" ? window.innerHeight : 800) };
+        const minX = rect.left, minY = rect.top, w = rect.width, h = rect.height;
+        const margin = 24;
+        const r = s.roon;
+        if (!r.fled) {
+          const x = minX + margin + Math.random() * Math.max(60, w - 140 - margin * 2);
+          const y = minY + margin + Math.random() * Math.max(60, h - 100 - margin * 2);
+          this.setState({ roon: { fled: true, x: Math.round(x), y: Math.round(y), r: Math.round(Math.random() * 40 - 20) }, roonDodges: s.roonDodges + 1 });
+          return;
+        }
+        const curX = r.x, curY = r.y;
+        if (Math.random() < Math.min(0.75, 0.4 + s.roonDodges * 0.02)) {
+          const x = minX + margin + Math.random() * Math.max(60, w - 140 - margin * 2);
+          const y = minY + margin + Math.random() * Math.max(60, h - 100 - margin * 2);
+          this.setState({ roon: { fled: true, x: Math.round(x), y: Math.round(y), r: Math.round(Math.random() * 40 - 20) }, roonDodges: s.roonDodges + 1 });
+          return;
+        }
+        const cursorX = e ? e.clientX : curX;
+        const cursorY = e ? e.clientY : curY;
+        let dx = curX - cursorX, dy = curY - cursorY;
+        const mag = Math.hypot(dx, dy) || 1;
+        dx /= mag; dy /= mag;
+        const jump = Math.min(140, 70 + s.roonDodges * 3);
+        let x = curX + dx * jump + (Math.random() * 40 - 20);
+        let y = curY + dy * jump + (Math.random() * 40 - 20);
+        x = Math.max(minX + margin, Math.min(minX + w - 100, x));
+        y = Math.max(minY + margin, Math.min(minY + h - 60, y));
+        this.setState({ roon: { fled: true, x: Math.round(x), y: Math.round(y), r: Math.round(Math.random() * 40 - 20) }, roonDodges: s.roonDodges + 1 });
+      },
+      goRoon: (e) => { if (e) e.preventDefault(); this.top(); this.setState({ page: "roon", view: "index", roon: { x: 0, y: 0, r: -8 } }); },
+      isRoon: s.page === "roon",
+      roonDodges: String(s.roonDodges).padStart(3, "0"),
+      marks: this.props.showRegistrationMarks ?? true,
+      ruleAnimA: (this.props.animatedRules ?? true) ? "ruleDrift 9s ease-in-out infinite" : "none",
+      ruleAnimB: (this.props.animatedRules ?? true) ? "ruleDriftAlt 12s ease-in-out infinite" : "none",
+      rows: rows,
+      workCount: String(WORKS.length).padStart(3, "0"),
+      isHome: s.page === "home",
+      goHome: (e) => this.nav("home", e),
+      workSectionRef: (el) => this.workSectionRef(el),
+      workSectionStyle: {
+        padding: "120px 44px 140px", minHeight: "calc(100vh - 200px)",
+        background: "#002FA7",
+        display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center",
+        opacity: s.workSectionVisible ? 1 : 0,
+        transform: s.workSectionVisible ? "translateY(0)" : "translateY(36px)",
+        transition: "opacity 900ms cubic-bezier(.65,0,.35,1), transform 900ms cubic-bezier(.65,0,.35,1)"
+      },
+      homeTiles: [
+        { tag: WORKS[8].cat, title: WORKS[8].title, href: "#" + WORKS[8].cat, open: (e) => this.openWork(WORKS[8].cat, "index", null, e) },
+        { tag: WORKS[3].cat, title: WORKS[3].title, href: "#" + WORKS[3].cat, open: (e) => this.openWork(WORKS[3].cat, "index", null, e) },
+        { tag: "DESIGN", title: "Ring, concept", href: "#ring", open: (e) => { if (e) e.preventDefault(); this.top(); this.setState({ page: "design", view: "project", projectId: "ring" }); } },
+        { tag: WORKS[6].cat, title: WORKS[6].title, href: "#" + WORKS[6].cat, open: (e) => this.openWork(WORKS[6].cat, "index", null, e) }
+      ],
+      isDesignIndex: s.page === "design" && s.view === "index",
+      isProject: s.page === "design" && s.view === "project",
+      project: (s.page === "design" && s.view === "project") ? PROJECTS[s.projectId] : null,
+      openSidonia: (e) => { if (e) e.preventDefault(); this.top(); this.setState({ page: "design", view: "project", projectId: "sidonia" }); },
+      openRing: (e) => { if (e) e.preventDefault(); this.top(); this.setState({ page: "design", view: "project", projectId: "ring" }); },
+      isArtIndex: s.page === "art" && s.view === "index",
+      isRoom: s.page === "art" && s.view === "room",
+      isWork: s.page === "art" && s.view === "work",
+      isAbout: s.page === "about",
+      isStudio: s.page === "about" && s.view === "studio",
+      curtainDown: s.curtain === "down" && (Date.now() - (s.curtainAt || 0)) < 1200,
+      curtainUp: s.curtain === "up" && (Date.now() - (s.curtainAt || 0)) < 1200,
+      room: room,
+      work: work,
+      goDesign: (e) => this.nav("design", e),
+      goArt: (e) => this.nav("art", e),
+      goAbout: (e) => this.nav("about", e),
+      goStudio: (e) => { if (e) e.preventDefault(); this.top(); this.setState({ page: "about", view: "studio" }); },
+      goBackFromWork: (e) => {
+        if (e) e.preventDefault();
+        this.top();
+        if (s.from === "room" && s.room) this.setState({ view: "room", workCat: null });
+        else this.setState({ view: "index", workCat: null, room: null });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
