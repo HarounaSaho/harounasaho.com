@@ -36,15 +36,17 @@ export default function CustomCursor() {
       syncLabel(clickable);
     };
 
-    document.addEventListener("mousemove", onMove);
+    document.addEventListener("pointermove", onMove);
+    document.addEventListener("pointerdown", onDown);
+    document.addEventListener("pointerup", onUp);
+    document.addEventListener("pointercancel", onUp);
     document.addEventListener("mouseleave", onLeave);
-    document.addEventListener("mousedown", onDown);
-    document.addEventListener("mouseup", onUp);
     return () => {
-      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerdown", onDown);
+      document.removeEventListener("pointerup", onUp);
+      document.removeEventListener("pointercancel", onUp);
       document.removeEventListener("mouseleave", onLeave);
-      document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("mouseup", onUp);
     };
   }, []);
 
