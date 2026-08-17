@@ -1,9 +1,4 @@
 export default function Header({ roon, onHome, onArt, onDesign, onAbout, onRoon, onRoonFlee }) {
-  const fled = !!roon.fled;
-  const roonStyle = fled
-    ? { left: roon.x, top: roon.y, transform: `rotate(${roon.r}deg)` }
-    : undefined;
-
   return (
     <header className="site-header">
       <div className="rule-wrap bottom">
@@ -15,8 +10,8 @@ export default function Header({ roon, onHome, onArt, onDesign, onAbout, onRoon,
         </a>
         <a
           href="#roon"
-          className={`roon${fled ? " fled" : ""}`}
-          style={roonStyle}
+          className="roon"
+          style={roon.fled ? { visibility: "hidden", pointerEvents: "none" } : undefined}
           onMouseEnter={onRoonFlee}
           onClick={onRoon}
         >

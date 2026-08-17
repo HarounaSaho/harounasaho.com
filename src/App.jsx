@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import CustomCursor from "./components/CustomCursor.jsx";
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
@@ -17,7 +17,7 @@ function top() {
 }
 
 export default function App() {
-  const homeAreaRef = useRef(null);
+  const heroRef = useRef(null);
   const [page, setPage] = useState("home");
   const [view, setView] = useState("index");
   const [room, setRoom] = useState(null);
@@ -30,6 +30,14 @@ export default function App() {
   const dodgesRef = useRef(roonDodges);
   roonRef.current = roon;
   dodgesRef.current = roonDodges;
+
+  useEffect(() => {
+    if (page === "home") return;
+    if (!roonRef.current.fled) return;
+    const resetRoon = { x: 0, y: 0, r: -8 };
+    roonRef.current = resetRoon;
+    setRoon(resetRoon);
+  }, [page]);
 
   const nav = useCallback(
     (nextPage, e) => {
@@ -44,6 +52,11 @@ export default function App() {
       if (nextPage === "home" && page === "roon") {
         dodgesRef.current = 0;
         setRoonDodges(0);
+      }
+      if (nextPage !== "home") {
+        const resetRoon = { x: 0, y: 0, r: -8 };
+        roonRef.current = resetRoon;
+        setRoon(resetRoon);
       }
     },
     [page]
@@ -111,46 +124,41 @@ export default function App() {
   };
 
   const roonFlee = (e) => {
+    if (page !== "home" || !heroRef.current) return;
     const r = roonRef.current;
     const dodges = dodgesRef.current;
-    const rect = homeAreaRef.current?.getBoundingClientRect?.() ?? {
-      left: 0,
-      top: 0,
-      width: window.innerWidth,
-      height: window.innerHeight,
-    };
-    const minX = rect.left;
-    const minY = rect.top;
-    const w = rect.width;
-    const h = rect.height;
+    const hero = heroRef.current.getBoundingClientRect();
     const margin = 24;
+    const sigW = 88;
+    const sigH = 48;
+    const minX = margin;
+    const minY = margin;
+    const maxX = Math.max(minX, hero.width - sigW - margin);
+    const maxY = Math.max(minY, hero.height - sigH - margin);
 
-    if (!r.fled) {
-      const x = minX + margin + Math.random() * Math.max(60, w - 140 - margin * 2);
-      const y = minY + margin + Math.random() * Math.max(60, h - 100 - margin * 2);
-      const next = { fled: true, x: Math.round(x), y: Math.round(y), r: Math.round(Math.random() * 40 - 20) };
+    const teleport = () => ({
+      fled: true,
+      x: Math.round(minX + Math.random() * Math.max(0, maxX - minX)),
+      y: Math.round(minY + Math.random() * Math.max(0, maxY - minY)),
+      r: Math.round(Math.random() * 40 - 20),
+    });
+
+    const commit = (next) => {
       roonRef.current = next;
       dodgesRef.current = dodges + 1;
       setRoon(next);
       setRoonDodges(dodges + 1);
+    };
+
+    if (!r.fled || Math.random() < Math.min(0.75, 0.4 + dodges * 0.02)) {
+      commit(teleport());
       return;
     }
 
     const curX = r.x;
     const curY = r.y;
-    if (Math.random() < Math.min(0.75, 0.4 + dodges * 0.02)) {
-      const x = minX + margin + Math.random() * Math.max(60, w - 140 - margin * 2);
-      const y = minY + margin + Math.random() * Math.max(60, h - 100 - margin * 2);
-      const next = { fled: true, x: Math.round(x), y: Math.round(y), r: Math.round(Math.random() * 40 - 20) };
-      roonRef.current = next;
-      dodgesRef.current = dodges + 1;
-      setRoon(next);
-      setRoonDodges(dodges + 1);
-      return;
-    }
-
-    const cursorX = e ? e.clientX : curX;
-    const cursorY = e ? e.clientY : curY;
+    const cursorX = e ? e.clientX - hero.left : curX;
+    const cursorY = e ? e.clientY - hero.top : curY;
     let dx = curX - cursorX;
     let dy = curY - cursorY;
     const mag = Math.hypot(dx, dy) || 1;
@@ -159,13 +167,9 @@ export default function App() {
     const jump = Math.min(140, 70 + dodges * 3);
     let x = curX + dx * jump + (Math.random() * 40 - 20);
     let y = curY + dy * jump + (Math.random() * 40 - 20);
-    x = Math.max(minX + margin, Math.min(minX + w - 100, x));
-    y = Math.max(minY + margin, Math.min(minY + h - 60, y));
-    const next = { fled: true, x: Math.round(x), y: Math.round(y), r: Math.round(Math.random() * 40 - 20) };
-    roonRef.current = next;
-    dodgesRef.current = dodges + 1;
-    setRoon(next);
-    setRoonDodges(dodges + 1);
+    x = Math.max(minX, Math.min(maxX, x));
+    y = Math.max(minY, Math.min(maxY, y));
+    commit({ fled: true, x: Math.round(x), y: Math.round(y), r: Math.round(Math.random() * 40 - 20) });
   };
 
   return (
@@ -186,9 +190,13 @@ export default function App() {
         onRoon={goRoon}
         onRoonFlee={roonFlee}
       />
-      <div className="home-area" ref={homeAreaRef}>
+      <div className="home-area">
         {page === "home" && (
           <HomePage
+            heroRef={heroRef}
+            roon={roon}
+            onRoonFlee={roonFlee}
+            onRoon={goRoon}
             onArt={goArt}
             onDesign={goDesign}
             onAbout={goAbout}

@@ -113,7 +113,7 @@
 }
 
 .roon.fled {
-  position: fixed;
+  position: absolute;
   z-index: 90;
 }
 
@@ -188,6 +188,7 @@
   touch-action: none;
   -webkit-user-select: none;
   user-select: none;
+  overflow: hidden;
 }
 
 .hero a,

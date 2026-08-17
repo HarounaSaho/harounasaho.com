@@ -80,7 +80,17 @@ function rasterizeStrokes(svgEl, strokes) {
   };
 }
 
-export default function HomePage({ onArt, onDesign, onAbout, onOpenWork, onOpenRing }) {
+export default function HomePage({
+  heroRef,
+  roon,
+  onRoonFlee,
+  onRoon,
+  onArt,
+  onDesign,
+  onAbout,
+  onOpenWork,
+  onOpenRing,
+}) {
   const svgRef = useRef(null);
   const floatRef = useRef(null);
   const workSectionRef = useRef(null);
@@ -89,7 +99,6 @@ export default function HomePage({ onArt, onDesign, onAbout, onOpenWork, onOpenR
   const drawingRef = useRef(false);
   const pointsRef = useRef(null);
   const moveRaf = useRef(0);
-  const heroRef = useRef(null);
 
   const [strokes, setStrokes] = useState([]);
   const [drawing, setDrawing] = useState(false);
@@ -314,6 +323,17 @@ export default function HomePage({ onArt, onDesign, onAbout, onOpenWork, onOpenR
         onPointerUp={endStroke}
         onPointerCancel={endStroke}
       >
+        {roon?.fled && (
+          <a
+            href="#roon"
+            className="roon fled"
+            style={{ left: roon.x, top: roon.y, transform: `rotate(${roon.r}deg)` }}
+            onMouseEnter={onRoonFlee}
+            onClick={onRoon}
+          >
+            roon
+          </a>
+        )}
         <svg ref={svgRef} className="hero-svg">
           <filter id="pencilTexture">
             <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="n" />
