@@ -88,6 +88,8 @@ export default function HomePage({ onArt, onDesign, onAbout, onOpenWork, onOpenR
   const animTimer = useRef(0);
   const drawingRef = useRef(false);
   const pointsRef = useRef(null);
+  const moveRaf = useRef(0);
+  const heroRef = useRef(null);
 
   const [strokes, setStrokes] = useState([]);
   const [drawing, setDrawing] = useState(false);
@@ -183,10 +185,21 @@ export default function HomePage({ onArt, onDesign, onAbout, onOpenWork, onOpenR
     }, elapsed * 1000 + 200);
   };
 
+  const pointFromEvent = (e) => {
+    const rect = (heroRef.current || e.currentTarget).getBoundingClientRect();
+    return [e.clientX - rect.left, e.clientY - rect.top];
+  };
+
   const startStroke = (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
     if (e.target.closest("a, button")) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const pt = [e.clientX - rect.left, e.clientY - rect.top];
+    e.preventDefault();
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {
+      /* ignore */
+    }
+    const pt = pointFromEvent(e);
     drawingRef.current = true;
     pointsRef.current = [pt];
     setDrawing(true);
@@ -195,13 +208,29 @@ export default function HomePage({ onArt, onDesign, onAbout, onOpenWork, onOpenR
 
   const moveStroke = (e) => {
     if (!drawingRef.current) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const next = (pointsRef.current || []).concat([[e.clientX - rect.left, e.clientY - rect.top]]);
+    e.preventDefault();
+    const next = (pointsRef.current || []).concat([pointFromEvent(e)]);
     pointsRef.current = next;
-    setCurPoints(next);
+    if (!moveRaf.current) {
+      moveRaf.current = requestAnimationFrame(() => {
+        setCurPoints(pointsRef.current);
+        moveRaf.current = 0;
+      });
+    }
   };
 
-  const endStroke = () => {
+  const endStroke = (e) => {
+    if (e?.currentTarget && e.pointerId != null) {
+      try {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      } catch {
+        /* ignore */
+      }
+    }
+    if (moveRaf.current) {
+      cancelAnimationFrame(moveRaf.current);
+      moveRaf.current = 0;
+    }
     const pts = pointsRef.current;
     if (!drawingRef.current || !pts || pts.length < 2) {
       drawingRef.current = false;
@@ -278,11 +307,12 @@ export default function HomePage({ onArt, onDesign, onAbout, onOpenWork, onOpenR
   return (
     <>
       <section
+        ref={heroRef}
         className="hero"
-        onMouseDown={startStroke}
-        onMouseMove={moveStroke}
-        onMouseUp={endStroke}
-        onMouseLeave={endStroke}
+        onPointerDown={startStroke}
+        onPointerMove={moveStroke}
+        onPointerUp={endStroke}
+        onPointerCancel={endStroke}
       >
         <svg ref={svgRef} className="hero-svg">
           <filter id="pencilTexture">
@@ -316,7 +346,7 @@ export default function HomePage({ onArt, onDesign, onAbout, onOpenWork, onOpenR
             }}
           />
         )}
-        <div className="doodle-toolbar" onMouseDown={(e) => e.stopPropagation()}>
+        <div className="doodle-toolbar" onPointerDown={(e) => e.stopPropagation()}>
           <div className="doodle-tools">
             <button
               type="button"

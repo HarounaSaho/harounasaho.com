@@ -185,6 +185,15 @@
   padding: 90px 44px 60px;
   position: relative;
   cursor: none;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.hero a,
+.hero button,
+.doodle-toolbar {
+  touch-action: manipulation;
 }
 
 .hero-svg {
