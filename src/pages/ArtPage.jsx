@@ -27,32 +27,34 @@ export function ArtIndex({ onHome, onOpenRoom, onOpenWork }) {
           given myself, one canvas at a time.
         </p>
       </div>
-      <table className="archive">
-        <thead>
-          <tr>
-            <th>CAT</th>
-            <th>TITLE</th>
-            <th>MEDIUM</th>
-            <th>YR</th>
-            <th>EXHIBITION</th>
-          </tr>
-        </thead>
-        <tbody>
-          {WORKS.map((row) => (
-            <tr
-              key={row.cat}
-              data-clickable="true"
-              onClick={(e) => (row.ex ? onOpenRoom(row.ex, e) : onOpenWork(row.cat, "index", null, e))}
-            >
-              <td>{row.cat}</td>
-              <td className="title">{row.title}</td>
-              <td className="medium">{row.medium}</td>
-              <td className="yr">{row.yr}</td>
-              <td className="ex">{row.ex || "One-off"}</td>
+      <div className="archive-wrap">
+        <table className="archive">
+          <thead>
+            <tr>
+              <th>CAT</th>
+              <th>TITLE</th>
+              <th>MEDIUM</th>
+              <th>YR</th>
+              <th>EXHIBITION</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {WORKS.map((row) => (
+              <tr
+                key={row.cat}
+                data-clickable="true"
+                onClick={(e) => (row.ex ? onOpenRoom(row.ex, e) : onOpenWork(row.cat, "index", null, e))}
+              >
+                <td>{row.cat}</td>
+                <td className="title">{row.title}</td>
+                <td className="medium">{row.medium}</td>
+                <td className="yr">{row.yr}</td>
+                <td className="ex">{row.ex || "One-off"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   );
 }

@@ -15,6 +15,7 @@ body,
   padding: 0;
   background: var(--white);
   min-height: 100%;
+  overflow-x: hidden;
 }
 
 body {
