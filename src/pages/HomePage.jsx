@@ -377,7 +377,7 @@ export default function HomePage({ onArt, onDesign, onAbout, onOpenWork, onOpenR
           <br />
           <span>Artist and Designer</span>
         </h1>
-        <p className="hero-lede">Art to learn more about myself. Design to learn more about the world.</p>
+        <p className="hero-lede">Visual language is the language I understand best.</p>
         <nav className="hero-nav">
           <a href="#art" onClick={onArt}>
             ART
