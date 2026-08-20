@@ -1,8 +1,9 @@
 import { useRef } from "react";
 
 let dragZ = 30;
+const CLICK_MAX = 6;
 
-export default function Draggable({ children, className = "", handle, style }) {
+export default function Draggable({ children, className = "", handle, style, onClick }) {
   const ref = useRef(null);
   const pos = useRef({ x: 0, y: 0 });
   const drag = useRef(null);
@@ -20,7 +21,13 @@ export default function Draggable({ children, className = "", handle, style }) {
     } catch {
       /* ignore */
     }
-    drag.current = { px: e.clientX, py: e.clientY, x: pos.current.x, y: pos.current.y };
+    drag.current = {
+      px: e.clientX,
+      py: e.clientY,
+      x: pos.current.x,
+      y: pos.current.y,
+      moved: false,
+    };
     dragZ += 1;
     el.style.zIndex = String(dragZ);
     el.classList.add("is-dragging");
@@ -30,8 +37,11 @@ export default function Draggable({ children, className = "", handle, style }) {
   const onPointerMove = (e) => {
     if (!drag.current) return;
     e.preventDefault();
-    const x = drag.current.x + (e.clientX - drag.current.px);
-    const y = drag.current.y + (e.clientY - drag.current.py);
+    const dx = e.clientX - drag.current.px;
+    const dy = e.clientY - drag.current.py;
+    if (Math.abs(dx) > CLICK_MAX || Math.abs(dy) > CLICK_MAX) drag.current.moved = true;
+    const x = drag.current.x + dx;
+    const y = drag.current.y + dy;
     pos.current = { x, y };
     const el = ref.current;
     if (el) el.style.transform = `translate(${x}px, ${y}px)`;
@@ -39,6 +49,7 @@ export default function Draggable({ children, className = "", handle, style }) {
 
   const onPointerUp = (e) => {
     if (!drag.current) return;
+    const wasClick = !drag.current.moved;
     drag.current = null;
     const el = ref.current;
     if (el) {
@@ -52,6 +63,7 @@ export default function Draggable({ children, className = "", handle, style }) {
         /* ignore */
       }
     }
+    if (wasClick && onClick) onClick(e);
   };
 
   return (

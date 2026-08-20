@@ -2,8 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { WORKS } from "../data";
 import Placeholder from "../components/Placeholder";
 import PaintWindow from "../components/PaintWindow";
+import AlbumScrub from "../components/AlbumScrub";
 import Draggable from "../components/Draggable";
 import musiciansSrc from "../assets/musicians.jpg";
+import cardJitsuSrc from "../assets/card-jitsu.png";
+import ugwuEkeSrc from "../assets/ugwu-eke.jpg";
 
 export default function HomePage({
   heroRef,
@@ -63,7 +66,7 @@ export default function HomePage({
         </h1>
         <p className="hero-lede">Speaking with visuals</p>
         <div className="hero-stage">
-          <Draggable className="musicians-frame">
+          <Draggable className="musicians-frame" onClick={onArt}>
             <img className="musicians-img" src={musiciansSrc} alt="Caravaggio, The Musicians" draggable="false" />
             <div className="musicians-caption">
               <a
@@ -78,7 +81,31 @@ export default function HomePage({
               <span>1597 x 2026</span>
             </div>
           </Draggable>
-          <Draggable className="paint-drag" handle=".paint-title">
+          <Draggable className="jones-frame" onClick={onArt}>
+            <img
+              className="jones-img"
+              src={ugwuEkeSrc}
+              alt="People from Ugwu Eke village wearing Igbo masks, near Alayi"
+              draggable="false"
+            />
+            <div className="musicians-caption">
+              <span className="musicians-caption-title">
+                People from Ugwu Eke village wearing Igbo masks, near Alayi
+              </span>
+              <span>Photo by G. I. Jones</span>
+              <span>1930s</span>
+            </div>
+          </Draggable>
+          <Draggable className="cj-drag" onClick={onDesign}>
+            <img className="cj-img" src={cardJitsuSrc} alt="Card-Jitsu" draggable="false" />
+          </Draggable>
+          <Draggable className="album-drag" onClick={onAbout}>
+            <AlbumScrub />
+            <div className="musicians-caption">
+              <span className="musicians-caption-title">music i like</span>
+            </div>
+          </Draggable>
+          <Draggable className="paint-drag" onClick={onDesign}>
             <PaintWindow />
           </Draggable>
         </div>
