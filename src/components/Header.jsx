@@ -1,4 +1,4 @@
-export default function Header({ roon, onHome, onArt, onDesign, onAbout, onRoon, onRoonFlee }) {
+export default function Header({ roon, roonCaught, onHome, onArt, onDesign, onAbout, onRoon, onRoonFlee }) {
   return (
     <header className="site-header">
       <div className="rule-wrap bottom">
@@ -8,15 +8,17 @@ export default function Header({ roon, onHome, onArt, onDesign, onAbout, onRoon,
         <a href="#home" className="wordmark" onClick={onHome}>
           HAROUNA SAHO
         </a>
-        <a
-          href="#roon"
-          className="roon"
-          style={roon.fled ? { visibility: "hidden", pointerEvents: "none" } : undefined}
-          onMouseEnter={onRoonFlee}
-          onClick={onRoon}
-        >
-          roon
-        </a>
+        {!roonCaught && (
+          <a
+            href="#roon"
+            className="roon"
+            style={roon.fled ? { visibility: "hidden", pointerEvents: "none" } : undefined}
+            onMouseEnter={onRoonFlee}
+            onClick={onRoon}
+          >
+            roon
+          </a>
+        )}
       </div>
       <nav className="top-nav">
         <a href="#art" onClick={onArt}>

@@ -8,6 +8,10 @@
   --ease: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body,
 #root {
@@ -15,6 +19,10 @@ body,
   padding: 0;
   background: var(--white);
   min-height: 100%;
+}
+
+body,
+#root {
   overflow-x: hidden;
 }
 

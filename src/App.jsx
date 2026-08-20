@@ -26,6 +26,7 @@ export default function App() {
   const [projectId, setProjectId] = useState(null);
   const [roon, setRoon] = useState({ x: 0, y: 0, r: -8 });
   const [roonDodges, setRoonDodges] = useState(0);
+  const [roonCaught, setRoonCaught] = useState(false);
   const roonRef = useRef(roon);
   const dodgesRef = useRef(roonDodges);
   roonRef.current = roon;
@@ -49,9 +50,12 @@ export default function App() {
       setWorkCat(null);
       setFrom("index");
       setProjectId(null);
-      if (nextPage === "home" && page === "roon") {
-        dodgesRef.current = 0;
-        setRoonDodges(0);
+      if (nextPage === "home") {
+        setRoonCaught(false);
+        if (page === "roon") {
+          dodgesRef.current = 0;
+          setRoonDodges(0);
+        }
       }
       if (nextPage !== "home") {
         const resetRoon = { x: 0, y: 0, r: -8 };
@@ -79,6 +83,7 @@ export default function App() {
     top();
     setPage("roon");
     setView("index");
+    setRoonCaught(true);
     const resetRoon = { x: 0, y: 0, r: -8 };
     roonRef.current = resetRoon;
     setRoon(resetRoon);
@@ -183,6 +188,7 @@ export default function App() {
       </div>
       <Header
         roon={roon}
+        roonCaught={roonCaught}
         onHome={goHome}
         onArt={goArt}
         onDesign={goDesign}
