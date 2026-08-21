@@ -16,6 +16,7 @@ export default function HomePage({
   onArt,
   onDesign,
   onAbout,
+  onMusic,
   onOpenWork,
   onOpenRing,
 }) {
@@ -104,7 +105,7 @@ export default function HomePage({
           <Draggable className="cj-drag" onClick={onDesign}>
             <img className="cj-img" src={cardJitsuSrc} alt="Card-Jitsu" draggable="false" />
           </Draggable>
-          <Draggable className="album-drag" onClick={onAbout}>
+          <Draggable className="album-drag" onClick={onMusic}>
             <AlbumScrub />
             <div className="musicians-caption">
               <span className="musicians-caption-title">music i like</span>

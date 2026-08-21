@@ -1926,6 +1926,36 @@ html:has(.is-dragging) .custom-cursor .wii-grab {
   color: #f0e15a;
 }
 
+.music-page .sec-tag {
+  margin: 22px 0 18px;
+}
+
+.music-page .page-h1 {
+  text-transform: none;
+  margin: 0 0 36px;
+}
+
+.music-body {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.music-caption {
+  flex: 0 0 min(280px, 32%);
+  max-width: 280px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #111111;
+  margin: 8px 0 0;
+}
+
+.music-stage {
+  width: min(640px, 58%);
+  flex: 1 1 auto;
+}
+
 .roon-page {
   animation: quickFade 280ms cubic-bezier(0.65, 0, 0.35, 1) both;
   padding: 90px 44px 120px;
@@ -2208,6 +2238,21 @@ html:has(.is-dragging) .custom-cursor .wii-grab {
   .selected-grid {
     grid-template-columns: 1fr;
     gap: 28px;
+  }
+
+  .music-body {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .music-caption {
+    flex: none;
+    max-width: none;
+    margin: 0;
+  }
+
+  .music-stage {
+    width: min(640px, 100%);
   }
 
   .page,
