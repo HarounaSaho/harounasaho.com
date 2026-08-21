@@ -27,11 +27,9 @@ export default function HomePage({
     if (!el) return;
     const obs = new IntersectionObserver(
       (entries) => {
-        if (!entries[0].isIntersecting) return;
-        setWorkVisible(true);
-        obs.disconnect();
+        setWorkVisible(entries[0].isIntersecting);
       },
-      { threshold: 0, rootMargin: "20% 0px 0px 0px" }
+      { threshold: 0.18, rootMargin: "0px 0px -12% 0px" }
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -46,7 +44,7 @@ export default function HomePage({
 
   return (
     <>
-      <section ref={heroRef} className="hero">
+      <section ref={heroRef} className={`hero${workVisible ? " is-leaving" : ""}`}>
         {roon?.fled && (
           <a
             href="#roon"
@@ -66,6 +64,13 @@ export default function HomePage({
         </h1>
         <p className="hero-lede">Speaking with visuals</p>
         <div className="hero-stage">
+          <a href="#art" className="hero-featured" onClick={onArt}>
+            <Placeholder label="FEATURED WORK" />
+            <div className="musicians-caption">
+              <span className="musicians-caption-title">Work</span>
+              <span>To be shown here</span>
+            </div>
+          </a>
           <Draggable className="musicians-frame" onClick={onArt}>
             <img className="musicians-img" src={musiciansSrc} alt="Caravaggio, The Musicians" draggable="false" />
             <div className="musicians-caption">
@@ -127,7 +132,9 @@ export default function HomePage({
           onClick={(e) => {
             e.preventDefault();
             setWorkVisible(true);
-            workSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+            requestAnimationFrame(() => {
+              workSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+            });
           }}
         >
           ↓

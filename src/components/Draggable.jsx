@@ -30,8 +30,6 @@ export default function Draggable({ children, className = "", handle, style, onC
     };
     dragZ += 1;
     el.style.zIndex = String(dragZ);
-    el.classList.add("is-dragging");
-    document.querySelector(".custom-cursor")?.classList.add("is-grab");
   };
 
   const onPointerMove = (e) => {
@@ -39,7 +37,10 @@ export default function Draggable({ children, className = "", handle, style, onC
     e.preventDefault();
     const dx = e.clientX - drag.current.px;
     const dy = e.clientY - drag.current.py;
-    if (Math.abs(dx) > CLICK_MAX || Math.abs(dy) > CLICK_MAX) drag.current.moved = true;
+    if (Math.abs(dx) > CLICK_MAX || Math.abs(dy) > CLICK_MAX) {
+      drag.current.moved = true;
+      ref.current?.classList.add("is-dragging");
+    }
     const x = drag.current.x + dx;
     const y = drag.current.y + dy;
     pos.current = { x, y };
@@ -54,9 +55,6 @@ export default function Draggable({ children, className = "", handle, style, onC
     const el = ref.current;
     if (el) {
       el.classList.remove("is-dragging");
-      if (!document.querySelector(".is-dragging")) {
-        document.querySelector(".custom-cursor")?.classList.remove("is-grab");
-      }
       try {
         el.releasePointerCapture(e.pointerId);
       } catch {
