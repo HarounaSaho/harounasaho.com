@@ -3,7 +3,7 @@ import { WORKS } from "../data";
 import Placeholder from "../components/Placeholder";
 import PaintWindow from "../components/PaintWindow";
 import AlbumScrub from "../components/AlbumScrub";
-import Draggable from "../components/Draggable";
+import PlaygroundMii from "../components/PlaygroundMii";
 import musiciansSrc from "../assets/musicians.jpg";
 import cardJitsuSrc from "../assets/card-jitsu.png";
 import ugwuEkeSrc from "../assets/ugwu-eke.jpg";
@@ -17,6 +17,7 @@ export default function HomePage({
   onDesign,
   onAbout,
   onMusic,
+  onMusicians,
   onOpenWork,
   onOpenRing,
 }) {
@@ -65,55 +66,44 @@ export default function HomePage({
         </h1>
         <p className="hero-lede">Speaking with visuals</p>
         <div className="hero-stage">
-          <a href="#art" className="hero-featured" onClick={onArt}>
-            <Placeholder label="FEATURED WORK" />
-            <div className="musicians-caption">
-              <span className="musicians-caption-title">Work</span>
-              <span>To be shown here</span>
+          <div className="hero-stage-board">
+            <a href="#musicians" className="musicians-frame" onClick={onMusicians}>
+              <img className="musicians-img" src={musiciansSrc} alt="Caravaggio, The Musicians" draggable="false" />
+              <div className="musicians-caption">
+                <span className="musicians-caption-title">The Musicians</span>
+                <span>Caravaggio (Michelangelo Merisi) Italian x Roon (Harouna Saho) Gambian</span>
+                <span>1597 x 2026</span>
+              </div>
+            </a>
+            <a href="#music" className="album-drag" onClick={onMusic}>
+              <AlbumScrub />
+              <div className="musicians-caption">
+                <span className="musicians-caption-title">music i like</span>
+              </div>
+            </a>
+            <a href="#art" className="jones-frame" onClick={onArt}>
+              <img
+                className="jones-img"
+                src={ugwuEkeSrc}
+                alt="People from Ugwu Eke village wearing Igbo masks, near Alayi"
+                draggable="false"
+              />
+              <div className="musicians-caption">
+                <span className="musicians-caption-title">
+                  People from Ugwu Eke village wearing Igbo masks, near Alayi
+                </span>
+                <span>Photo by G. I. Jones</span>
+                <span>1930s</span>
+              </div>
+            </a>
+            <a href="#design" className="cj-drag" onClick={onDesign}>
+              <img className="cj-img" src={cardJitsuSrc} alt="Card-Jitsu" draggable="false" />
+            </a>
+            <div className="paint-drag">
+              <PaintWindow />
             </div>
-          </a>
-          <Draggable className="musicians-frame" onClick={onArt}>
-            <img className="musicians-img" src={musiciansSrc} alt="Caravaggio, The Musicians" draggable="false" />
-            <div className="musicians-caption">
-              <a
-                className="musicians-caption-title"
-                href="https://www.metmuseum.org/art/collection/search/435844"
-                target="_blank"
-                rel="noreferrer"
-              >
-                The Musicians
-              </a>
-              <span>Caravaggio (Michelangelo Merisi) Italian x Roon (Harouna Saho) Gambian</span>
-              <span>1597 x 2026</span>
-            </div>
-          </Draggable>
-          <Draggable className="jones-frame" onClick={onArt}>
-            <img
-              className="jones-img"
-              src={ugwuEkeSrc}
-              alt="People from Ugwu Eke village wearing Igbo masks, near Alayi"
-              draggable="false"
-            />
-            <div className="musicians-caption">
-              <span className="musicians-caption-title">
-                People from Ugwu Eke village wearing Igbo masks, near Alayi
-              </span>
-              <span>Photo by G. I. Jones</span>
-              <span>1930s</span>
-            </div>
-          </Draggable>
-          <Draggable className="cj-drag" onClick={onDesign}>
-            <img className="cj-img" src={cardJitsuSrc} alt="Card-Jitsu" draggable="false" />
-          </Draggable>
-          <Draggable className="album-drag" onClick={onMusic}>
-            <AlbumScrub />
-            <div className="musicians-caption">
-              <span className="musicians-caption-title">music i like</span>
-            </div>
-          </Draggable>
-          <Draggable className="paint-drag" onClick={onDesign}>
-            <PaintWindow />
-          </Draggable>
+          </div>
+          <PlaygroundMii onClick={onAbout} />
         </div>
         <nav className="hero-nav">
           <a href="#art" onClick={onArt}>

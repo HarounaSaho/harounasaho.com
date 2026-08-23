@@ -7,6 +7,7 @@ import { DesignIndex, ProjectDetail } from "./pages/DesignPage.jsx";
 import { ArtIndex, RoomView, WorkView } from "./pages/ArtPage.jsx";
 import AboutPage from "./pages/AboutPage.jsx";
 import MusicPage from "./pages/MusicPage.jsx";
+import MusiciansPage from "./pages/MusiciansPage.jsx";
 import RoonPage from "./pages/RoonPage.jsx";
 
 function top() {
@@ -72,6 +73,7 @@ export default function App() {
   const goDesign = (e) => nav("design", e);
   const goAbout = (e) => nav("about", e);
   const goMusic = (e) => nav("music", e);
+  const goMusicians = (e) => nav("musicians", e);
 
   const goStudio = (e) => {
     if (e) e.preventDefault();
@@ -245,6 +247,7 @@ export default function App() {
             onDesign={goDesign}
             onAbout={goAbout}
             onMusic={goMusic}
+            onMusicians={goMusicians}
             onOpenWork={(cat, e) => openWork(cat, "index", null, e)}
             onOpenRing={(e) => openProject("ring", e)}
           />
@@ -272,6 +275,7 @@ export default function App() {
           <AboutPage isStudio={view === "studio"} onHome={goHome} onAbout={goAbout} onStudio={goStudio} />
         )}
         {page === "music" && <MusicPage onHome={goHome} />}
+        {page === "musicians" && <MusiciansPage onHome={goHome} />}
         {page === "roon" && <RoonPage dodges={roonDodges} onStudio={goStudio} onAbout={goAbout} />}
       </div>
       <Footer />

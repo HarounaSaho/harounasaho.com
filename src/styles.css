@@ -230,25 +230,26 @@ html:has(.is-dragging) .custom-cursor .wii-grab {
 .hero-stage {
   position: relative;
   width: 100%;
-  min-height: 680px;
+  min-height: 560px;
   margin-top: 8px;
 }
 
-.hero-featured {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -52%);
-  width: min(520px, 54%);
-  z-index: 3;
-  margin: 0;
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
+.hero-stage-board {
+  display: grid;
+  grid-template-columns: minmax(140px, 180px) minmax(0, 1fr) minmax(280px, 440px);
+  grid-template-areas:
+    "musicians musicians musicians"
+    "album . jones"
+    "cj . paint";
+  column-gap: 28px;
+  row-gap: 22px;
+  align-items: start;
+  width: 100%;
+  max-width: 920px;
 }
 
-.hero-featured .ph {
-  width: 100%;
+.hero-featured {
+  display: none;
 }
 
 .draggable {
@@ -260,15 +261,49 @@ html:has(.is-dragging) .custom-cursor .wii-grab {
   z-index: 40;
 }
 
-.musicians-frame {
+.mii-playground {
   position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 18;
+  overflow: visible;
+}
+
+.playground-mii {
+  position: absolute;
+  top: 0;
   left: 0;
-  top: 2%;
-  width: min(480px, 44%);
+  width: 118px;
+  height: 188px;
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  will-change: transform;
+}
+
+.playground-mii.is-dragging {
+  z-index: 40;
+}
+
+.mii-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.musicians-frame {
+  position: relative;
+  grid-area: musicians;
+  justify-self: start;
+  width: min(520px, 100%);
   min-width: 0;
-  max-width: 500px;
   margin: 0;
   z-index: 5;
+  color: inherit;
+  text-decoration: none;
 }
 
 .musicians-img {
@@ -311,14 +346,16 @@ html:has(.is-dragging) .custom-cursor .wii-grab {
 }
 
 .jones-frame {
-  position: absolute;
-  right: 2%;
-  top: 0;
-  width: min(190px, 22%);
+  position: relative;
+  grid-area: jones;
+  justify-self: end;
+  width: min(170px, 100%);
   min-width: 0;
-  max-width: 200px;
+  max-width: 170px;
   margin: 0;
   z-index: 6;
+  color: inherit;
+  text-decoration: none;
 }
 
 .jones-img {
@@ -330,22 +367,23 @@ html:has(.is-dragging) .custom-cursor .wii-grab {
 }
 
 .paint-drag {
-  position: absolute;
-  right: 1%;
-  bottom: 2%;
-  width: min(220px, 26%);
+  position: relative;
+  grid-area: paint;
+  justify-self: end;
+  width: min(440px, 100%);
   margin: 0;
   min-width: 0;
   z-index: 8;
 }
 
 .cj-drag {
-  position: absolute;
-  left: 1%;
-  bottom: 6%;
-  width: min(240px, 28%);
+  position: relative;
+  grid-area: cj;
+  width: min(210px, 100%);
   min-width: 0;
   z-index: 7;
+  color: inherit;
+  text-decoration: none;
 }
 
 .cj-img {
@@ -356,12 +394,13 @@ html:has(.is-dragging) .custom-cursor .wii-grab {
 }
 
 .album-drag {
-  position: absolute;
-  right: 4%;
-  top: 36%;
-  width: min(170px, 20%);
+  position: relative;
+  grid-area: album;
+  width: min(150px, 100%);
   min-width: 0;
   z-index: 7;
+  color: inherit;
+  text-decoration: none;
 }
 
 .album-scrub {
@@ -400,10 +439,13 @@ html:has(.is-dragging) .custom-cursor .wii-grab {
   cursor: none;
 }
 
-.hero .paint-body,
+.hero .paint-body {
+  min-height: 360px;
+}
+
 .hero .paint-canvas-scroll,
 .hero .paint-canvas-wrap {
-  min-height: 110px;
+  min-height: 320px;
 }
 
 .hero .paint-menu-btn {
@@ -1595,6 +1637,22 @@ html:has(.is-dragging) .custom-cursor .wii-grab {
   margin: 34px 0 0;
 }
 
+.musicians-page .work-image {
+  max-width: 860px;
+  flex: 1 1 560px;
+}
+
+.musicians-page .work-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #111111;
+}
+
+.musicians-page .work-side a {
+  color: #002fa7;
+}
+
 .info-page {
   position: relative;
   background: #f0e15a;
@@ -2136,21 +2194,19 @@ html:has(.is-dragging) .custom-cursor .wii-grab {
   }
 
   .hero-stage {
-    min-height: 0;
+    min-height: 480px;
+  }
+
+  .hero-stage-board {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
+    max-width: none;
   }
 
-  .hero-featured {
-    position: relative;
-    left: auto;
-    top: auto;
-    transform: none;
-    width: min(340px, 100%);
-    margin: 8px 0 12px;
-    align-self: center;
+  .mii-playground {
+    min-height: 280px;
   }
 
   .musicians-frame,
@@ -2161,17 +2217,19 @@ html:has(.is-dragging) .custom-cursor .wii-grab {
   .paint-drag,
   .hero .paint-drag {
     position: relative;
+    grid-area: auto;
     left: auto;
     right: auto;
     top: auto;
     bottom: auto;
+    justify-self: auto;
     width: min(300px, 100%);
     max-width: none;
     margin: 0;
   }
 
   .musicians-frame {
-    width: min(480px, 100%);
+    width: min(440px, 100%);
   }
 
   .jones-frame {
@@ -2186,19 +2244,22 @@ html:has(.is-dragging) .custom-cursor .wii-grab {
   .hero .paint-window,
   .paint-drag,
   .hero .paint-drag {
-    width: min(260px, 100%);
+    width: min(420px, 100%);
     flex: none;
     margin: 0;
     align-self: flex-start;
   }
 
-  .paint-body {
-    min-height: 260px;
+  .paint-body,
+  .hero .paint-body {
+    min-height: 320px;
   }
 
   .paint-canvas-scroll,
-  .paint-canvas-wrap {
-    min-height: 220px;
+  .paint-canvas-wrap,
+  .hero .paint-canvas-scroll,
+  .hero .paint-canvas-wrap {
+    min-height: 280px;
   }
 
   .paint-swatches {
