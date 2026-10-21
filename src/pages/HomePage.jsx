@@ -44,18 +44,23 @@ export default function HomePage({
 
   return (
     <>
-      <section ref={heroRef} className={`hero${workVisible ? " is-leaving" : ""}`}>
+      <style>{".current-show:hover .current-show-title{text-decoration:underline;text-decoration-color:#ffc20e;text-decoration-thickness:3px;text-underline-offset:6px}"}</style>
+      <section ref={heroRef} className={"hero" + (workVisible ? " is-leaving" : "")}>
         {roon?.fled && (
           <a
             href="#roon"
             className="roon fled"
-            style={{ left: roon.x, top: roon.y, transform: `rotate(${roon.r}deg)` }}
+            style={{ left: roon.x, top: roon.y, transform: "rotate(" + roon.r + "deg)" }}
             onMouseEnter={onRoonFlee}
             onClick={onRoon}
           >
             roon
           </a>
         )}
+        <a className="current-show" href="/beyond-the-space-in-two/" style={{display:"flex",flexDirection:"column",alignItems:"flex-start",gap:8,margin:"0 0 28px",textDecoration:"none",color:"#111111"}}>
+          <span className="current-show-title" style={{fontFamily:"Arial, Helvetica, sans-serif",fontWeight:"bold",letterSpacing:"-0.035em",fontSize:"clamp(36px, 7vw, 64px)",lineHeight:0.95,color:"#002fa7"}}>CURRENT SHOW</span>
+          <span className="current-show-name" style={{fontFamily:"Bodoni Moda, Times New Roman, serif",fontStyle:"italic",fontWeight:500,fontSize:"clamp(22px, 3vw, 32px)",lineHeight:1.1,color:"#111111"}}>Beyond the Space In Two</span>
+        </a>
         <div className="sec-tag">SEC · 00 / HOME</div>
         <h1>
           Harouna Saho
@@ -143,7 +148,7 @@ export default function HomePage({
       <section
         id="selected-work"
         ref={workSectionRef}
-        className={`selected-work${workVisible ? " visible" : " hidden"}`}
+        className={"selected-work" + (workVisible ? " visible" : " hidden")}
       >
         <div className="selected-work-head">
           <h2>Selected Work</h2>
