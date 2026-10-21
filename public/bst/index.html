@@ -17,9 +17,17 @@
   <img id="poster" width="1545" height="2000" alt="Exhibition poster. 1st artist exhibition: Beyond the Space In Two. Harouna Saho. Reception Friday Oct. 30, 6–8 PM. Aisling Gallery, The Study at Yale Hotel, 1157 Chapel Street, New Haven. On display Oct. 22–Nov. 22.">
   <p class="note"><a href="/beyond-the-space-in-two/">Exhibition page</a></p>
   <script>
-    var parts = [0,1,2,3,4,5,6,7].map(function (n) {
+    var head = [0,1].map(function (n) {
       return "/shows/beyond-the-space-in-two/poster-0" + n + ".txt";
     });
+    var mid = [];
+    for (var i = 0; i < 15; i++) {
+      mid.push("/shows/beyond-the-space-in-two/poster-2-" + (i < 10 ? "0" : "") + i + ".txt");
+    }
+    var tail = [3,4,5,6,7].map(function (n) {
+      return "/shows/beyond-the-space-in-two/poster-0" + n + ".txt";
+    });
+    var parts = head.concat(mid, tail);
     Promise.all(parts.map(function (url) {
       return fetch(url).then(function (response) { return response.text(); });
     })).then(function (chunks) {
