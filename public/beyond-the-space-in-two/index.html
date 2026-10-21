@@ -11,64 +11,29 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;1,6..96,500&amp;display=swap" rel="stylesheet">
   <style>
-    :root {
-      --ink: #111111;
-      --klein: #002fa7;
-      --yellow: #ffc20e;
-      --sold: #d01212;
-    }
+    :root { --ink: #111111; --klein: #002fa7; --yellow: #ffc20e; --sold: #d01212; }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: #fff;
-      color: var(--ink);
-      font-family: Arial, Helvetica, sans-serif;
-      font-weight: bold;
-      line-height: 1.45;
-      -webkit-font-smoothing: antialiased;
-    }
+    body { margin: 0; background: #fff; color: var(--ink); font-family: Arial, Helvetica, sans-serif; font-weight: bold; line-height: 1.45; -webkit-font-smoothing: antialiased; }
     img { max-width: 100%; height: auto; }
     button, a { -webkit-tap-highlight-color: transparent; }
     :focus-visible { outline: 2px solid var(--klein); outline-offset: 3px; }
     ::selection { background: var(--yellow); color: var(--ink); }
-    .sheet {
-      width: min(1080px, 100%);
-      margin: 0 auto;
-      padding: max(36px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(48px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
-    }
+    .sheet { width: min(1080px, 100%); margin: 0 auto; padding: max(36px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(48px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); }
     .mark { display: block; width: 36px; height: 4px; background: var(--yellow); margin: 0 0 28px; }
     .name { margin: 0; font-size: clamp(32px, 8vw, 56px); line-height: 0.95; letter-spacing: -0.035em; font-weight: bold; }
-    h1 {
-      margin: 14px 0 0;
-      font-family: "Bodoni Moda", "Palatino Linotype", Palatino, "Times New Roman", serif;
-      font-style: italic;
-      font-weight: 500;
-      font-size: clamp(42px, 10vw, 84px);
-      line-height: 0.96;
-      letter-spacing: -0.03em;
-    }
+    h1 { margin: 14px 0 0; font-family: "Bodoni Moda", "Palatino Linotype", Palatino, "Times New Roman", serif; font-style: italic; font-weight: 500; font-size: clamp(42px, 10vw, 84px); line-height: 0.96; letter-spacing: -0.03em; }
     .kicker { margin: 18px 0 0; color: var(--klein); font-size: 16px; letter-spacing: -0.02em; }
     .facts { margin: 40px 0 0; padding: 0; list-style: none; }
     .facts li { margin: 0; font-size: 16px; letter-spacing: -0.02em; line-height: 1.55; }
     .actions { display: flex; flex-direction: column; gap: 10px; margin-top: 32px; }
-    .btn {
-      display: flex; align-items: center; justify-content: center;
-      min-height: 48px; padding: 14px 16px; border: 1px solid var(--ink);
-      background: #fff; color: var(--ink); font-family: Arial, Helvetica, sans-serif;
-      font-weight: bold; font-size: 14px; letter-spacing: -0.02em; text-align: center; text-decoration: none;
-    }
+    .btn { display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 14px 16px; border: 1px solid var(--ink); background: #fff; color: var(--ink); font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 14px; letter-spacing: -0.02em; text-align: center; text-decoration: none; }
     .btn:hover { color: var(--klein); border-color: var(--klein); }
     .poster { margin: 36px 0 0; }
-    .poster img { display: block; width: 100%; height: auto; border: 1px solid var(--ink); }
+    .poster img { display: block; width: 100%; height: auto; border: 1px solid var(--ink); aspect-ratio: 1545 / 2000; background: #f3f3f3; cursor: pointer; }
     .works { margin-top: 72px; }
     .prints { margin-top: 88px; }
-    .prints h2 {
-      margin: 0;
-      font-family: "Bodoni Moda", "Palatino Linotype", Palatino, "Times New Roman", serif;
-      font-style: italic; font-weight: 500;
-      font-size: clamp(32px, 6.5vw, 52px); line-height: 0.96; letter-spacing: -0.03em;
-    }
+    .prints h2 { margin: 0; font-family: "Bodoni Moda", "Palatino Linotype", Palatino, "Times New Roman", serif; font-style: italic; font-weight: 500; font-size: clamp(32px, 6.5vw, 52px); line-height: 0.96; letter-spacing: -0.03em; }
     .prints-lead { margin: 14px 0 0; font-size: 16px; letter-spacing: -0.02em; }
     .prints .grid { margin-top: 40px; }
     .grid { display: grid; grid-template-columns: 1fr; gap: 56px; }
@@ -119,10 +84,10 @@
     </ul>
     <div class="actions">
       <a class="btn" href="/shows/beyond-the-space-in-two/HarounaSaho_Paintings_Fall_Exhibition.pdf" download="HarounaSaho_Paintings_Fall_Exhibition.pdf">Exhibition Catalogue (PDF)</a>
-      <a class="btn" href="/shows/beyond-the-space-in-two/exhibition-poster.jpg" target="_blank" rel="noopener">Exhibition Poster</a>
+      <a class="btn" id="poster-link" href="/bst/">Exhibition Poster</a>
     </div>
     <figure class="poster">
-      <img src="/shows/beyond-the-space-in-two/exhibition-poster.jpg" width="1545" height="2000" alt="Exhibition poster. Harouna Saho, Beyond the Space In Two. Aisling Gallery, The Study at Yale Hotel, 1157 Chapel Street, New Haven. On view Oct. 22 to Nov. 22, 2026. Opening reception Friday, Oct. 30, 6 to 8 PM.">
+      <img id="show-poster" width="1545" height="2000" alt="Exhibition poster. 1st artist exhibition: Beyond the Space In Two. Harouna Saho. Reception Friday Oct. 30, 6–8 PM. Aisling Gallery, The Study at Yale Hotel, 1157 Chapel Street, New Haven. On display Oct. 22–Nov. 22.">
     </figure>
     <section class="works" aria-label="Works in the exhibition">
       <div class="grid">
@@ -168,9 +133,31 @@
   </div>
   <script>
     (function () {
+      var parts = [0,1,2,3,4,5,6,7].map(function (n) {
+        return "/shows/beyond-the-space-in-two/poster-0" + n + ".txt";
+      });
+      Promise.all(parts.map(function (url) {
+        return fetch(url).then(function (response) { return response.text(); });
+      })).then(function (chunks) {
+        var uri = "data:image/jpeg;base64," + chunks.join("").replace(/\s/g, "");
+        var poster = document.getElementById("show-poster");
+        var posterLink = document.getElementById("poster-link");
+        if (poster) poster.src = uri;
+        if (posterLink) {
+          posterLink.href = uri;
+          posterLink.setAttribute("download", "HarounaSaho_Exhibition_Poster.jpg");
+        }
+      });
       var lightbox = document.getElementById("lightbox");
       var stage = document.getElementById("lightbox-stage");
       var lastTrigger = null;
+      function openNode(node, trigger) {
+        stage.replaceChildren(node);
+        lastTrigger = trigger || null;
+        lightbox.hidden = false;
+        lightbox.classList.add("is-open");
+        document.body.style.overflow = "hidden";
+      }
       function openFrom(button) {
         var img = button.querySelector("img");
         var node;
@@ -182,11 +169,7 @@
           var plate = button.querySelector(".plate");
           node = plate ? plate.cloneNode(true) : document.createElement("span");
         }
-        stage.replaceChildren(node);
-        lastTrigger = button;
-        lightbox.hidden = false;
-        lightbox.classList.add("is-open");
-        document.body.style.overflow = "hidden";
+        openNode(node, button);
       }
       function close() {
         if (lightbox.hidden) return;
@@ -199,6 +182,16 @@
       document.querySelectorAll(".shot").forEach(function (button) {
         button.addEventListener("click", function () { openFrom(button); });
       });
+      var poster = document.getElementById("show-poster");
+      if (poster) {
+        poster.addEventListener("click", function () {
+          if (!poster.getAttribute("src")) return;
+          var node = document.createElement("img");
+          node.src = poster.src;
+          node.alt = poster.alt || "";
+          openNode(node, poster);
+        });
+      }
       lightbox.addEventListener("click", close);
       document.addEventListener("keydown", function (event) {
         if (event.key === "Escape") close();
