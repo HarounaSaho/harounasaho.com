@@ -2,12 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Beyond the Space In Two</title>
-  <link rel="canonical" href="/beyond-the-space-in-two/">
-  <meta http-equiv="refresh" content="0; url=/beyond-the-space-in-two/">
-  <script>location.replace("/beyond-the-space-in-two/");</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Beyond the Space In Two — Harouna Saho</title>
+  <meta name="description" content="Exhibition poster for Beyond the Space In Two, Harouna Saho's first solo gallery exhibition at Aisling Gallery.">
+  <link rel="canonical" href="https://harounasaho.com/beyond-the-space-in-two/">
+  <style>
+    body { margin: 0; background: #fff; color: #111; font-family: Arial, Helvetica, sans-serif; font-weight: bold; }
+    img { display: block; width: 100%; height: auto; background: #f3f3f3; aspect-ratio: 1545 / 2000; }
+    .note { margin: 0; padding: 18px 20px 32px; font-size: 14px; letter-spacing: -0.02em; }
+    a { color: #002fa7; }
+  </style>
 </head>
 <body>
-  <p><a href="/beyond-the-space-in-two/">Beyond the Space In Two</a></p>
+  <img id="poster" width="1545" height="2000" alt="Exhibition poster. 1st artist exhibition: Beyond the Space In Two. Harouna Saho. Reception Friday Oct. 30, 6–8 PM. Aisling Gallery, The Study at Yale Hotel, 1157 Chapel Street, New Haven. On display Oct. 22–Nov. 22.">
+  <p class="note"><a href="/beyond-the-space-in-two/">Exhibition page</a></p>
+  <script>
+    var parts = [0,1,2,3,4,5,6,7].map(function (n) {
+      return "/shows/beyond-the-space-in-two/poster-0" + n + ".txt";
+    });
+    Promise.all(parts.map(function (url) {
+      return fetch(url).then(function (response) { return response.text(); });
+    })).then(function (chunks) {
+      document.getElementById("poster").src = "data:image/jpeg;base64," + chunks.join("").replace(/\s/g, "");
+    });
+  </script>
 </body>
 </html>
