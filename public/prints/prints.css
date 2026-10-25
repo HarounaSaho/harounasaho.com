@@ -1,0 +1,277 @@
+.print-offer {
+  margin-top: 28px;
+}
+
+.print-offer-heading {
+  margin: 0 0 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #002fa7;
+}
+
+.print-card {
+  margin: 0;
+}
+
+.print-frame {
+  position: relative;
+  background: #fff;
+  border: 1px solid #111;
+}
+
+.print-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  background: #fff;
+}
+
+.print-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #002fa7;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  padding: 5px 7px;
+}
+
+.print-title {
+  margin: 16px 0 0;
+  font-family: "Bodoni Moda", "Palatino Linotype", Palatino, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(26px, 4vw, 34px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.print-title em {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.print-year,
+.print-edition,
+.print-paper {
+  margin: 2px 0 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+  line-height: 1.45;
+}
+
+.print-sizes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  margin-top: 16px;
+  border: 1px solid #111;
+  border-right: 0;
+}
+
+.print-size {
+  min-height: 44px;
+  margin: 0;
+  padding: 10px 8px;
+  border: 0;
+  border-right: 1px solid #111;
+  background: #fff;
+  color: #111;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+}
+
+.print-size[aria-pressed="true"] {
+  background: #002fa7;
+  color: #fff;
+}
+
+.print-size:hover {
+  background: #ffc20e;
+  color: #002fa7;
+}
+
+.print-size[aria-pressed="true"]:hover {
+  background: #002fa7;
+  color: #fff;
+}
+
+.print-price {
+  margin: 14px 0 0;
+  min-height: 28px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  letter-spacing: -0.03em;
+  line-height: 28px;
+}
+
+.print-buy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 10px;
+  padding: 12px 16px;
+  border: 0;
+  background: #002fa7;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.print-buy:hover {
+  background: #ffc20e;
+  color: #002fa7;
+}
+
+.print-buy:disabled,
+.print-buy.is-disabled {
+  background: #ececec;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.print-buy:disabled:hover,
+.print-buy.is-disabled:hover {
+  background: #ececec;
+  color: #666;
+}
+
+.print-ship {
+  margin: 8px 0 0;
+  min-height: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 12px;
+  letter-spacing: -0.01em;
+  line-height: 18px;
+  color: #111;
+}
+
+.print-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 56px;
+  margin-top: 40px;
+}
+
+.print-status {
+  margin: 28px 0 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+}
+
+.print-page,
+.thanks-page {
+  width: min(1080px, 100%);
+  margin: 0 auto;
+  padding: max(36px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(48px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+  background: #fff;
+  color: #111;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  line-height: 1.45;
+}
+
+.print-page .mark,
+.thanks-page .mark {
+  display: block;
+  width: 36px;
+  height: 4px;
+  background: #ffc20e;
+  margin: 0 0 28px;
+}
+
+.print-page .name,
+.thanks-page .name {
+  margin: 0;
+  font-size: clamp(32px, 8vw, 56px);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+}
+
+.print-page h1,
+.thanks-page h1 {
+  margin: 14px 0 0;
+  font-family: "Bodoni Moda", "Palatino Linotype", Palatino, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(42px, 10vw, 84px);
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+}
+
+.print-page .kicker,
+.thanks-page .kicker {
+  margin: 18px 0 0;
+  color: #002fa7;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+}
+
+.thanks-copy {
+  margin: 36px 0 0;
+  max-width: 28em;
+  font-family: "Bodoni Moda", "Palatino Linotype", Palatino, "Times New Roman", serif;
+  font-weight: 500;
+  font-size: clamp(28px, 5vw, 40px);
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+}
+
+.print-page .back-wrap,
+.thanks-page .back-wrap {
+  margin: 88px 0 0;
+  padding-top: 22px;
+  border-top: 1px solid #111;
+}
+
+.print-page .back,
+.thanks-page .back {
+  color: #002fa7;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.print-page .back:hover,
+.thanks-page .back:hover {
+  text-decoration: underline;
+  text-decoration-color: #ffc20e;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+@media (min-width: 900px) {
+  .print-grid {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 48px;
+    row-gap: 72px;
+  }
+
+  .print-page,
+  .thanks-page {
+    padding: 72px 48px 80px;
+  }
+}
