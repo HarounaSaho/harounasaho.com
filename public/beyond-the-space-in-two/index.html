@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;1,6..96,500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/prints/prints.css">
   <style>
     :root { --ink: #111111; --klein: #002fa7; --yellow: #ffc20e; --sold: #d01212; }
     * { box-sizing: border-box; }
@@ -51,8 +52,9 @@
     .back-wrap { margin: 88px 0 0; padding-top: 22px; border-top: 1px solid var(--ink); }
     .back { color: var(--klein); font-size: 14px; letter-spacing: -0.02em; text-decoration: none; }
     .back:hover { text-decoration: underline; text-decoration-color: var(--yellow); text-decoration-thickness: 2px; text-underline-offset: 4px; }
-    .venue { color: var(--klein); text-decoration: none; }
-    .venue:hover { text-decoration: underline; text-decoration-color: var(--yellow); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+    .inquire { color: var(--klein); text-decoration: none; }
+    .inquire:hover { text-decoration: underline; text-decoration-color: var(--yellow); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+
     .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)); background: #fff; }
     .lightbox.is-open { display: flex; }
     .lightbox img, .lightbox .plate { max-width: calc(100vw - 32px); max-height: calc(100dvh - 32px); width: auto; height: auto; object-fit: contain; border: 0; background: #fff; }
@@ -79,13 +81,14 @@
       <p class="kicker">First solo gallery exhibition</p>
     </header>
     <ul class="facts">
-      <li><a class="venue" href="https://www.thestudyatyale.com/local-culture/aisling-gallery">Aisling Gallery</a>, The Study at Yale Hotel</li>
+      <li><a class="inquire" href="https://www.thestudyatyale.com/local-culture/aisling-gallery">Aisling Gallery</a>, The Study at Yale Hotel</li>
       <li>1157 Chapel Street, New Haven, Connecticut</li>
       <li>On view Oct. 22 – Nov. 22, 2026</li>
       <li>Opening Reception: Friday, Oct. 30, 6–8 PM</li>
     </ul>
     <div class="actions">
       <a class="btn" href="/shows/beyond-the-space-in-two/HarounaSaho_Paintings_Fall_Exhibition.pdf" download="HarounaSaho_Paintings_Fall_Exhibition.pdf">Exhibition Catalogue (PDF)</a>
+      <a class="btn" href="/prints/">Shop prints</a>
     </div>
     <figure class="poster">
       <img id="show-poster" width="1545" height="2000" alt="Exhibition poster. 1st artist exhibition: Beyond the Space In Two. Harouna Saho. Reception Friday Oct. 30, 6–8 PM. Aisling Gallery, The Study at Yale Hotel, 1157 Chapel Street, New Haven. On display Oct. 22–Nov. 22.">
@@ -94,35 +97,19 @@
       <div class="grid">
         <p class="series-caption">From the series See No Evil, Hear No Evil, Speak No Evil</p>
         <article class="work">
-          <button type="button" class="shot" aria-label="View See No Evil full size"><span class="plate"></span></button>
-          <div class="label"><p class="tombstone"><em>See No Evil</em>, 2026</p><p class="meta">Price on request</p></div>
+          <button type="button" class="shot" aria-label="View See No Evil full size"><img src="/prints/see-no-evil.jpg" width="760" height="760" alt="See No Evil, 2026" loading="lazy"></button>
+          <div class="label"><p class="tombstone"><em>See No Evil</em>, 2026</p><p class="meta">Price on request</p><p class="meta"><a class="inquire" href="mailto:harouna.saho@yale.edu?subject=Purchase%20inquiry">Message me for purchase inquiries</a></p></div>
+          <div data-print-for="See No Evil"></div>
         </article>
         <article class="work">
-          <button type="button" class="shot" aria-label="View Hear No Evil full size"><span class="plate"></span></button>
-          <div class="label"><p class="tombstone"><em>Hear No Evil</em>, 2026</p><p class="meta">Price on request</p></div>
+          <button type="button" class="shot" aria-label="View Hear No Evil full size"><img src="/prints/hear-no-evil.jpg" width="760" height="760" alt="Hear No Evil, 2026" loading="lazy"></button>
+          <div class="label"><p class="tombstone"><em>Hear No Evil</em>, 2026</p><p class="meta">Price on request</p><p class="meta"><a class="inquire" href="mailto:harouna.saho@yale.edu?subject=Purchase%20inquiry">Message me for purchase inquiries</a></p></div>
+          <div data-print-for="Hear No Evil"></div>
         </article>
         <article class="work">
-          <button type="button" class="shot" aria-label="View Speak No Evil full size"><span class="plate"></span></button>
-          <div class="label"><p class="tombstone"><em>Speak No Evil</em>, 2026</p><p class="meta">Price on request</p></div>
-        </article>
-      </div>
-    </section>
-    <section class="prints" aria-labelledby="prints-heading">
-      <h2 id="prints-heading">Prints</h2>
-      <p class="prints-lead">Open edition prints from the exhibition.</p>
-      <div class="grid">
-        <p class="series-caption">From the series See No Evil, Hear No Evil, Speak No Evil</p>
-        <article class="work">
-          <button type="button" class="shot" aria-label="View See No Evil print full size"><span class="plate"></span></button>
-          <div class="label"><p class="tombstone"><em>See No Evil</em>, 2026</p><p class="meta">Print</p><p class="meta">Price on request</p></div>
-        </article>
-        <article class="work">
-          <button type="button" class="shot" aria-label="View Hear No Evil print full size"><span class="plate"></span></button>
-          <div class="label"><p class="tombstone"><em>Hear No Evil</em>, 2026</p><p class="meta">Print</p><p class="meta">Price on request</p></div>
-        </article>
-        <article class="work">
-          <button type="button" class="shot" aria-label="View Speak No Evil print full size"><span class="plate"></span></button>
-          <div class="label"><p class="tombstone"><em>Speak No Evil</em>, 2026</p><p class="meta">Print</p><p class="meta">Price on request</p></div>
+          <button type="button" class="shot" aria-label="View Speak No Evil full size"><img src="/prints/speak-no-evil.jpg" width="760" height="760" alt="Speak No Evil, 2026" loading="lazy"></button>
+          <div class="label"><p class="tombstone"><em>Speak No Evil</em>, 2026</p><p class="meta">Price on request</p><p class="meta"><a class="inquire" href="mailto:harouna.saho@yale.edu?subject=Purchase%20inquiry">Message me for purchase inquiries</a></p></div>
+          <div data-print-for="Speak No Evil"></div>
         </article>
       </div>
     </section>
@@ -202,5 +189,6 @@
       });
     }());
   </script>
+  <script src="/prints/prints.js"></script>
 </body>
 </html>
