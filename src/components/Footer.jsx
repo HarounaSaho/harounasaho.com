@@ -6,6 +6,7 @@ export default function Footer() {
       </div>
       <div>NEW HAVEN, CT</div>
       <div>SHEET 1 OF 1 · TRIM 1440 × 960 px</div>
+      <div><a href="/prints/" style={{ color: "inherit" }}>PRINTS</a></div>
       <div>© 2026 H. SAHO</div>
     </footer>
   );
