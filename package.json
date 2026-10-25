@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/materialize-print-images.mjs && vite build",
     "preview": "vite preview",
     "deploy": "vercel --prod"
   },
