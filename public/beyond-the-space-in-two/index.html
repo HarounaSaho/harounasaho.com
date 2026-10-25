@@ -86,7 +86,6 @@
     </ul>
     <div class="actions">
       <a class="btn" href="/shows/beyond-the-space-in-two/HarounaSaho_Paintings_Fall_Exhibition.pdf" download="HarounaSaho_Paintings_Fall_Exhibition.pdf">Exhibition Catalogue (PDF)</a>
-      <a class="btn" id="poster-link" href="/bst/">Exhibition Poster</a>
     </div>
     <figure class="poster">
       <img id="show-poster" width="1545" height="2000" alt="Exhibition poster. 1st artist exhibition: Beyond the Space In Two. Harouna Saho. Reception Friday Oct. 30, 6–8 PM. Aisling Gallery, The Study at Yale Hotel, 1157 Chapel Street, New Haven. On display Oct. 22–Nov. 22.">
@@ -151,12 +150,7 @@
       })).then(function (chunks) {
         var uri = "data:image/jpeg;base64," + chunks.join("").replace(/\s/g, "");
         var poster = document.getElementById("show-poster");
-        var posterLink = document.getElementById("poster-link");
         if (poster) poster.src = uri;
-        if (posterLink) {
-          posterLink.href = uri;
-          posterLink.setAttribute("download", "HarounaSaho_Exhibition_Poster.jpg");
-        }
       });
       var lightbox = document.getElementById("lightbox");
       var stage = document.getElementById("lightbox-stage");
