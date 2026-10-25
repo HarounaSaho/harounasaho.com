@@ -1,0 +1,51 @@
+[
+  {
+    "work": "See No Evil",
+    "year": 2026,
+    "image": "see-no-evil.jpg",
+    "edition": "Open edition",
+    "paper": "Archival matte, 230gsm",
+    "shipsIn": 7,
+    "variants": [
+      { "size": "8 × 8 in", "price": null, "stripeLink": "", "soldOut": false },
+      { "size": "12 × 12 in", "price": null, "stripeLink": "", "soldOut": false }
+    ]
+  },
+  {
+    "work": "Hear No Evil",
+    "year": 2026,
+    "image": "hear-no-evil.jpg",
+    "edition": "Open edition",
+    "paper": "Archival matte, 230gsm",
+    "shipsIn": 7,
+    "variants": [
+      { "size": "8 × 8 in", "price": null, "stripeLink": "", "soldOut": false },
+      { "size": "12 × 12 in", "price": null, "stripeLink": "", "soldOut": false }
+    ]
+  },
+  {
+    "work": "Speak No Evil",
+    "year": 2026,
+    "image": "speak-no-evil.jpg",
+    "edition": "Open edition",
+    "paper": "Archival matte, 230gsm",
+    "shipsIn": 7,
+    "variants": [
+      { "size": "8 × 8 in", "price": null, "stripeLink": "", "soldOut": false },
+      { "size": "12 × 12 in", "price": null, "stripeLink": "", "soldOut": false }
+    ]
+  },
+  {
+    "work": "See No Evil, Hear No Evil, Speak No Evil",
+    "set": true,
+    "year": 2026,
+    "image": "triptych.jpg",
+    "edition": "Open edition",
+    "paper": "Archival matte, 230gsm",
+    "shipsIn": 7,
+    "variants": [
+      { "size": "8 × 8 in", "price": null, "stripeLink": "", "soldOut": false },
+      { "size": "12 × 12 in", "price": null, "stripeLink": "", "soldOut": false }
+    ]
+  }
+]
