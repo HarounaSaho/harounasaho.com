@@ -20,17 +20,22 @@ export default function Header({ roon, roonCaught, onHome, onArt, onDesign, onAb
           </a>
         )}
       </div>
-      <nav className="top-nav">
-        <a href="#art" onClick={onArt}>
-          ART
+      <div className="header-actions">
+        <nav className="top-nav">
+          <a href="#art" onClick={onArt}>
+            ART
+          </a>
+          <a href="#design" onClick={onDesign}>
+            DESIGN
+          </a>
+          <a href="#about" onClick={onAbout}>
+            INFO
+          </a>
+        </nav>
+        <a className="prints-btn" href="/prints/">
+          Shop prints
         </a>
-        <a href="#design" onClick={onDesign}>
-          DESIGN
-        </a>
-        <a href="#about" onClick={onAbout}>
-          INFO
-        </a>
-      </nav>
+      </div>
     </header>
   );
 }
