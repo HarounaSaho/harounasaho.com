@@ -14,7 +14,7 @@
   function buyable(variant) {
     if (!variant || variant.soldOut) return false;
     var link = variant.stripeLink || "";
-    return /^https:\/\/buy\.stripe\.com\/[A-Za-z0-9_]+/.test(link);
+    return /^https:\/\/buy\.stripe\.com\/[A-Za-z0-9]+/.test(link);
   }
 
   function editionLine(edition) {
@@ -23,33 +23,24 @@
     return text + " print";
   }
 
-  function imageSrc(print) {
-    var image = print.image || "";
-    if (image.charAt(0) === "/") return image;
-    return "/prints/" + image;
-  }
-
-  function card(print, withImage) {
+  function card(print) {
     var article = document.createElement("article");
     article.className = "print-card";
     var variants = Array.isArray(print.variants) ? print.variants : [];
     var selected = 0;
 
-    var frame = null;
-    if (withImage) {
-      frame = document.createElement("div");
-      frame.className = "print-frame";
-      var tag = document.createElement("span");
-      tag.className = "print-tag";
-      tag.textContent = "PRINT";
-      var img = document.createElement("img");
-      img.alt = (print.work || "Print") + ", " + (print.year || "") + ", open edition print";
-      img.loading = "lazy";
-      img.decoding = "async";
-      img.src = imageSrc(print);
-      frame.appendChild(tag);
-      frame.appendChild(img);
-    }
+    var frame = document.createElement("div");
+    frame.className = "print-frame";
+    var tag = document.createElement("span");
+    tag.className = "print-tag";
+    tag.textContent = "PRINT";
+    var img = document.createElement("img");
+    img.alt = (print.work || "Print") + ", " + (print.year || "") + ", open edition print";
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.src = "/prints/" + print.image;
+    frame.appendChild(tag);
+    frame.appendChild(img);
 
     var title = document.createElement("h3");
     title.className = "print-title";
@@ -77,14 +68,14 @@
     var price = document.createElement("p");
     price.className = "print-price";
 
-    var buy = document.createElement("a");
+    var buy = document.createElement("button");
+    buy.type = "button";
     buy.className = "print-buy";
-    buy.setAttribute("aria-disabled", "true");
 
     var ship = document.createElement("p");
     ship.className = "print-ship";
     var days = typeof print.shipsIn === "number" ? print.shipsIn : 7;
-    ship.textContent = "Ships in " + days + " business days \u00b7 Unframed";
+    ship.textContent = "Ships in " + days + " business days · Unframed";
 
     function paint() {
       var variant = variants[selected] || {};
@@ -94,19 +85,13 @@
       });
       if (variant.soldOut) {
         buy.textContent = "Sold out";
-        buy.removeAttribute("href");
-        buy.classList.add("is-disabled");
-        buy.setAttribute("aria-disabled", "true");
+        buy.disabled = true;
       } else if (buyable(variant)) {
         buy.textContent = "Buy print";
-        buy.href = variant.stripeLink;
-        buy.classList.remove("is-disabled");
-        buy.removeAttribute("aria-disabled");
+        buy.disabled = false;
       } else {
         buy.textContent = "Buy print";
-        buy.removeAttribute("href");
-        buy.classList.add("is-disabled");
-        buy.setAttribute("aria-disabled", "true");
+        buy.disabled = true;
       }
     }
 
@@ -122,15 +107,15 @@
       sizes.appendChild(button);
     });
 
-    buy.addEventListener("click", function (event) {
-      if (!buy.getAttribute("href")) event.preventDefault();
+    buy.addEventListener("click", function () {
+      var variant = variants[selected];
+      if (!buyable(variant)) return;
+      window.location.assign(variant.stripeLink);
     });
 
-    if (frame) article.appendChild(frame);
-    if (withImage) {
-      article.appendChild(title);
-      article.appendChild(year);
-    }
+    article.appendChild(frame);
+    article.appendChild(title);
+    article.appendChild(year);
     article.appendChild(edition);
     if (print.paper) article.appendChild(paper);
     if (variants.length) article.appendChild(sizes);
@@ -148,21 +133,8 @@
     heading.className = "print-offer-heading";
     heading.textContent = "Prints available";
     section.appendChild(heading);
-    section.appendChild(card(print, false));
+    section.appendChild(card(print));
     return section;
-  }
-
-  function uniquePrints(prints) {
-    var seen = {};
-    var list = [];
-    prints.forEach(function (print) {
-      if (!print || print.set) return;
-      var key = String(print.image || print.work || "").toLowerCase();
-      if (!key || seen[key]) return;
-      seen[key] = true;
-      list.push(print);
-    });
-    return list;
   }
 
   function fail() {
@@ -186,21 +158,20 @@
     })
     .then(function (prints) {
       if (!Array.isArray(prints)) throw new Error("prints");
-      var once = uniquePrints(prints);
       mounts.forEach(function (mount) {
         var name = mount.getAttribute("data-print-for");
         var match = null;
-        once.forEach(function (print) {
+        prints.forEach(function (print) {
           if (match) return;
-          if (print.work === name) match = print;
+          if (print && print.work === name && !print.set) match = print;
         });
         mount.replaceChildren();
         if (match) mount.appendChild(offer(match));
       });
       if (grid) {
         grid.replaceChildren();
-        once.forEach(function (print) {
-          grid.appendChild(card(print, true));
+        prints.forEach(function (print) {
+          if (print) grid.appendChild(card(print));
         });
         grid.hidden = false;
       }

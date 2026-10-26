@@ -36,63 +36,16 @@
     ]
   },
   {
-    "work": "Beyond",
+    "work": "See No Evil, Hear No Evil, Speak No Evil",
+    "set": true,
     "year": 2026,
-    "image": "beyond.jpg",
-    "edition": "Open edition",
-    "paper": "Archival matte, 230gsm",
-    "shipsIn": 7,
-    "variants": [
-      { "size": "8 × 12 in", "price": null, "stripeLink": "", "soldOut": false },
-      { "size": "10 × 15 in", "price": null, "stripeLink": "", "soldOut": false }
-    ]
-  },
-  {
-    "work": "Figure Yellow",
-    "year": 2026,
-    "image": "figure-yellow.jpg",
-    "edition": "Open edition",
-    "paper": "Archival matte, 230gsm",
-    "shipsIn": 7,
-    "variants": [
-      { "size": "8 × 6 in", "price": null, "stripeLink": "", "soldOut": false },
-      { "size": "12 × 9 in", "price": null, "stripeLink": "", "soldOut": false }
-    ]
-  },
-  {
-    "work": "Profile Bird",
-    "year": 2026,
-    "image": "profile-bird.jpg",
+    "image": "triptych.jpg",
     "edition": "Open edition",
     "paper": "Archival matte, 230gsm",
     "shipsIn": 7,
     "variants": [
       { "size": "8 × 8 in", "price": null, "stripeLink": "", "soldOut": false },
       { "size": "12 × 12 in", "price": null, "stripeLink": "", "soldOut": false }
-    ]
-  },
-  {
-    "work": "Relief",
-    "year": 2026,
-    "image": "relief.jpg",
-    "edition": "Open edition",
-    "paper": "Archival matte, 230gsm",
-    "shipsIn": 7,
-    "variants": [
-      { "size": "8 × 10 in", "price": null, "stripeLink": "", "soldOut": false },
-      { "size": "12 × 15 in", "price": null, "stripeLink": "", "soldOut": false }
-    ]
-  },
-  {
-    "work": "Peacock",
-    "year": 2026,
-    "image": "peacock.jpg",
-    "edition": "Open edition",
-    "paper": "Archival matte, 230gsm",
-    "shipsIn": 7,
-    "variants": [
-      { "size": "8 × 12 in", "price": null, "stripeLink": "", "soldOut": false },
-      { "size": "10 × 15 in", "price": null, "stripeLink": "", "soldOut": false }
     ]
   }
 ]
