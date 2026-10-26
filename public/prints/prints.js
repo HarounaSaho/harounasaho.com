@@ -248,7 +248,7 @@
     link.href = "/prints/preview/";
     link.textContent = "Review order";
     var note = document.createElement("p");
-    note.className = "print-ship");
+    note.className = "print-ship";
     note.textContent = checkout.items.length + " prints · " + formatPrice(checkout.total) + " · Unframed";
     wrap.appendChild(link);
     wrap.appendChild(note);
