@@ -14,7 +14,7 @@
   function buyable(variant) {
     if (!variant || variant.soldOut) return false;
     var link = variant.stripeLink || "";
-    return /^https:\/\/buy\.stripe\.com\/[A-Za-z0-9]+/.test(link);
+    return /^https:\/\/buy\.stripe\.com\/[A-Za-z0-9_]+/.test(link);
   }
 
   function editionLine(edition) {
@@ -84,7 +84,7 @@
     var ship = document.createElement("p");
     ship.className = "print-ship";
     var days = typeof print.shipsIn === "number" ? print.shipsIn : 7;
-    ship.textContent = "Ships in " + days + " business days · Unframed";
+    ship.textContent = "Ships in " + days + " business days \u00b7 Unframed";
 
     function paint() {
       var variant = variants[selected] || {};
