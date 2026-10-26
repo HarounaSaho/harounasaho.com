@@ -169,6 +169,35 @@ html:has(.is-dragging) .custom-cursor .wii-grab {
   color: #002fa7;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.prints-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 12px 18px;
+  background: #002fa7;
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  text-decoration: none;
+  flex: none;
+}
+
+.prints-btn:hover {
+  background: #ffc20e;
+  color: #002fa7;
+}
+
 .home-area {
   position: relative;
   min-height: calc(100vh - 200px);
@@ -2101,10 +2130,21 @@ html:has(.is-dragging) .custom-cursor .wii-grab {
     font-size: 24px;
   }
 
+  .header-actions {
+    width: 100%;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
   .top-nav {
     width: 100%;
     justify-content: space-between;
     gap: 12px;
+  }
+
+  .prints-btn {
+    width: 100%;
   }
 
   .hero {
