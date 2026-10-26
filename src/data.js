@@ -1,22 +1,17 @@
 // Live site content. Edit this file to add works, shows, projects, or studio updates, then push to publish.
 export const WORKS = [
-  { cat: "HS·002", title: "Ferryman at Low Tide", medium: "Oil on linen", yr: "2022", ex: "THE LONG WALK", dims: "48 × 48 in" },
-  { cat: "HS·005", title: "Norman, Interior", medium: "Oil on panel", yr: "2023", ex: null, dims: "24 × 24 in" },
-  { cat: "HS·008", title: "Salt Road", medium: "Oil on linen", yr: "2023", ex: "THE LONG WALK", dims: "60 × 60 in" },
-  { cat: "HS·011", title: "Two Rivers, One Name", medium: "Acrylic on canvas", yr: "2024", ex: "THE LONG WALK", dims: "36 × 36 in" },
-  { cat: "HS·014", title: "The Keeper's Table", medium: "Oil on linen", yr: "2024", ex: "SECOND SEASON", dims: "52 × 52 in" },
-  { cat: "HS·016", title: "Watchtower, Unfinished", medium: "Gouache on paper", yr: "2024", ex: null, dims: "18 × 18 in" },
-  { cat: "HS·019", title: "Harvest Without Rain", medium: "Oil on linen", yr: "2025", ex: "SECOND SEASON", dims: "60 × 60 in" },
-  { cat: "HS·021", title: "Cartographer's Hands", medium: "Oil on panel", yr: "2025", ex: "SECOND SEASON", dims: "30 × 30 in" },
-  { cat: "HS·024", title: "Nine Skies for One Horizon", medium: "Gouache on paper", yr: "2025", ex: "SECOND SEASON", dims: "8 × 8 in" },
-  { cat: "HS·027", title: "Return, Delayed", medium: "Oil on linen", yr: "2026", ex: null, dims: "44 × 44 in" },
-  { cat: "HS·029", title: "The Second Ferry", medium: "Oil on linen", yr: "2026", ex: "SECOND SEASON", dims: "66 × 66 in" },
-  { cat: "HS·031", title: "Field Notes, Gambia", medium: "Acrylic on canvas", yr: "2026", ex: null, dims: "28 × 28 in" },
+  { cat: "HS·001", title: "See No Evil", medium: "Painting", yr: "2026", ex: "BEYOND THE SPACE IN TWO", dims: "", image: "/works/see-no-evil.jpg" },
+  { cat: "HS·002", title: "Hear No Evil", medium: "Painting", yr: "2026", ex: "BEYOND THE SPACE IN TWO", dims: "", image: "/works/hear-no-evil.jpg" },
+  { cat: "HS·003", title: "Speak No Evil", medium: "Painting", yr: "2026", ex: "BEYOND THE SPACE IN TWO", dims: "", image: "/works/speak-no-evil.jpg" },
+  { cat: "HS·004", title: "Beyond", medium: "Painting", yr: "2026", ex: "BEYOND THE SPACE IN TWO", dims: "", image: "/works/beyond.jpg" },
+  { cat: "HS·005", title: "Figure Yellow", medium: "Painting", yr: "2026", ex: null, dims: "", image: "/works/figure-yellow.jpg" },
+  { cat: "HS·006", title: "Profile Bird", medium: "Painting", yr: "2026", ex: null, dims: "", image: "/works/profile-bird.jpg" },
+  { cat: "HS·007", title: "Relief", medium: "Print", yr: "2026", ex: null, dims: "", image: "/works/relief.jpg" },
+  { cat: "HS·008", title: "Peacock", medium: "Painting", yr: "2026", ex: null, dims: "", image: "/works/peacock.jpg" },
 ];
 
 export const SHOWS = {
-  "THE LONG WALK": "YALE SCHOOL OF ART · 2024",
-  "SECOND SEASON": "GREEN HALL GALLERY · 2026",
+  "BEYOND THE SPACE IN TWO": "AISLING GALLERY · 2026",
 };
 
 export const PROJECTS = {
