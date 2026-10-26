@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { WORKS } from "../data";
-import Placeholder from "../components/Placeholder";
 import PaintWindow from "../components/PaintWindow";
 import AlbumScrub from "../components/AlbumScrub";
 import Draggable from "../components/Draggable";
@@ -35,12 +34,13 @@ export default function HomePage({
     return () => obs.disconnect();
   }, []);
 
-  const homeTiles = [
-    { tag: WORKS[8].cat, title: WORKS[8].title, open: (e) => onOpenWork(WORKS[8].cat, e) },
-    { tag: WORKS[3].cat, title: WORKS[3].title, open: (e) => onOpenWork(WORKS[3].cat, e) },
-    { tag: "DESIGN", title: "Ring, concept", open: onOpenRing },
-    { tag: WORKS[6].cat, title: WORKS[6].title, open: (e) => onOpenWork(WORKS[6].cat, e) },
-  ];
+  const featured = WORKS[0];
+  const homeTiles = WORKS.slice(0, 4).map((work) => ({
+    tag: work.cat,
+    title: work.title,
+    image: work.image,
+    open: (e) => onOpenWork(work.cat, e),
+  }));
 
   return (
     <>
@@ -69,11 +69,11 @@ export default function HomePage({
         </h1>
         <p className="hero-lede">Speaking with visuals</p>
         <div className="hero-stage">
-          <a href="#art" className="hero-featured" onClick={onArt}>
-            <Placeholder label="FEATURED WORK" />
+          <a href="#work" className="hero-featured" onClick={(e) => onOpenWork(featured.cat, e)}>
+            <img className="work-photo" src={featured.image} alt={featured.title} />
             <div className="musicians-caption">
-              <span className="musicians-caption-title">Work</span>
-              <span>To be shown here</span>
+              <span className="musicians-caption-title">{featured.title}</span>
+              <span>{featured.yr}</span>
             </div>
           </a>
           <Draggable className="musicians-frame" onClick={onArt}>
@@ -156,7 +156,7 @@ export default function HomePage({
         <div className="selected-grid">
           {homeTiles.map((tile) => (
             <a key={tile.title} href="#work" className="selected-tile" onClick={tile.open}>
-              <Placeholder label="SQUARE CROP" variant="on-blue" />
+              <img className="work-photo" src={tile.image} alt={tile.title} />
               <div className="tile-meta">
                 <span className="tile-tag">{tile.tag}</span>
                 <span className="tile-title">{tile.title}</span>

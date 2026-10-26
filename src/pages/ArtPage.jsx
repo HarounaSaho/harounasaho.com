@@ -1,5 +1,4 @@
 import { WORKS, SHOWS } from "../data";
-import Placeholder from "../components/Placeholder";
 
 export function ArtIndex({ onHome, onOpenRoom, onOpenWork }) {
   return (
@@ -82,7 +81,7 @@ export function RoomView({ roomName, onArt, onOpenWork }) {
             className="room-tile"
             onClick={(e) => onOpenWork(tile.cat, "room", roomName, e)}
           >
-            <Placeholder label="SQUARE CROP" variant="fine" />
+            <img className="work-photo" src={tile.image} alt={tile.title} />
             <div className="room-tile-meta">
               <span className="cat">{tile.cat}</span>
               <span className="title">{tile.title}</span>
@@ -106,7 +105,7 @@ export function WorkView({ workCat, from, room, onBack }) {
       </a>
       <div className="work-layout">
         <div className="work-image">
-          <Placeholder label="SQUARE CROP · PAINTING" />
+          <img className="work-photo" src={work.image} alt={work.title} />
         </div>
         <div className="work-side">
           <div className="work-cat">{work.cat}</div>
@@ -121,10 +120,12 @@ export function WorkView({ workCat, from, room, onBack }) {
                 <td>YEAR</td>
                 <td>{work.yr}</td>
               </tr>
-              <tr>
-                <td>DIMENSIONS</td>
-                <td className="work-dims">{work.dims}</td>
-              </tr>
+              {work.dims ? (
+                <tr>
+                  <td>DIMENSIONS</td>
+                  <td className="work-dims">{work.dims}</td>
+                </tr>
+              ) : null}
               <tr>
                 <td>EXHIBITION</td>
                 <td>{work.ex || "One-off"}</td>
