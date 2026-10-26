@@ -156,6 +156,79 @@
   color: #666;
 }
 
+.order-list {
+  margin-top: 36px;
+}
+
+.order-line {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: start;
+  padding: 16px 0;
+  border-bottom: 1px solid #111;
+}
+
+.order-line.no-thumb {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.order-line img {
+  display: block;
+  width: 72px;
+  height: auto;
+  object-fit: contain;
+  background: #fff;
+  border: 1px solid #111;
+}
+
+.order-line .order-copy {
+  min-width: 0;
+}
+
+.order-name {
+  margin: 0;
+  font-family: "Bodoni Moda", "Palatino Linotype", Palatino, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(22px, 4vw, 28px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.order-meta,
+.order-detail {
+  margin: 4px 0 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+}
+
+.order-price {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+}
+
+.order-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 18px 0 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+}
+
+.order-pay {
+  margin-top: 22px;
+}
+
 .print-ship {
   margin: 8px 0 0;
   min-height: 18px;
