@@ -26,7 +26,9 @@ async function materialize(sourceDir, outDir) {
     const dir = join(sourceDir, name);
     let files = [];
     try {
-      files = (await readdir(dir)).filter((file) => file.endsWith(".txt")).sort();
+      files = (await readdir(dir))
+        .filter((file) => /^\d{2}([a-z]+)?\.txt$/.test(file))
+        .sort();
     } catch {
       continue;
     }
@@ -40,7 +42,8 @@ async function materialize(sourceDir, outDir) {
     const chunks = await Promise.all(files.map((file) => readFile(join(dir, file), "utf8")));
     const encoded = chunks.join("").replace(/\s/g, "");
     const bytes = Buffer.from(encoded, "base64");
-    if (bytes.length < 3 || bytes[0] !== 0xff || bytes[1] !== 0xd8) {
+    const end = bytes.length;
+    if (end < 4 || bytes[0] !== 0xff || bytes[1] !== 0xd8 || bytes[end - 2] !== 0xff || bytes[end - 1] !== 0xd9) {
       throw new Error("Source did not decode to a JPEG: " + name);
     }
     await writeFile(dest, bytes);
