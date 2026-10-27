@@ -29,6 +29,8 @@ export default function App() {
   const [roonCaught, setRoonCaught] = useState(false);
   const roonRef = useRef(roon);
   const dodgesRef = useRef(roonDodges);
+  const roonAnchor = useRef(null);
+  const roonFleeRef = useRef(null);
   roonRef.current = roon;
   dodgesRef.current = roonDodges;
 
@@ -155,7 +157,24 @@ export default function App() {
       setRoonDodges(dodges + 1);
     };
 
-    if (!r.fled || Math.random() < Math.min(0.75, 0.4 + dodges * 0.02)) {
+    if (!r.fled) {
+      const next = teleport();
+      const el = roonAnchor.current;
+      if (el) {
+        el.style.transition = "none";
+        el.style.position = "fixed";
+        el.style.left = hero.left + next.x + "px";
+        el.style.top = hero.top + next.y + "px";
+        el.style.margin = "0";
+        el.style.transform = "rotate(" + next.r + "deg)";
+        el.style.zIndex = "90";
+        el.style.pointerEvents = "none";
+      }
+      commit(next);
+      return;
+    }
+
+    if (Math.random() < Math.min(0.75, 0.4 + dodges * 0.02)) {
       commit(teleport());
       return;
     }
@@ -176,6 +195,25 @@ export default function App() {
     y = Math.max(minY, Math.min(maxY, y));
     commit({ fled: true, x: Math.round(x), y: Math.round(y), r: Math.round(Math.random() * 40 - 20) });
   };
+  roonFleeRef.current = roonFlee;
+
+  useEffect(() => {
+    if (page !== "home" || roon.fled || roonCaught) return;
+    const pad = 72;
+    const onMove = (e) => {
+      const el = roonAnchor.current;
+      if (!el || roonRef.current.fled) return;
+      const box = el.getBoundingClientRect();
+      const near =
+        e.clientX >= box.left - pad &&
+        e.clientX <= box.right + pad &&
+        e.clientY >= box.top - pad &&
+        e.clientY <= box.bottom + pad;
+      if (near) roonFleeRef.current(e);
+    };
+    window.addEventListener("pointermove", onMove);
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [page, roon.fled, roonCaught]);
 
   return (
     <div className="app">
@@ -195,6 +233,8 @@ export default function App() {
         onAbout={goAbout}
         onRoon={goRoon}
         onRoonFlee={roonFlee}
+        roonAnchor={roonAnchor}
+        chase={page === "home"}
       />
       <div className="home-area">
         {page === "home" && (

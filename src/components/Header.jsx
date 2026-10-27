@@ -1,4 +1,9 @@
-export default function Header({ roon, roonCaught, onHome, onArt, onDesign, onAbout, onRoon, onRoonFlee }) {
+export default function Header({ roon, roonCaught, onHome, onArt, onDesign, onAbout, onRoon, onRoonFlee, roonAnchor, chase }) {
+  const dodge = (e) => {
+    if (e) e.preventDefault();
+    onRoonFlee(e);
+  };
+
   return (
     <header className="site-header">
       <div className="rule-wrap bottom">
@@ -11,10 +16,12 @@ export default function Header({ roon, roonCaught, onHome, onArt, onDesign, onAb
         {!roonCaught && (
           <a
             href="#roon"
+            ref={roonAnchor}
             className="roon"
             style={roon.fled ? { visibility: "hidden", pointerEvents: "none" } : undefined}
-            onMouseEnter={onRoonFlee}
-            onClick={onRoon}
+            onMouseEnter={chase ? dodge : undefined}
+            onPointerDown={chase ? dodge : undefined}
+            onClick={chase ? dodge : onRoon}
           >
             roon
           </a>
