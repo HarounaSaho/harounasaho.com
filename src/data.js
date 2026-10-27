@@ -1,13 +1,13 @@
 // Live site content. Edit this file to add works, shows, projects, or studio updates, then push to publish.
 export const WORKS = [
-  { cat: "HS·001", title: "See No Evil", medium: "Painting", yr: "2026", ex: "BEYOND THE SPACE IN TWO", dims: "", image: "/works/see-no-evil.jpg" },
-  { cat: "HS·002", title: "Unheard", medium: "Painting", yr: "2024", ex: "BEYOND THE SPACE IN TWO", dims: "", image: "/works/hear-no-evil.jpg" },
-  { cat: "HS·003", title: "Speak No Evil", medium: "Painting", yr: "2026", ex: "BEYOND THE SPACE IN TWO", dims: "", image: "/works/speak-no-evil.jpg" },
-  { cat: "HS·004", title: "Beyond", medium: "Painting", yr: "2026", ex: "BEYOND THE SPACE IN TWO", dims: "", image: "/works/beyond.jpg" },
-  { cat: "HS·005", title: "Figure Yellow", medium: "Painting", yr: "2026", ex: null, dims: "", image: "/works/figure-yellow.jpg" },
-  { cat: "HS·006", title: "Hear No Evil", medium: "Painting", yr: "2026", ex: "BEYOND THE SPACE IN TWO", dims: "", image: "/works/profile-bird.jpg" },
-  { cat: "HS·007", title: "Relief", medium: "Print", yr: "2026", ex: null, dims: "", image: "/works/relief.jpg" },
-  { cat: "HS·008", title: "Peacock", medium: "Painting", yr: "2026", ex: null, dims: "", image: "/works/peacock.jpg" },
+  { cat: "HS·001", title: "See No Evil", medium: "Acrylic on canvas", yr: "2026", ex: "BEYOND THE SPACE IN TWO", dims: "12 × 12 in", image: "/works/see-no-evil.jpg" },
+  { cat: "HS·002", title: "Hear No Evil", medium: "Acrylic on canvas", yr: "2026", ex: "BEYOND THE SPACE IN TWO", dims: "12 × 12 in", image: "/works/profile-bird.jpg" },
+  { cat: "HS·003", title: "Speak No Evil", medium: "Acrylic on canvas", yr: "2026", ex: "BEYOND THE SPACE IN TWO", dims: "12 × 12 in", image: "/works/speak-no-evil.jpg" },
+  { cat: "HS·004", title: "Unheard", medium: "Acrylic on canvas", yr: "2024", ex: "BEYOND THE SPACE IN TWO", dims: "12 × 12 in", image: "/works/hear-no-evil.jpg" },
+  { cat: "HS·005", title: "Continuum", medium: "Oil on canvas", yr: "2025", ex: "BEYOND THE SPACE IN TWO", dims: "48 × 36 in", image: "/works/figure-yellow.jpg" },
+  { cat: "HS·006", title: "What Remains", medium: "Oil on canvas", yr: "2025", ex: "BEYOND THE SPACE IN TWO", dims: "24 × 36 in", image: "/works/beyond.jpg" },
+  { cat: "HS·007", title: "Offering", medium: "Oil on canvas", yr: "2025", ex: "BEYOND THE SPACE IN TWO", dims: "24 × 36 in", image: "/works/peacock.jpg" },
+  { cat: "HS·008", title: "Homage", medium: "Woodblock print, ink on cotton", yr: "2026", ex: "BEYOND THE SPACE IN TWO", dims: "32 × 48 in", image: "/works/relief.jpg" },
 ];
 
 export const SHOWS = {

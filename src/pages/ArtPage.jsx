@@ -81,7 +81,7 @@ export function RoomView({ roomName, onArt, onOpenWork }) {
             className="room-tile"
             onClick={(e) => onOpenWork(tile.cat, "room", roomName, e)}
           >
-            <img className="work-photo" src={tile.image} alt={tile.title} />
+            <img className="work-photo" src={tile.image} alt={tile.title + ", " + tile.yr + ", by Harouna Saho"} />
             <div className="room-tile-meta">
               <span className="cat">{tile.cat}</span>
               <span className="title">{tile.title}</span>
@@ -105,7 +105,7 @@ export function WorkView({ workCat, from, room, onBack }) {
       </a>
       <div className="work-layout">
         <div className="work-image">
-          <img className="work-photo" src={work.image} alt={work.title} />
+          <img className="work-photo" src={work.image} alt={work.title + ", " + work.yr + ", by Harouna Saho"} />
         </div>
         <div className="work-side">
           <div className="work-cat">{work.cat}</div>

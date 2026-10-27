@@ -38,6 +38,7 @@ export default function HomePage({
   const homeTiles = WORKS.slice(0, 4).map((work) => ({
     tag: work.cat,
     title: work.title,
+    yr: work.yr,
     image: work.image,
     open: (e) => onOpenWork(work.cat, e),
   }));
@@ -70,7 +71,7 @@ export default function HomePage({
         <p className="hero-lede">Speaking with visuals</p>
         <div className="hero-stage">
           <a href="#work" className="hero-featured" onClick={(e) => onOpenWork(featured.cat, e)}>
-            <img className="work-photo" src={featured.image} alt={featured.title} />
+            <img className="work-photo" src={featured.image} alt={featured.title + ", " + featured.yr + ", by Harouna Saho"} />
             <div className="musicians-caption">
               <span className="musicians-caption-title">{featured.title}</span>
               <span>{featured.yr}</span>
@@ -156,7 +157,7 @@ export default function HomePage({
         <div className="selected-grid">
           {homeTiles.map((tile) => (
             <a key={tile.title} href="#work" className="selected-tile" onClick={tile.open}>
-              <img className="work-photo" src={tile.image} alt={tile.title} />
+              <img className="work-photo" src={tile.image} alt={tile.title + ", " + tile.yr + ", by Harouna Saho"} />
               <div className="tile-meta">
                 <span className="tile-tag">{tile.tag}</span>
                 <span className="tile-title">{tile.title}</span>
