@@ -3,8 +3,9 @@ import CustomCursor from "./components/CustomCursor.jsx";
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import HomePage from "./pages/HomePage.jsx";
-import { DesignIndex, ProjectDetail } from "./pages/DesignPage.jsx";
-import { ArtIndex, RoomView, WorkView } from "./pages/ArtPage.jsx";
+import { ProjectDetail } from "./pages/DesignPage.jsx";
+import { RoomView, WorkView } from "./pages/ArtPage.jsx";
+import WorksPage from "./pages/WorksPage.jsx";
 import AboutPage from "./pages/AboutPage.jsx";
 import RoonPage from "./pages/RoonPage.jsx";
 
@@ -69,8 +70,7 @@ export default function App() {
   );
 
   const goHome = (e) => nav("home", e);
-  const goArt = (e) => nav("art", e);
-  const goDesign = (e) => nav("design", e);
+  const goWorks = (e) => nav("works", e);
   const goAbout = (e) => nav("about", e);
 
   const goStudio = (e) => {
@@ -94,7 +94,7 @@ export default function App() {
   const openWork = (cat, fromView, roomName, e) => {
     if (e) e.preventDefault();
     top();
-    setPage("art");
+    setPage("works");
     setView("work");
     setWorkCat(cat);
     setFrom(fromView);
@@ -104,7 +104,7 @@ export default function App() {
   const openRoom = (name, e) => {
     if (e) e.preventDefault();
     top();
-    setPage("art");
+    setPage("works");
     setView("room");
     setRoom(name);
   };
@@ -112,7 +112,7 @@ export default function App() {
   const openProject = (id, e) => {
     if (e) e.preventDefault();
     top();
-    setPage("design");
+    setPage("works");
     setView("project");
     setProjectId(id);
   };
@@ -121,9 +121,11 @@ export default function App() {
     if (e) e.preventDefault();
     top();
     if (from === "room" && room) {
+      setPage("works");
       setView("room");
       setWorkCat(null);
     } else {
+      setPage("works");
       setView("index");
       setWorkCat(null);
       setRoom(null);
@@ -228,8 +230,7 @@ export default function App() {
         roon={roon}
         roonCaught={roonCaught}
         onHome={goHome}
-        onArt={goArt}
-        onDesign={goDesign}
+        onWorks={goWorks}
         onAbout={goAbout}
         onRoon={goRoon}
         onRoonFlee={roonFlee}
@@ -243,30 +244,21 @@ export default function App() {
             roon={roon}
             onRoonFlee={roonFlee}
             onRoon={goRoon}
-            onArt={goArt}
-            onDesign={goDesign}
+            onWorks={goWorks}
             onAbout={goAbout}
-            onOpenWork={(cat, e) => openWork(cat, "index", null, e)}
-            onOpenRing={(e) => openProject("ring", e)}
+            onOpenWork={(cat, e) => openWork(cat, "works", null, e)}
           />
         )}
-        {page === "design" && view === "index" && (
-          <DesignIndex
-            onHome={goHome}
-            onOpenSidonia={(e) => openProject("sidonia", e)}
-            onOpenRing={(e) => openProject("ring", e)}
-          />
+        {page === "works" && view === "index" && (
+          <WorksPage onHome={goHome} onOpenWork={openWork} onOpenProject={openProject} />
         )}
-        {page === "design" && view === "project" && (
-          <ProjectDetail projectId={projectId} onDesign={goDesign} />
+        {page === "works" && view === "project" && (
+          <ProjectDetail projectId={projectId} onWorks={goWorks} />
         )}
-        {page === "art" && view === "index" && (
-          <ArtIndex onHome={goHome} onOpenRoom={openRoom} onOpenWork={openWork} />
+        {page === "works" && view === "room" && (
+          <RoomView roomName={room} onArt={goWorks} onOpenWork={openWork} />
         )}
-        {page === "art" && view === "room" && (
-          <RoomView roomName={room} onArt={goArt} onOpenWork={openWork} />
-        )}
-        {page === "art" && view === "work" && (
+        {page === "works" && view === "work" && (
           <WorkView workCat={workCat} from={from} room={room} onBack={goBackFromWork} />
         )}
         {page === "about" && (

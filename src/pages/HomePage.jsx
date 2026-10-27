@@ -12,11 +12,9 @@ export default function HomePage({
   roon,
   onRoonFlee,
   onRoon,
-  onArt,
-  onDesign,
+  onWorks,
   onAbout,
   onOpenWork,
-  onOpenRing,
 }) {
   const workSectionRef = useRef(null);
   const [workVisible, setWorkVisible] = useState(false);
@@ -77,7 +75,7 @@ export default function HomePage({
               <span>{featured.yr}</span>
             </div>
           </a>
-          <Draggable className="musicians-frame" onClick={onArt}>
+          <Draggable className="musicians-frame" onClick={onWorks}>
             <img className="musicians-img" src={musiciansSrc} alt="Caravaggio, The Musicians" draggable="false" />
             <div className="musicians-caption">
               <a
@@ -92,7 +90,7 @@ export default function HomePage({
               <span>1597 x 2026</span>
             </div>
           </Draggable>
-          <Draggable className="jones-frame" onClick={onArt}>
+          <Draggable className="jones-frame" onClick={onWorks}>
             <img
               className="jones-img"
               src={ugwuEkeSrc}
@@ -107,7 +105,7 @@ export default function HomePage({
               <span>1930s</span>
             </div>
           </Draggable>
-          <Draggable className="cj-drag" onClick={onDesign}>
+          <Draggable className="cj-drag" onClick={onWorks}>
             <img className="cj-img" src={cardJitsuSrc} alt="Card-Jitsu" draggable="false" />
           </Draggable>
           <Draggable className="album-drag" onClick={onAbout}>
@@ -116,16 +114,13 @@ export default function HomePage({
               <span className="musicians-caption-title">music i like</span>
             </div>
           </Draggable>
-          <Draggable className="paint-drag" onClick={onDesign}>
+          <Draggable className="paint-drag" onClick={onWorks}>
             <PaintWindow />
           </Draggable>
         </div>
         <nav className="hero-nav">
-          <a href="#art" onClick={onArt}>
-            ART
-          </a>
-          <a href="#design" onClick={onDesign}>
-            DESIGN
+          <a href="#works" onClick={onWorks}>
+            WORKS
           </a>
           <a href="#about" onClick={onAbout}>
             INFO
@@ -165,8 +160,8 @@ export default function HomePage({
             </a>
           ))}
         </div>
-        <a href="#art" className="archive-link" onClick={onArt}>
-          SEE FULL ARCHIVE →
+        <a href="#works" className="archive-link" onClick={onWorks}>
+          SEE ALL WORKS →
         </a>
       </section>
     </>

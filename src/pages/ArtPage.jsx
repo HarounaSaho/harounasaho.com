@@ -62,8 +62,8 @@ export function RoomView({ roomName, onArt, onOpenWork }) {
   const tiles = WORKS.filter((w) => w.ex === roomName);
   return (
     <section className="page fade-in">
-      <a href="#art" className="crumb" onClick={onArt}>
-        ← ARCHIVE
+      <a href="#works" className="crumb" onClick={onArt}>
+        ← WORKS
       </a>
       <div className="room-head">
         <h1>{roomName}</h1>
@@ -96,7 +96,7 @@ export function RoomView({ roomName, onArt, onOpenWork }) {
 export function WorkView({ workCat, from, room, onBack }) {
   const work = WORKS.find((w) => w.cat === workCat);
   if (!work) return null;
-  const backLabel = from === "room" ? room : "ARCHIVE";
+  const backLabel = from === "room" ? room : "WORKS";
 
   return (
     <section className="page fade-in">
