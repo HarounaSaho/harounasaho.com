@@ -38,7 +38,7 @@ export function ProjectDetail({ projectId, onBack, backLabel }) {
 
   return (
     <section className="page narrow slide-left">
-      <a href={backLabel === "DESIGN" ? "#design" : "#works"} className="crumb" onClick={onBack}>
+      <a href={backLabel === "DESIGN" ? "#design" : "#art"} className="crumb" onClick={onBack}>
         ← {backLabel}
       </a>
       <div className="sec-tag project-sec">{project.sec}</div>

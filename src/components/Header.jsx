@@ -1,4 +1,4 @@
-export default function Header({ roon, roonCaught, onHome, onWorks, onDesign, onAbout, onRoon, onRoonFlee, roonAnchor, chase }) {
+export default function Header({ roon, roonCaught, onHome, onArt, onDesign, onAbout, onRoon, onRoonFlee, roonAnchor, chase }) {
   const dodge = (e) => {
     if (e) e.preventDefault();
     onRoonFlee(e);
@@ -29,8 +29,8 @@ export default function Header({ roon, roonCaught, onHome, onWorks, onDesign, on
       </div>
       <div className="header-actions">
         <nav className="top-nav">
-          <a href="#works" onClick={onWorks}>
-            WORKS
+          <a href="#art" onClick={onArt}>
+            ART
           </a>
           <a href="#design" onClick={onDesign}>
             DESIGN

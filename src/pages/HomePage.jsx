@@ -12,7 +12,7 @@ export default function HomePage({
   roon,
   onRoonFlee,
   onRoon,
-  onWorks,
+  onArt,
   onDesign,
   onAbout,
   onOpenWork,
@@ -76,7 +76,7 @@ export default function HomePage({
               <span>{featured.yr}</span>
             </div>
           </a>
-          <Draggable className="musicians-frame" onClick={onWorks}>
+          <Draggable className="musicians-frame" onClick={onArt}>
             <img className="musicians-img" src={musiciansSrc} alt="Caravaggio, The Musicians" draggable="false" />
             <div className="musicians-caption">
               <a
@@ -91,7 +91,7 @@ export default function HomePage({
               <span>1597 x 2026</span>
             </div>
           </Draggable>
-          <Draggable className="jones-frame" onClick={onWorks}>
+          <Draggable className="jones-frame" onClick={onArt}>
             <img
               className="jones-img"
               src={ugwuEkeSrc}
@@ -120,8 +120,8 @@ export default function HomePage({
           </Draggable>
         </div>
         <nav className="hero-nav">
-          <a href="#works" onClick={onWorks}>
-            WORKS
+          <a href="#art" onClick={onArt}>
+            ART
           </a>
           <a href="#design" onClick={onDesign}>
             DESIGN
@@ -164,8 +164,8 @@ export default function HomePage({
             </a>
           ))}
         </div>
-        <a href="#works" className="archive-link" onClick={onWorks}>
-          SEE ALL WORKS →
+        <a href="#art" className="archive-link" onClick={onArt}>
+          SEE ALL ART →
         </a>
       </section>
     </>

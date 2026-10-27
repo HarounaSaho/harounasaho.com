@@ -4,8 +4,7 @@ import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import { DesignIndex, ProjectDetail } from "./pages/DesignPage.jsx";
-import { RoomView, WorkView } from "./pages/ArtPage.jsx";
-import WorksPage from "./pages/WorksPage.jsx";
+import { ArtIndex, RoomView, WorkView } from "./pages/ArtPage.jsx";
 import AboutPage from "./pages/AboutPage.jsx";
 import RoonPage from "./pages/RoonPage.jsx";
 
@@ -70,7 +69,7 @@ export default function App() {
   );
 
   const goHome = (e) => nav("home", e);
-  const goWorks = (e) => nav("works", e);
+  const goArt = (e) => nav("art", e);
   const goDesign = (e) => nav("design", e);
   const goAbout = (e) => nav("about", e);
 
@@ -95,7 +94,7 @@ export default function App() {
   const openWork = (cat, fromView, roomName, e) => {
     if (e) e.preventDefault();
     top();
-    setPage("works");
+    setPage("art");
     setView("work");
     setWorkCat(cat);
     setFrom(fromView);
@@ -105,7 +104,7 @@ export default function App() {
   const openRoom = (name, e) => {
     if (e) e.preventDefault();
     top();
-    setPage("works");
+    setPage("art");
     setView("room");
     setRoom(name);
   };
@@ -113,7 +112,7 @@ export default function App() {
   const openProject = (id, fromView, e) => {
     if (e) e.preventDefault();
     top();
-    const origin = fromView === "design" ? "design" : "works";
+    const origin = fromView === "design" ? "design" : "art";
     setPage(origin);
     setView("project");
     setProjectId(id);
@@ -124,11 +123,11 @@ export default function App() {
     if (e) e.preventDefault();
     top();
     if (from === "room" && room) {
-      setPage("works");
+      setPage("art");
       setView("room");
       setWorkCat(null);
     } else {
-      setPage("works");
+      setPage("art");
       setView("index");
       setWorkCat(null);
       setRoom(null);
@@ -233,7 +232,7 @@ export default function App() {
         roon={roon}
         roonCaught={roonCaught}
         onHome={goHome}
-        onWorks={goWorks}
+        onArt={goArt}
         onDesign={goDesign}
         onAbout={goAbout}
         onRoon={goRoon}
@@ -248,21 +247,14 @@ export default function App() {
             roon={roon}
             onRoonFlee={roonFlee}
             onRoon={goRoon}
-            onWorks={goWorks}
+            onArt={goArt}
             onDesign={goDesign}
             onAbout={goAbout}
-            onOpenWork={(cat, e) => openWork(cat, "works", null, e)}
+            onOpenWork={(cat, e) => openWork(cat, "index", null, e)}
           />
         )}
-        {page === "works" && view === "index" && (
-          <WorksPage
-            onHome={goHome}
-            onOpenWork={openWork}
-            onOpenProject={(id, e) => openProject(id, "works", e)}
-          />
-        )}
-        {page === "works" && view === "project" && (
-          <ProjectDetail projectId={projectId} onBack={goWorks} backLabel="WORKS" />
+        {page === "art" && view === "index" && (
+          <ArtIndex onHome={goHome} onOpenRoom={openRoom} onOpenWork={openWork} />
         )}
         {page === "design" && view === "index" && (
           <DesignIndex
@@ -274,10 +266,10 @@ export default function App() {
         {page === "design" && view === "project" && (
           <ProjectDetail projectId={projectId} onBack={goDesign} backLabel="DESIGN" />
         )}
-        {page === "works" && view === "room" && (
-          <RoomView roomName={room} onArt={goWorks} onOpenWork={openWork} />
+        {page === "art" && view === "room" && (
+          <RoomView roomName={room} onArt={goArt} onOpenWork={openWork} />
         )}
-        {page === "works" && view === "work" && (
+        {page === "art" && view === "work" && (
           <WorkView workCat={workCat} from={from} room={room} onBack={goBackFromWork} />
         )}
         {page === "about" && (
