@@ -169,7 +169,7 @@
   margin: 0 0 28px;
 }
 
-.shop-bar .mark {
+.print-page .shop-bar .mark {
   margin: 0;
 }
 
@@ -341,6 +341,7 @@
 
 .print-page,
 .thanks-page {
+  box-sizing: border-box;
   width: min(1080px, 100%);
   margin: 0 auto;
   padding: max(36px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(48px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
