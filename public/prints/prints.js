@@ -251,7 +251,7 @@
     price.className = "print-price";
     price.textContent = formatPrice(item.price);
     var note = document.createElement("p");
-    note.className = "print-ship");
+    note.className = "print-ship";
     note.textContent = "Unframed";
     section.appendChild(heading);
     section.appendChild(edition);
