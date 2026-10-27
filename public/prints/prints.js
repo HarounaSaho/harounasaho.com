@@ -201,12 +201,38 @@
     var price = document.createElement("p");
     price.className = "print-price";
     price.textContent = formatPrice(item.price);
+    var ship = document.createElement("p");
+    ship.className = "print-ship";
+    ship.textContent = "Unframed";
     article.appendChild(title);
     article.appendChild(year);
     article.appendChild(edition);
     article.appendChild(size);
     article.appendChild(price);
+    article.appendChild(buyControl(item));
+    article.appendChild(ship);
     return article;
+  }
+
+  function buyControl(item) {
+    var buy = document.createElement("a");
+    buy.className = "print-buy";
+    if (item && item.soldOut) {
+      buy.textContent = "Sold out";
+      buy.classList.add("is-disabled");
+      buy.setAttribute("aria-disabled", "true");
+    } else if (buyable({ stripeLink: item && item.stripeLink })) {
+      buy.textContent = "Buy print";
+      buy.href = item.stripeLink;
+    } else {
+      buy.textContent = "Buy print";
+      buy.classList.add("is-disabled");
+      buy.setAttribute("aria-disabled", "true");
+    }
+    buy.addEventListener("click", function (event) {
+      if (!buy.getAttribute("href")) event.preventDefault();
+    });
+    return buy;
   }
 
   function setOffer(item) {
@@ -224,98 +250,16 @@
     var price = document.createElement("p");
     price.className = "print-price";
     price.textContent = formatPrice(item.price);
-    var review = document.createElement("a");
-    review.className = "print-buy";
-    review.href = "/prints/preview/";
-    review.textContent = "Review the print set";
     var note = document.createElement("p");
-    note.className = "print-ship";
-    note.textContent = "Sold together · Unframed";
+    note.className = "print-ship");
+    note.textContent = "Unframed";
     section.appendChild(heading);
     section.appendChild(edition);
     section.appendChild(size);
     section.appendChild(price);
-    section.appendChild(review);
+    section.appendChild(buyControl(item));
     section.appendChild(note);
     return section;
-  }
-
-  function reviewBar(checkout) {
-    var wrap = document.createElement("div");
-    wrap.className = "order-pay";
-    var link = document.createElement("a");
-    link.className = "print-buy";
-    link.href = "/prints/preview/";
-    link.textContent = "Review order";
-    var note = document.createElement("p");
-    note.className = "print-ship";
-    note.textContent = checkout.items.length + " prints · " + formatPrice(checkout.total) + " · Unframed";
-    wrap.appendChild(link);
-    wrap.appendChild(note);
-    return wrap;
-  }
-
-  function renderPreview(checkout, root) {
-    var list = document.createElement("div");
-    list.className = "order-list";
-    checkout.items.forEach(function (item) {
-      var row = document.createElement("div");
-      row.className = "order-line" + (item.image ? "" : " no-thumb");
-      if (item.image) {
-        var img = document.createElement("img");
-        img.alt = item.work + ", " + item.year;
-        img.loading = "lazy";
-        img.src = imageSrc(item);
-        row.appendChild(img);
-      }
-      var copy = document.createElement("div");
-      copy.className = "order-copy";
-      var name = document.createElement("h2");
-      name.className = "order-name";
-      name.textContent = item.work || "";
-      var meta = document.createElement("p");
-      meta.className = "order-meta";
-      meta.textContent = (item.year == null ? "" : item.year) + " · " + (item.size || "");
-      var detail = document.createElement("p");
-      detail.className = "order-detail";
-      detail.textContent = item.detail || "";
-      copy.appendChild(name);
-      copy.appendChild(meta);
-      copy.appendChild(detail);
-      var price = document.createElement("p");
-      price.className = "order-price";
-      price.textContent = formatPrice(item.price);
-      row.appendChild(copy);
-      row.appendChild(price);
-      list.appendChild(row);
-    });
-    var total = document.createElement("p");
-    total.className = "order-total";
-    var totalLabel = document.createElement("span");
-    totalLabel.textContent = "Total";
-    var totalAmount = document.createElement("span");
-    totalAmount.textContent = formatPrice(checkout.total);
-    total.appendChild(totalLabel);
-    total.appendChild(totalAmount);
-    var payWrap = document.createElement("div");
-    payWrap.className = "order-pay";
-    var pay = document.createElement("a");
-    pay.className = "print-buy";
-    if (buyable({ stripeLink: checkout.stripeLink })) {
-      pay.href = checkout.stripeLink;
-      pay.textContent = "Pay " + formatPrice(checkout.total);
-    } else {
-      pay.textContent = "Pay " + formatPrice(checkout.total);
-      pay.classList.add("is-disabled");
-      pay.setAttribute("aria-disabled", "true");
-    }
-    var note = document.createElement("p");
-    note.className = "print-ship";
-    note.textContent = "Unframed. Payment opens on Stripe.";
-    payWrap.appendChild(pay);
-    payWrap.appendChild(note);
-    root.replaceChildren(list, total, payWrap);
-    root.hidden = false;
   }
 
   function renderCheckout(checkout) {
@@ -338,9 +282,7 @@
       grid.hidden = false;
       var existing = grid.parentNode.querySelector(".order-pay");
       if (existing) existing.remove();
-      grid.insertAdjacentElement("afterend", reviewBar(checkout));
     }
-    if (preview) renderPreview(checkout, preview);
     if (loading) loading.hidden = true;
   }
 

@@ -1,13 +1,11 @@
 {
-  "stripeLink": "https://buy.stripe.com/dRm5kwe2n5IDf1f7c0fMA00",
-  "total": 640,
-  "successPath": "/prints/thank-you/",
   "items": [
     {
       "work": "Continuum",
       "year": 2025,
       "size": "14 × 11 in",
       "price": 100,
+      "stripeLink": "",
       "detail": "Limited edition print. Edition of 25, signed and numbered. Unframed."
     },
     {
@@ -15,6 +13,7 @@
       "year": 2025,
       "size": "10 × 14 in",
       "price": 80,
+      "stripeLink": "",
       "detail": "Limited edition print. Edition of 25, signed and numbered. Unframed."
     },
     {
@@ -22,6 +21,7 @@
       "year": 2025,
       "size": "10 × 14 in",
       "price": 80,
+      "stripeLink": "",
       "detail": "Limited edition print. Edition of 25, signed and numbered. Unframed."
     },
     {
@@ -29,6 +29,7 @@
       "year": 2026,
       "size": "11 × 14 in",
       "price": 100,
+      "stripeLink": "",
       "detail": "Limited edition woodblock print. Edition of 25, signed and numbered. Unframed."
     },
     {
@@ -37,6 +38,7 @@
       "size": "11 × 11 in",
       "price": 70,
       "image": "see-no-evil.jpg",
+      "stripeLink": "",
       "detail": "Limited edition print from the series See No Evil, Hear No Evil, Speak No Evil. Edition of 25, signed and numbered. Unframed."
     },
     {
@@ -45,6 +47,7 @@
       "size": "11 × 11 in",
       "price": 70,
       "image": "hear-no-evil.jpg",
+      "stripeLink": "",
       "detail": "Limited edition print from the series See No Evil, Hear No Evil, Speak No Evil. Edition of 25, signed and numbered. Unframed."
     },
     {
@@ -53,6 +56,7 @@
       "size": "11 × 11 in",
       "price": 70,
       "image": "speak-no-evil.jpg",
+      "stripeLink": "",
       "detail": "Limited edition print from the series See No Evil, Hear No Evil, Speak No Evil. Edition of 25, signed and numbered. Unframed."
     },
     {
@@ -60,6 +64,7 @@
       "year": 2024,
       "size": "11 × 11 in",
       "price": 70,
+      "stripeLink": "",
       "detail": "Limited edition print. Edition of 25, signed and numbered. Unframed."
     }
   ]
