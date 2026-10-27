@@ -318,8 +318,41 @@
   letter-spacing: -0.03em;
 }
 
-.order-pay {
+.order-pay,
+.checkout-all {
   margin-top: 22px;
+  min-height: 76px;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+}
+
+.checkout-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 72px;
+  padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+  background: #002fa7;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+}
+
+.checkout-bar:hover {
+  background: #ffc20e;
+  color: #002fa7;
+}
+
+body:has(.checkout-bar) .print-page {
+  padding-bottom: 140px;
 }
 
 .print-ship {
