@@ -13,11 +13,19 @@
 }
 
 .print-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   margin: 0;
+  min-width: 0;
 }
 
 .print-frame {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
   background: #fff;
   border: 1px solid #111;
 }
@@ -25,7 +33,7 @@
 .print-frame img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: contain;
   background: #fff;
 }
@@ -49,7 +57,7 @@
   font-family: "Bodoni Moda", "Palatino Linotype", Palatino, "Times New Roman", serif;
   font-style: italic;
   font-weight: 500;
-  font-size: clamp(26px, 4vw, 34px);
+  font-size: clamp(20px, 2.4vw, 32px);
   line-height: 1.05;
   letter-spacing: -0.03em;
 }
@@ -109,7 +117,8 @@
 }
 
 .print-price {
-  margin: 14px 0 0;
+  margin: auto 0 0;
+  padding-top: 14px;
   min-height: 28px;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
@@ -326,8 +335,8 @@
 
 .print-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 56px;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px 16px;
   margin-top: 40px;
 }
 
@@ -440,9 +449,9 @@
 
 @media (min-width: 900px) {
   .print-grid {
-    grid-template-columns: 1fr 1fr;
-    column-gap: 48px;
-    row-gap: 72px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 28px;
+    row-gap: 48px;
   }
 
   .print-page,
