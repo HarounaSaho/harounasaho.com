@@ -161,15 +161,42 @@
   color: #002fa7;
 }
 
+.shop-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 28px;
+}
+
+.shop-bar .mark {
+  margin: 0;
+}
+
 .cart-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
   margin-top: 18px;
-  color: #002fa7;
+  padding: 0 14px;
+  background: #002fa7;
+  color: #fff;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
   font-size: 15px;
   letter-spacing: -0.02em;
   text-decoration: none;
+}
+
+.shop-bar .cart-link {
+  margin-top: 0;
+  flex: none;
+}
+
+.cart-link:hover {
+  background: #ffc20e;
+  color: #002fa7;
 }
 
 .actions .cart-link {
