@@ -2,8 +2,63 @@
   var mounts = document.querySelectorAll("[data-print-for]");
   var grid = document.getElementById("print-grid");
   var preview = document.getElementById("order-preview");
+  var cartRoot = document.getElementById("print-cart");
   var loading = document.getElementById("print-loading");
-  if (!mounts.length && !grid && !preview) return;
+  var cartKey = "saho-print-cart";
+  if (!mounts.length && !grid && !preview && !cartRoot) return;
+
+  function readCart() {
+    try {
+      var parsed = JSON.parse(localStorage.getItem(cartKey) || "[]");
+      if (!Array.isArray(parsed)) return [];
+      return parsed.filter(function (name) { return typeof name === "string" && name; });
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function writeCart(names) {
+    var unique = [];
+    names.forEach(function (name) {
+      if (unique.indexOf(name) === -1) unique.push(name);
+    });
+    localStorage.setItem(cartKey, JSON.stringify(unique));
+  }
+
+  function paintCart() {
+    var names = readCart();
+    document.querySelectorAll("[data-cart-for]").forEach(function (button) {
+      var on = names.indexOf(button.getAttribute("data-cart-for")) !== -1;
+      button.textContent = on ? "Added" : "Add to cart";
+      button.setAttribute("aria-pressed", on ? "true" : "false");
+      button.classList.toggle("is-added", on);
+    });
+    document.querySelectorAll("[data-cart-count]").forEach(function (link) {
+      link.textContent = names.length ? "Cart · " + names.length : "Cart";
+    });
+  }
+
+  function toggleCart(name) {
+    var names = readCart();
+    var index = names.indexOf(name);
+    if (index === -1) names.push(name);
+    else names.splice(index, 1);
+    writeCart(names);
+    paintCart();
+  }
+
+  function ensureCartLink() {
+    if (document.querySelector("[data-cart-count]")) return;
+    var link = document.createElement("a");
+    link.className = "cart-link";
+    link.href = "/prints/cart/";
+    link.setAttribute("data-cart-count", "");
+    link.textContent = "Cart";
+    var actions = document.querySelector(".actions");
+    var kicker = document.querySelector(".print-page .kicker");
+    if (kicker) kicker.insertAdjacentElement("afterend", link);
+    else if (actions) actions.appendChild(link);
+  }
 
   function formatPrice(price) {
     if (typeof price !== "number" || !isFinite(price)) return "\u00a0";
@@ -209,30 +264,113 @@
     article.appendChild(edition);
     article.appendChild(size);
     article.appendChild(price);
-    article.appendChild(buyControl(item));
+    article.appendChild(addButton(item));
     article.appendChild(ship);
     return article;
   }
 
-  function buyControl(item) {
-    var buy = document.createElement("a");
+  function addButton(item) {
+    var buy = document.createElement("button");
+    buy.type = "button";
     buy.className = "print-buy";
     if (item && item.soldOut) {
       buy.textContent = "Sold out";
       buy.classList.add("is-disabled");
-      buy.setAttribute("aria-disabled", "true");
-    } else if (buyable({ stripeLink: item && item.stripeLink })) {
-      buy.textContent = "Buy print";
-      buy.href = item.stripeLink;
-    } else {
-      buy.textContent = "Buy print";
-      buy.classList.add("is-disabled");
-      buy.setAttribute("aria-disabled", "true");
+      buy.disabled = true;
+      return buy;
     }
-    buy.addEventListener("click", function (event) {
-      if (!buy.getAttribute("href")) event.preventDefault();
+    buy.setAttribute("data-cart-for", item.work || "");
+    buy.addEventListener("click", function () {
+      toggleCart(item.work);
+      if (cartRoot && window.__sahoRenderCart) window.__sahoRenderCart();
     });
     return buy;
+  }
+
+  function renderCart(checkout) {
+    if (!cartRoot || !checkout) return;
+    var names = readCart();
+    var chosen = checkout.items.filter(function (item) {
+      return names.indexOf(item.work) !== -1;
+    });
+    cartRoot.replaceChildren();
+    if (!chosen.length) {
+      var empty = document.createElement("p");
+      empty.className = "print-status";
+      empty.textContent = "Your cart is empty.";
+      var back = document.createElement("p");
+      back.className = "cart-empty-link";
+      var shop = document.createElement("a");
+      shop.href = "/prints/";
+      shop.textContent = "Browse prints";
+      back.appendChild(shop);
+      cartRoot.appendChild(empty);
+      cartRoot.appendChild(back);
+      cartRoot.hidden = false;
+      return;
+    }
+    var list = document.createElement("div");
+    list.className = "order-list";
+    var total = 0;
+    chosen.forEach(function (item) {
+      total += typeof item.price === "number" ? item.price : 0;
+      var row = document.createElement("div");
+      row.className = "order-line" + (item.image ? "" : " no-thumb");
+      if (item.image) {
+        var img = document.createElement("img");
+        img.alt = item.work + ", " + item.year;
+        img.src = imageSrc(item);
+        row.appendChild(img);
+      }
+      var copy = document.createElement("div");
+      copy.className = "order-copy";
+      var name = document.createElement("h2");
+      name.className = "order-name";
+      name.textContent = item.work;
+      var meta = document.createElement("p");
+      meta.className = "order-meta";
+      meta.textContent = (item.year == null ? "" : item.year) + " · " + (item.size || "") + " · " + formatPrice(item.price);
+      copy.appendChild(name);
+      copy.appendChild(meta);
+      var actions = document.createElement("div");
+      actions.className = "cart-actions";
+      if (buyable({ stripeLink: item.stripeLink })) {
+        var pay = document.createElement("a");
+        pay.className = "print-buy";
+        pay.href = item.stripeLink;
+        pay.textContent = "Checkout";
+        actions.appendChild(pay);
+      }
+      var remove = document.createElement("button");
+      remove.type = "button";
+      remove.className = "cart-remove";
+      remove.textContent = "Remove";
+      remove.addEventListener("click", function () {
+        var next = readCart().filter(function (work) { return work !== item.work; });
+        writeCart(next);
+        paintCart();
+        renderCart(checkout);
+      });
+      actions.appendChild(remove);
+      row.appendChild(copy);
+      row.appendChild(actions);
+      list.appendChild(row);
+    });
+    var sum = document.createElement("p");
+    sum.className = "order-total";
+    var label = document.createElement("span");
+    label.textContent = "Total";
+    var amount = document.createElement("span");
+    amount.textContent = formatPrice(total);
+    sum.appendChild(label);
+    sum.appendChild(amount);
+    var note = document.createElement("p");
+    note.className = "print-ship";
+    note.textContent = "Each print checks out on its own Stripe page.";
+    cartRoot.appendChild(list);
+    cartRoot.appendChild(sum);
+    cartRoot.appendChild(note);
+    cartRoot.hidden = false;
   }
 
   function setOffer(item) {
@@ -257,13 +395,15 @@
     section.appendChild(edition);
     section.appendChild(size);
     section.appendChild(price);
-    section.appendChild(buyControl(item));
+    section.appendChild(addButton(item));
     section.appendChild(note);
     return section;
   }
 
   function renderCheckout(checkout) {
     if (!checkout || !Array.isArray(checkout.items)) throw new Error("checkout");
+    window.__sahoRenderCart = function () { renderCart(checkout); };
+    ensureCartLink();
     mounts.forEach(function (mount) {
       var name = mount.getAttribute("data-print-for");
       var match = null;
@@ -280,9 +420,9 @@
         grid.appendChild(setCard(item));
       });
       grid.hidden = false;
-      var existing = grid.parentNode.querySelector(".order-pay");
-      if (existing) existing.remove();
     }
+    renderCart(checkout);
+    paintCart();
     if (loading) loading.hidden = true;
   }
 
