@@ -3,7 +3,7 @@ import CustomCursor from "./components/CustomCursor.jsx";
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import HomePage from "./pages/HomePage.jsx";
-import { ProjectDetail } from "./pages/DesignPage.jsx";
+import { DesignIndex, ProjectDetail } from "./pages/DesignPage.jsx";
 import { RoomView, WorkView } from "./pages/ArtPage.jsx";
 import WorksPage from "./pages/WorksPage.jsx";
 import AboutPage from "./pages/AboutPage.jsx";
@@ -71,6 +71,7 @@ export default function App() {
 
   const goHome = (e) => nav("home", e);
   const goWorks = (e) => nav("works", e);
+  const goDesign = (e) => nav("design", e);
   const goAbout = (e) => nav("about", e);
 
   const goStudio = (e) => {
@@ -109,12 +110,14 @@ export default function App() {
     setRoom(name);
   };
 
-  const openProject = (id, e) => {
+  const openProject = (id, fromView, e) => {
     if (e) e.preventDefault();
     top();
-    setPage("works");
+    const origin = fromView === "design" ? "design" : "works";
+    setPage(origin);
     setView("project");
     setProjectId(id);
+    setFrom(origin);
   };
 
   const goBackFromWork = (e) => {
@@ -231,6 +234,7 @@ export default function App() {
         roonCaught={roonCaught}
         onHome={goHome}
         onWorks={goWorks}
+        onDesign={goDesign}
         onAbout={goAbout}
         onRoon={goRoon}
         onRoonFlee={roonFlee}
@@ -245,15 +249,30 @@ export default function App() {
             onRoonFlee={roonFlee}
             onRoon={goRoon}
             onWorks={goWorks}
+            onDesign={goDesign}
             onAbout={goAbout}
             onOpenWork={(cat, e) => openWork(cat, "works", null, e)}
           />
         )}
         {page === "works" && view === "index" && (
-          <WorksPage onHome={goHome} onOpenWork={openWork} onOpenProject={openProject} />
+          <WorksPage
+            onHome={goHome}
+            onOpenWork={openWork}
+            onOpenProject={(id, e) => openProject(id, "works", e)}
+          />
         )}
         {page === "works" && view === "project" && (
-          <ProjectDetail projectId={projectId} onWorks={goWorks} />
+          <ProjectDetail projectId={projectId} onBack={goWorks} backLabel="WORKS" />
+        )}
+        {page === "design" && view === "index" && (
+          <DesignIndex
+            onHome={goHome}
+            onOpenSidonia={(e) => openProject("sidonia", "design", e)}
+            onOpenRing={(e) => openProject("ring", "design", e)}
+          />
+        )}
+        {page === "design" && view === "project" && (
+          <ProjectDetail projectId={projectId} onBack={goDesign} backLabel="DESIGN" />
         )}
         {page === "works" && view === "room" && (
           <RoomView roomName={room} onArt={goWorks} onOpenWork={openWork} />

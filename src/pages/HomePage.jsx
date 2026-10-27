@@ -13,6 +13,7 @@ export default function HomePage({
   onRoonFlee,
   onRoon,
   onWorks,
+  onDesign,
   onAbout,
   onOpenWork,
 }) {
@@ -105,7 +106,7 @@ export default function HomePage({
               <span>1930s</span>
             </div>
           </Draggable>
-          <Draggable className="cj-drag" onClick={onWorks}>
+          <Draggable className="cj-drag" onClick={onDesign}>
             <img className="cj-img" src={cardJitsuSrc} alt="Card-Jitsu" draggable="false" />
           </Draggable>
           <Draggable className="album-drag" onClick={onAbout}>
@@ -114,13 +115,16 @@ export default function HomePage({
               <span className="musicians-caption-title">music i like</span>
             </div>
           </Draggable>
-          <Draggable className="paint-drag" onClick={onWorks}>
+          <Draggable className="paint-drag" onClick={onDesign}>
             <PaintWindow />
           </Draggable>
         </div>
         <nav className="hero-nav">
           <a href="#works" onClick={onWorks}>
             WORKS
+          </a>
+          <a href="#design" onClick={onDesign}>
+            DESIGN
           </a>
           <a href="#about" onClick={onAbout}>
             INFO

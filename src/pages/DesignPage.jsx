@@ -32,14 +32,14 @@ export function DesignIndex({ onHome, onOpenSidonia, onOpenRing }) {
   );
 }
 
-export function ProjectDetail({ projectId, onWorks }) {
+export function ProjectDetail({ projectId, onBack, backLabel }) {
   const project = PROJECTS[projectId];
   if (!project) return null;
 
   return (
     <section className="page narrow slide-left">
-      <a href="#works" className="crumb" onClick={onWorks}>
-        ← WORKS
+      <a href={backLabel === "DESIGN" ? "#design" : "#works"} className="crumb" onClick={onBack}>
+        ← {backLabel}
       </a>
       <div className="sec-tag project-sec">{project.sec}</div>
       <h1 className="page-h1 tight">{project.title}</h1>
