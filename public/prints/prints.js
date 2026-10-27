@@ -6,6 +6,7 @@
   var loading = document.getElementById("print-loading");
   var cartKey = "saho-print-cart";
   var catalog = null;
+  var cartLinks = null;
   if (!mounts.length && !grid && !preview && !cartRoot) return;
 
   function readCart() {
@@ -344,6 +345,29 @@
     return plan.steps.length === 1 && !plan.unpaid.length;
   }
 
+  function namesKey(items) {
+    return items.map(function (item) { return item.work; }).slice().sort().join("\n");
+  }
+
+  function exactPayment(items) {
+    if (!cartLinks || !items.length) return null;
+    var url = cartLinks[namesKey(items)];
+    if (typeof url !== "string" || !/^https:\/\/buy\.stripe\.com\/[A-Za-z0-9_]+$/.test(url)) return null;
+    return {
+      works: items.map(function (item) { return item.work; }),
+      amount: orderTotal(items),
+      url: url
+    };
+  }
+
+  function fullPayment(items) {
+    var exact = exactPayment(items);
+    if (exact) return exact;
+    var plan = checkoutPlan(items);
+    if (!planCovers(plan)) return null;
+    return plan.steps[0];
+  }
+
   function chosenItems(checkout) {
     var names = readCart();
     return checkout.items.filter(function (item) {
@@ -368,15 +392,14 @@
       bar.setAttribute("data-checkout-bar", "");
       document.body.appendChild(bar);
     }
-    var plan = checkoutPlan(chosen);
-    var total = orderTotal(chosen);
-    if (planCovers(plan)) {
-      bar.href = plan.steps[0].url;
-      bar.textContent = "Checkout \u00b7 " + formatPrice(plan.steps[0].amount);
+    var payment = fullPayment(chosen);
+    if (payment) {
+      bar.href = payment.url;
+      bar.textContent = "Checkout \u00b7 " + formatPrice(payment.amount);
       return;
     }
     bar.href = "/prints/cart/";
-    bar.textContent = "Checkout \u00b7 " + formatPrice(total);
+    bar.textContent = "Pay prints";
   }
 
   function renderCart(checkout) {
@@ -400,6 +423,17 @@
     }
     var list = document.createElement("div");
     list.className = "order-list";
+    var total = orderTotal(chosen);
+    var payment = fullPayment(chosen);
+    var plan = checkoutPlan(chosen);
+    var payFor = {};
+    var withPayment = {};
+    if (!payment) {
+      plan.steps.forEach(function (step) {
+        payFor[step.works[0]] = step;
+        step.works.forEach(function (work) { withPayment[work] = step; });
+      });
+    }
     chosen.forEach(function (item) {
       var row = document.createElement("div");
       row.className = "order-line" + (item.image ? "" : " no-thumb");
@@ -419,8 +453,28 @@
       meta.textContent = (item.year == null ? "" : item.year) + " \u00b7 " + (item.size || "") + " \u00b7 " + formatPrice(item.price);
       copy.appendChild(name);
       copy.appendChild(meta);
+      var grouped = withPayment[item.work];
+      if (!payment && grouped && grouped.works.length > 1) {
+        var shared = document.createElement("p");
+        shared.className = "order-detail";
+        shared.textContent = "Pays together with " + grouped.works.filter(function (work) { return work !== item.work; }).join(" and ") + ".";
+        copy.appendChild(shared);
+      }
+      if (!payment && !grouped && item.work === "See No Evil") {
+        var blocked = document.createElement("p");
+        blocked.className = "order-detail";
+        blocked.textContent = "There is no Stripe page for See No Evil alone. The only page also includes Unheard and charges $140.";
+        copy.appendChild(blocked);
+      }
       var actions = document.createElement("div");
       actions.className = "cart-actions";
+      if (!payment && payFor[item.work]) {
+        var rowPay = document.createElement("a");
+        rowPay.className = "print-buy";
+        rowPay.href = payFor[item.work].url;
+        rowPay.textContent = "Pay \u00b7 " + formatPrice(payFor[item.work].amount);
+        actions.appendChild(rowPay);
+      }
       var remove = document.createElement("button");
       remove.type = "button";
       remove.className = "cart-remove";
@@ -436,8 +490,6 @@
       row.appendChild(actions);
       list.appendChild(row);
     });
-    var total = orderTotal(chosen);
-    var plan = checkoutPlan(chosen);
     var sum = document.createElement("p");
     sum.className = "order-total";
     var label = document.createElement("span");
@@ -446,39 +498,18 @@
     amount.textContent = formatPrice(total);
     sum.appendChild(label);
     sum.appendChild(amount);
-    var pay = document.createElement("a");
-    pay.className = "print-buy checkout-all";
-    var step = plan.steps[0];
-    if (step) {
-      pay.href = step.url;
-      pay.textContent = planCovers(plan)
-        ? "Checkout \u00b7 " + formatPrice(step.amount)
-        : "Checkout \u00b7 " + step.works.join(" and ") + " \u00b7 " + formatPrice(step.amount);
-    } else {
-      pay.textContent = "Checkout \u00b7 " + formatPrice(total);
-      pay.classList.add("is-disabled");
-      pay.setAttribute("aria-disabled", "true");
-      pay.addEventListener("click", function (event) { event.preventDefault(); });
-    }
     cartRoot.appendChild(list);
     cartRoot.appendChild(sum);
-    cartRoot.appendChild(pay);
-    if (!planCovers(plan)) {
+    if (payment) {
+      var pay = document.createElement("a");
+      pay.className = "print-buy checkout-all";
+      pay.href = payment.url;
+      pay.textContent = "Checkout \u00b7 " + formatPrice(payment.amount);
+      cartRoot.appendChild(pay);
+    } else if (plan.steps.length) {
       var note = document.createElement("p");
       note.className = "order-detail";
-      var later = plan.steps.slice(1).map(function (payment) {
-        return payment.works.join(" and ") + " \u00b7 " + formatPrice(payment.amount);
-      });
-      plan.unpaid.forEach(function (item) {
-        later.push(item.work + " is " + formatPrice(item.price) + " and is not in this payment");
-      });
-      if (step) {
-        note.textContent = "This payment is " + formatPrice(step.amount) + " for " + step.works.join(" and ") + ". The cart total is " + formatPrice(total) + ". After you pay, remove " + (step.works.length === 1 ? "it" : "them") + " and check out the next print" + (later.length ? ": " + later.join(", ") : "") + ".";
-      } else if (plan.unpaid.length === 1 && plan.unpaid[0].work === "See No Evil") {
-        note.textContent = "See No Evil is $70. Its Stripe page also adds Unheard and charges $140, so checkout stays closed until that page charges only See No Evil.";
-      } else {
-        note.textContent = "The cart total is " + formatPrice(total) + ". " + later.join(". ") + ".";
-      }
+      note.textContent = "Stripe takes these one print at a time. Use Pay on each print. The total is " + formatPrice(total) + ". After a payment goes through, remove that print.";
       cartRoot.appendChild(note);
     }
     cartRoot.hidden = false;
@@ -587,11 +618,17 @@
     .catch(fail);
   }
 
-  fetch("/data/checkout.json")
-    .then(function (response) {
+  Promise.all([
+    fetch("/data/checkout.json").then(function (response) {
       if (!response.ok) throw new Error("checkout");
       return response.json();
-    })
-    .then(renderCheckout)
-    .catch(loadPrintList);
+    }),
+    fetch("/data/cart-links.json").then(function (response) {
+      if (!response.ok) return null;
+      return response.json();
+    }).catch(function () { return null; })
+  ]).then(function (result) {
+    cartLinks = result[1] && typeof result[1] === "object" && !Array.isArray(result[1]) ? result[1] : null;
+    renderCheckout(result[0]);
+  }).catch(loadPrintList);
 }());
