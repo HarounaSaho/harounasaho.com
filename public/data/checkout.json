@@ -5,7 +5,7 @@
       "year": 2025,
       "size": "14 × 11 in",
       "price": 100,
-      "image": "continuum.jpg",
+      "image": "https://img.stripecdn.com/cdn-cgi/image/format=jpeg,height=1600,dpr=1/https%3A%2F%2Fd1wqzb5bdbcre6.cloudfront.net%2Fb7d54480815ef327a7298958f8b17fc5d16a746a304b62b5f2688a607c8f2050%2F68747470733a2f2f66696c65732e7374726970652e636f6d2f6c696e6b732f4d44423859574e6a644638785656566c56553079546c5a54597a4a6852464a4966475a7358327870646d5666626e68745a4756544e544e4d54314a495a47564c63456777616c56695931704c30304c6a5444397a5745%2F6d65726368616e745f69643d616363745f31555565554d324e565363326144524826636c69656e743d5041594d454e545f50414745",
       "stripeLink": "https://buy.stripe.com/14AdR28I34Ez5qF67WfMA08",
       "detail": "Limited edition print. Edition of 25, signed and numbered. Unframed."
     },
@@ -14,7 +14,7 @@
       "year": 2025,
       "size": "10 × 14 in",
       "price": 80,
-      "image": "what-remains.jpg",
+      "image": "https://img.stripecdn.com/cdn-cgi/image/format=jpeg,height=1600,dpr=1/https%3A%2F%2Fd1wqzb5bdbcre6.cloudfront.net%2Fc9c894a4a9926bbe47a614a6c28148344d27afd210b14a7dccee688168c6abb6%2F68747470733a2f2f66696c65732e7374726970652e636f6d2f6c696e6b732f4d44423859574e6a644638785656566c56553079546c5a54597a4a6852464a4966475a7358327870646d566653326452576b5a6e56565979546d637a51584a786155357563334653563074783030334a43434a6a4252%2F6d65726368616e745f69643d616363745f31555565554d324e565363326144524826636c69656e743d5041594d454e545f50414745",
       "stripeLink": "https://buy.stripe.com/aFa5kw5vRb2X6uJ0NCfMA07",
       "detail": "Limited edition print. Edition of 25, signed and numbered. Unframed."
     },
@@ -23,7 +23,7 @@
       "year": 2025,
       "size": "10 × 14 in",
       "price": 80,
-      "image": "offering.jpg",
+      "image": "https://img.stripecdn.com/cdn-cgi/image/format=jpeg,height=1600,dpr=1/https%3A%2F%2Fd1wqzb5bdbcre6.cloudfront.net%2Fdcfb3b9d57d1398df54f2066c043d1e90e011fd0371ee11da35b1b40108e2ecf%2F68747470733a2f2f66696c65732e7374726970652e636f6d2f6c696e6b732f4d44423859574e6a644638785656566c56553079546c5a54597a4a6852464a4966475a7358327870646d566662584934646b784f5247705a536b356e56475675626b786a634539684e58493030304e33436c47537a36%2F6d65726368616e745f69643d616363745f31555565554d324e565363326144524826636c69656e743d5041594d454e545f50414745",
       "stripeLink": "https://buy.stripe.com/7sYeV62jFef92et67WfMA06",
       "detail": "Limited edition print. Edition of 25, signed and numbered. Unframed."
     },
@@ -32,7 +32,7 @@
       "year": 2026,
       "size": "11 × 14 in",
       "price": 100,
-      "image": "homage.jpg",
+      "image": "https://img.stripecdn.com/cdn-cgi/image/format=jpeg,height=1600,dpr=1/https%3A%2F%2Fd1wqzb5bdbcre6.cloudfront.net%2Fa7c19ebb0bfb42b343d7631bf55500ad0736b8e64fb9a780fd1af3811547ebdd%2F68747470733a2f2f66696c65732e7374726970652e636f6d2f6c696e6b732f4d44423859574e6a644638785656566c56553079546c5a54597a4a6852464a4966475a7358327870646d5666596c4d775958567a61556854646e56795455646d57553173517a4e424e5859343030684c554c7a4a6975%2F6d65726368616e745f69643d616363745f31555565554d324e565363326144524826636c69656e743d5041594d454e545f50414745",
       "stripeLink": "https://buy.stripe.com/7sY3co7DZ9YT6uJ7c0fMA05",
       "detail": "Limited edition woodblock print. Edition of 25, signed and numbered. Unframed."
     },
@@ -68,7 +68,7 @@
       "year": 2024,
       "size": "11 × 11 in",
       "price": 70,
-      "image": "unheard.jpg",
+      "image": "https://img.stripecdn.com/cdn-cgi/image/format=jpeg,height=1600,dpr=1/https%3A%2F%2Fd1wqzb5bdbcre6.cloudfront.net%2F1fd79551cbbf83b1524e858eb6ddd66efc520f6f2692a01f57501cc9a9ba9e8b%2F68747470733a2f2f66696c65732e7374726970652e636f6d2f6c696e6b732f4d44423859574e6a644638785656566c56553079546c5a54597a4a6852464a4966475a7358327870646d566657564271647a4a33566d46334f48687953453553636b4e7064334a4e517a4d7830304c42614635365952%2F6d65726368616e745f69643d616363745f31555565554d324e565363326144524826636c69656e743d5041594d454e545f50414745",
       "stripeLink": "https://buy.stripe.com/14A3coe2n2wr06lcwkfMA02",
       "detail": "Limited edition print. Edition of 25, signed and numbered. Unframed."
     }

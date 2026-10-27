@@ -81,7 +81,7 @@
 
   function imageSrc(print) {
     var image = print.image || "";
-    if (image.charAt(0) === "/") return image;
+    if (image.charAt(0) === "/" || image.indexOf("https://") === 0) return image;
     return "/prints/" + image;
   }
 
