@@ -41,7 +41,7 @@
       "year": 2026,
       "size": "11 × 11 in",
       "price": 70,
-      "image": "see-no-evil.jpg",
+      "image": "https://img.stripecdn.com/cdn-cgi/image/format=jpeg,height=1600,dpr=1/https%3A%2F%2Fd1wqzb5bdbcre6.cloudfront.net%2F1fcf2d95484a939a9fb666d10c6e25de61654780d1c43b4790951abdcf216736%2F68747470733a2f2f66696c65732e7374726970652e636f6d2f6c696e6b732f4d44423859574e6a644638785656566c56553079546c5a54597a4a6852464a4966475a7358327870646d56665a57524c6431526c526a52506258466d633231544d57706f596b3171543370533030364931517576646b%2F6d65726368616e745f69643d616363745f31555565554d324e565363326144524826636c69656e743d5041594d454e545f50414745",
       "stripeLink": "https://buy.stripe.com/fZu9AM2jF1snbP30NCfMA04",
       "detail": "Limited edition print from the series See No Evil, Hear No Evil, Speak No Evil. Edition of 25, signed and numbered. Unframed."
     },
@@ -50,7 +50,7 @@
       "year": 2026,
       "size": "11 × 11 in",
       "price": 70,
-      "image": "hear-no-evil.jpg",
+      "image": "https://img.stripecdn.com/cdn-cgi/image/format=jpeg,height=1600,dpr=1/https%3A%2F%2Fd1wqzb5bdbcre6.cloudfront.net%2Fbae44fdd149aa16fb183dde4629a35ece393e239b84cfcd14aecb9b0c2a9b813%2F68747470733a2f2f66696c65732e7374726970652e636f6d2f6c696e6b732f4d44423859574e6a644638785656566c56553079546c5a54597a4a6852464a4966475a7358327870646d5666616a5a48636e4a4b5348645361306f32656a46336556466a4e6a6c554d6d314f30304436545755564d37%2F6d65726368616e745f69643d616363745f31555565554d324e565363326144524826636c69656e743d5041594d454e545f50414745",
       "stripeLink": "https://buy.stripe.com/14A7sEgavgnh2et8g4fMA03",
       "detail": "Limited edition print from the series See No Evil, Hear No Evil, Speak No Evil. Edition of 25, signed and numbered. Unframed."
     },
@@ -59,7 +59,7 @@
       "year": 2026,
       "size": "11 × 11 in",
       "price": 70,
-      "image": "speak-no-evil.jpg",
+      "image": "https://img.stripecdn.com/cdn-cgi/image/format=jpeg,height=1600,dpr=1/https%3A%2F%2Fd1wqzb5bdbcre6.cloudfront.net%2Ff00357aba9e6a4f9b8fb939d76b6bc60210cfa18454ce91d7be796c6bbe4b3cf%2F68747470733a2f2f66696c65732e7374726970652e636f6d2f6c696e6b732f4d44423859574e6a644638785656566c56553079546c5a54597a4a6852464a4966475a7358327870646d566659546b7a6332703056574a36516a5a31637a4e30556b4e3556305a4b576b743230306572696a624e7174%2F6d65726368616e745f69643d616363745f31555565554d324e565363326144524826636c69656e743d5041594d454e545f50414745",
       "stripeLink": "https://buy.stripe.com/eVq9AM0bx1sn7yNcwkfMA01",
       "detail": "Limited edition print from the series See No Evil, Hear No Evil, Speak No Evil. Edition of 25, signed and numbered. Unframed."
     },
