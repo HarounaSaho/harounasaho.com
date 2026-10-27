@@ -3,39 +3,43 @@
     {
       "work": "Continuum",
       "year": 2025,
-      "size": "14 \u00d7 11 in",
+      "size": "14 × 11 in",
       "price": 100,
+      "image": "continuum.jpg",
       "stripeLink": "https://buy.stripe.com/14AdR28I34Ez5qF67WfMA08",
       "detail": "Limited edition print. Edition of 25, signed and numbered. Unframed."
     },
     {
       "work": "What Remains",
       "year": 2025,
-      "size": "10 \u00d7 14 in",
+      "size": "10 × 14 in",
       "price": 80,
+      "image": "what-remains.jpg",
       "stripeLink": "https://buy.stripe.com/aFa5kw5vRb2X6uJ0NCfMA07",
       "detail": "Limited edition print. Edition of 25, signed and numbered. Unframed."
     },
     {
       "work": "Offering",
       "year": 2025,
-      "size": "10 \u00d7 14 in",
+      "size": "10 × 14 in",
       "price": 80,
+      "image": "offering.jpg",
       "stripeLink": "https://buy.stripe.com/7sYeV62jFef92et67WfMA06",
       "detail": "Limited edition print. Edition of 25, signed and numbered. Unframed."
     },
     {
       "work": "Homage",
       "year": 2026,
-      "size": "11 \u00d7 14 in",
+      "size": "11 × 14 in",
       "price": 100,
+      "image": "homage.jpg",
       "stripeLink": "https://buy.stripe.com/7sY3co7DZ9YT6uJ7c0fMA05",
       "detail": "Limited edition woodblock print. Edition of 25, signed and numbered. Unframed."
     },
     {
       "work": "See No Evil",
       "year": 2026,
-      "size": "11 \u00d7 11 in",
+      "size": "11 × 11 in",
       "price": 70,
       "image": "see-no-evil.jpg",
       "stripeLink": "https://buy.stripe.com/fZu9AM2jF1snbP30NCfMA04",
@@ -44,7 +48,7 @@
     {
       "work": "Hear No Evil",
       "year": 2026,
-      "size": "11 \u00d7 11 in",
+      "size": "11 × 11 in",
       "price": 70,
       "image": "hear-no-evil.jpg",
       "stripeLink": "https://buy.stripe.com/14A7sEgavgnh2et8g4fMA03",
@@ -53,7 +57,7 @@
     {
       "work": "Speak No Evil",
       "year": 2026,
-      "size": "11 \u00d7 11 in",
+      "size": "11 × 11 in",
       "price": 70,
       "image": "speak-no-evil.jpg",
       "stripeLink": "https://buy.stripe.com/eVq9AM0bx1sn7yNcwkfMA01",
@@ -62,8 +66,9 @@
     {
       "work": "Unheard",
       "year": 2024,
-      "size": "11 \u00d7 11 in",
+      "size": "11 × 11 in",
       "price": 70,
+      "image": "unheard.jpg",
       "stripeLink": "https://buy.stripe.com/14A3coe2n2wr06lcwkfMA02",
       "detail": "Limited edition print. Edition of 25, signed and numbered. Unframed."
     }
