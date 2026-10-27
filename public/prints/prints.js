@@ -5,6 +5,7 @@
   var cartRoot = document.getElementById("print-cart");
   var loading = document.getElementById("print-loading");
   var cartKey = "saho-print-cart";
+  var catalog = null;
   if (!mounts.length && !grid && !preview && !cartRoot) return;
 
   function readCart() {
@@ -36,6 +37,7 @@
     document.querySelectorAll("[data-cart-count]").forEach(function (link) {
       link.textContent = names.length ? "Cart · " + names.length : "Cart";
     });
+    paintCheckoutBar();
   }
 
   function toggleCart(name) {
@@ -48,7 +50,7 @@
   }
 
   function ensureCartLink() {
-    if (document.querySelector("[data-cart-count]")) return;
+    if (cartRoot || document.querySelector("[data-cart-count]")) return;
     var link = document.createElement("a");
     link.className = "cart-link";
     link.href = "/prints/cart/";
@@ -287,12 +289,61 @@
     return buy;
   }
 
-  function renderCart(checkout) {
-    if (!cartRoot || !checkout) return;
+  function orderTotal(items) {
+    var total = 0;
+    items.forEach(function (item) {
+      total += typeof item.price === "number" ? item.price : 0;
+    });
+    return total;
+  }
+
+  function paymentFor(items) {
+    var table = {
+      "Continuum": "https://buy.stripe.com/14AdR28I34Ez5qF67WfMA08",
+      "Hear No Evil": "https://buy.stripe.com/14A7sEgavgnh2et8g4fMA03",
+      "Homage": "https://buy.stripe.com/7sY3co7DZ9YT6uJ7c0fMA05",
+      "Offering": "https://buy.stripe.com/7sYeV62jFef92et67WfMA06",
+      "Speak No Evil": "https://buy.stripe.com/eVq9AM0bx1sn7yNcwkfMA01",
+      "Unheard": "https://buy.stripe.com/14A3coe2n2wr06lcwkfMA02",
+      "What Remains": "https://buy.stripe.com/aFa5kw5vRb2X6uJ0NCfMA07",
+      "See No Evil\nUnheard": "https://buy.stripe.com/fZu9AM2jF1snbP30NCfMA04"
+    };
+    var key = items.map(function (item) { return item.work; }).sort().join("\n");
+    return table[key] || "";
+  }
+
+  function chosenItems(checkout) {
     var names = readCart();
-    var chosen = checkout.items.filter(function (item) {
+    return checkout.items.filter(function (item) {
       return names.indexOf(item.work) !== -1;
     });
+  }
+
+  function paintCheckoutBar() {
+    var bar = document.querySelector("[data-checkout-bar]");
+    if (!catalog || document.getElementById("print-cart")) {
+      if (bar) bar.remove();
+      return;
+    }
+    var chosen = chosenItems(catalog);
+    if (!chosen.length) {
+      if (bar) bar.remove();
+      return;
+    }
+    if (!bar) {
+      bar = document.createElement("a");
+      bar.className = "checkout-bar";
+      bar.setAttribute("data-checkout-bar", "");
+      document.body.appendChild(bar);
+    }
+    var pay = paymentFor(chosen);
+    bar.href = pay || "/prints/cart/";
+    bar.textContent = "Checkout · " + formatPrice(orderTotal(chosen));
+  }
+
+  function renderCart(checkout) {
+    if (!cartRoot || !checkout) return;
+    var chosen = chosenItems(checkout);
     cartRoot.replaceChildren();
     if (!chosen.length) {
       var empty = document.createElement("p");
@@ -311,9 +362,7 @@
     }
     var list = document.createElement("div");
     list.className = "order-list";
-    var total = 0;
     chosen.forEach(function (item) {
-      total += typeof item.price === "number" ? item.price : 0;
       var row = document.createElement("div");
       row.className = "order-line" + (item.image ? "" : " no-thumb");
       if (item.image) {
@@ -334,13 +383,6 @@
       copy.appendChild(meta);
       var actions = document.createElement("div");
       actions.className = "cart-actions";
-      if (buyable({ stripeLink: item.stripeLink })) {
-        var pay = document.createElement("a");
-        pay.className = "print-buy";
-        pay.href = item.stripeLink;
-        pay.textContent = "Checkout";
-        actions.appendChild(pay);
-      }
       var remove = document.createElement("button");
       remove.type = "button";
       remove.className = "cart-remove";
@@ -356,6 +398,7 @@
       row.appendChild(actions);
       list.appendChild(row);
     });
+    var total = orderTotal(chosen);
     var sum = document.createElement("p");
     sum.className = "order-total";
     var label = document.createElement("span");
@@ -364,12 +407,14 @@
     amount.textContent = formatPrice(total);
     sum.appendChild(label);
     sum.appendChild(amount);
-    var note = document.createElement("p");
-    note.className = "print-ship";
-    note.textContent = "Each print checks out on its own Stripe page.";
+    var pay = document.createElement("a");
+    pay.className = "print-buy checkout-all";
+    var href = paymentFor(chosen);
+    if (href) pay.href = href;
+    pay.textContent = "Checkout · " + formatPrice(total);
     cartRoot.appendChild(list);
     cartRoot.appendChild(sum);
-    cartRoot.appendChild(note);
+    cartRoot.appendChild(pay);
     cartRoot.hidden = false;
   }
 
@@ -402,6 +447,7 @@
 
   function renderCheckout(checkout) {
     if (!checkout || !Array.isArray(checkout.items)) throw new Error("checkout");
+    catalog = checkout;
     window.__sahoRenderCart = function () { renderCart(checkout); };
     ensureCartLink();
     mounts.forEach(function (mount) {
