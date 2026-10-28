@@ -1,0 +1,7 @@
+name: Cart checkout links
+on: workflow_dispatch
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo cart-links
