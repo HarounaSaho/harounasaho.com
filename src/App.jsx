@@ -111,7 +111,6 @@ export default function App() {
 
   const openProject = (id, fromView, e) => {
     if (e) e.preventDefault();
-    if (id === "ring") return;
     top();
     const origin = fromView === "design" ? "design" : "art";
     setPage(origin);
@@ -261,6 +260,7 @@ export default function App() {
           <DesignIndex
             onHome={goHome}
             onOpenSidonia={(e) => openProject("sidonia", "design", e)}
+            onOpenRing={(e) => openProject("ring", "design", e)}
           />
         )}
         {page === "design" && view === "project" && (
