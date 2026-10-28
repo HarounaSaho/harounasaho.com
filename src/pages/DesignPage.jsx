@@ -1,7 +1,7 @@
 import { PROJECTS } from "../data";
 import Placeholder from "../components/Placeholder";
 
-export function DesignIndex({ onHome, onOpenSidonia }) {
+export function DesignIndex({ onHome, onOpenSidonia, onOpenRing }) {
   return (
     <section className="page narrow slide-left">
       <a href="#home" className="crumb" onClick={onHome}>
@@ -20,6 +20,15 @@ export function DesignIndex({ onHome, onOpenSidonia }) {
           <p>Interface and identity work for an agent platform - mostly making complex state legible.</p>
           <div className="open-cta">OPEN →</div>
         </a>
+        <a href="#ring" className="design-card" onClick={onOpenRing}>
+          <div className="design-date">
+            2024 - 2025 <span className="locked">🔒 LOCKED</span>
+          </div>
+          <h2>Ring, concept</h2>
+          <div className="design-role">WEARABLE AI · SELF‑INITIATED</div>
+          <p>A voice-first ring with no screen: industrial study, gesture set, and a small system of haptic replies.</p>
+          <div className="open-cta">OPEN →</div>
+        </a>
       </div>
     </section>
   );
@@ -27,7 +36,7 @@ export function DesignIndex({ onHome, onOpenSidonia }) {
 
 export function ProjectDetail({ projectId, onBack, backLabel }) {
   const project = PROJECTS[projectId];
-  if (!project || project.id === "ring") return null;
+  if (!project) return null;
 
   return (
     <section className="page narrow slide-left">
