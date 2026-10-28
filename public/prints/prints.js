@@ -298,9 +298,9 @@
     return total;
   }
 
-  // Amounts are the live Stripe charges. See No Evil\u2019s link bills See No Evil and Unheard together ($140), so it is not used for See No Evil alone.
+  // Amounts are the live Stripe charges.
   var payments = [
-    { works: ["See No Evil", "Unheard"], amount: 140, url: "https://buy.stripe.com/fZu9AM2jF1snbP30NCfMA04" },
+    { works: ["See No Evil"], amount: 70, url: "https://buy.stripe.com/fZu9AM2jF1snbP30NCfMA04" },
     { works: ["Continuum"], amount: 100, url: "https://buy.stripe.com/14AdR28I34Ez5qF67WfMA08" },
     { works: ["Hear No Evil"], amount: 70, url: "https://buy.stripe.com/14A7sEgavgnh2et8g4fMA03" },
     { works: ["Homage"], amount: 100, url: "https://buy.stripe.com/7sY3co7DZ9YT6uJ7c0fMA05" },
@@ -459,12 +459,6 @@
         shared.className = "order-detail";
         shared.textContent = "Pays together with " + grouped.works.filter(function (work) { return work !== item.work; }).join(" and ") + ".";
         copy.appendChild(shared);
-      }
-      if (!payment && !grouped && item.work === "See No Evil") {
-        var blocked = document.createElement("p");
-        blocked.className = "order-detail";
-        blocked.textContent = "There is no Stripe page for See No Evil alone. The only page also includes Unheard and charges $140.";
-        copy.appendChild(blocked);
       }
       var actions = document.createElement("div");
       actions.className = "cart-actions";
