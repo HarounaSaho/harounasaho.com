@@ -32,6 +32,23 @@ export const PROJECTS = {
       "Identity followed the interface rather than the reverse - the type and spacing rules came out of the densest screen, then went outward.",
     ],
   },
+  ring: {
+    id: "ring",
+    sec: "SEC · 01.2 / RING",
+    title: "Ring, concept",
+    lede: "A voice-first ring with no screen: industrial study, gesture set, and a small system of haptic replies.",
+    role: "SELF-INITIATED",
+    dates: "2024 - 2025",
+    surface: "WEARABLE · INDUSTRIAL",
+    status: "CONCEPT",
+    locked: true,
+    slotA: "INDUSTRIAL RENDER",
+    slotB: "GESTURE SHEET",
+    notes: [
+      "No screen means every reply is a texture. Six haptic patterns carry the whole vocabulary - confirm, deny, wait, listening, dropped, done.",
+      "Sized around a 17.3 mm inner diameter, which is where the sensor stack stops being felt from the inside.",
+    ],
+  },
 };
 
 export const STUDIO_TIMELINE = [
