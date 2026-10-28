@@ -21,12 +21,10 @@ export function DesignIndex({ onHome, onOpenSidonia, onOpenRing }) {
           <div className="open-cta">OPEN →</div>
         </a>
         <a href="#ring" className="design-card" onClick={onOpenRing}>
-          <div className="design-date">
-            2024 - 2025 <span className="locked">🔒 LOCKED</span>
-          </div>
-          <h2>Ring, concept</h2>
-          <div className="design-role">WEARABLE AI · SELF‑INITIATED</div>
-          <p>A voice-first ring with no screen: industrial study, gesture set, and a small system of haptic replies.</p>
+          <div className="design-date">2024 - 2025</div>
+          <h2>JALI</h2>
+          <div className="design-role">VOICE AI RING</div>
+          <p>A silver ring. I double-tap, speak, and feel the answer on my finger.</p>
           <div className="open-cta">OPEN →</div>
         </a>
       </div>
@@ -75,10 +73,12 @@ export function ProjectDetail({ projectId, onBack, backLabel }) {
         </div>
       ) : (
         <div className="project-layout">
-          <div className="project-images">
-            <Placeholder label={project.slotA} />
-            <Placeholder label={project.slotB} />
-          </div>
+          {project.slotA || project.slotB ? (
+            <div className="project-images">
+              {project.slotA ? <Placeholder label={project.slotA} /> : null}
+              {project.slotB ? <Placeholder label={project.slotB} /> : null}
+            </div>
+          ) : null}
           <div className="project-side">
             <table className="meta-table">
               <tbody>

@@ -7,3 +7,7 @@
   color: #111111;
   margin: 34px 0 0;
 }
+
+.project-layout:not(:has(.project-images)) .project-side {
+  max-width: 560px;
+}
