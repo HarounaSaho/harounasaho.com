@@ -47,8 +47,8 @@ export default function AboutPage({ isStudio, onHome, onAbout, onStudio }) {
               <tr>
                 <td>INSTAGRAM</td>
                 <td>
-                  <a href="https://instagram.com/" target="_blank" rel="noreferrer">
-                    @roon.paints
+                  <a href="https://instagram.com/roonart_" target="_blank" rel="noreferrer">
+                    @roonart_
                   </a>
                 </td>
               </tr>
