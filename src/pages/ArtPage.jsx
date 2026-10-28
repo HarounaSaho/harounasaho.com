@@ -132,9 +132,7 @@ export function WorkView({ workCat, from, room, onBack }) {
               </tr>
             </tbody>
           </table>
-          <p className="work-close">
-            Concept art for one continuing world - no fixed story, each piece its own scene.
-          </p>
+          {work.text ? <p className="work-close">{work.text}</p> : null}
         </div>
       </div>
     </section>
