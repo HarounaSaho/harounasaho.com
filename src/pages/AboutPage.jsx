@@ -52,10 +52,6 @@ export default function AboutPage({ isStudio, onHome, onAbout, onStudio }) {
                   </a>
                 </td>
               </tr>
-              <tr>
-                <td>STATUS</td>
-                <td className="contact-status">COMMISSIONS OPEN</td>
-              </tr>
             </tbody>
           </table>
         </div>
