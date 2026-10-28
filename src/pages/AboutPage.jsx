@@ -20,8 +20,8 @@ export default function AboutPage({ isStudio, onHome, onAbout, onStudio }) {
         <h1>A painter building one world, scene by scene.</h1>
         <div className="info-bio">
           <p>
-            Harouna Saho is a senior at Yale, painting out of New Haven. He is from The Gambia by way of Norman,
-            Oklahoma, and the distance between those places is most of what the work is about.
+            Harouna Saho is a senior at Yale, painting out of New Haven. He is from The Gambia and grew up in Norman,
+            Oklahoma.
           </p>
           <p>
             The paintings are concept art for one continuing world. There is no plot and no name for it - each canvas
