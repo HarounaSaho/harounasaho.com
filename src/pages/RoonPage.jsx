@@ -1,4 +1,4 @@
-export default function RoonPage({ dodges, onStudio, onAbout }) {
+export default function RoonPage({ dodges, onAbout }) {
   return (
     <section className="roon-page">
       <div className="sec-tag">SEC · 00 / ROON - CAUGHT</div>
@@ -12,12 +12,6 @@ export default function RoonPage({ dodges, onStudio, onAbout }) {
           </tr>
         </tbody>
       </table>
-      <div className="sneak-wrap">
-        <a href="#studio" className="sneak-btn" onClick={onStudio}>
-          <span>SNEAK PEEK - WHAT I&apos;M WORKING ON</span>
-          <span className="arrow">→</span>
-        </a>
-      </div>
       <div className="roon-back">
         <a href="#about" className="crumb" onClick={onAbout}>
           ← INFO

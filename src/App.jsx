@@ -16,14 +16,25 @@ function top() {
   }
 }
 
+function openingFromHash() {
+  const hash = typeof window === "undefined" ? "" : window.location.hash.replace(/^#/, "");
+  if (hash === "ring" || hash === "sidonia") {
+    return { page: "design", view: "project", projectId: hash };
+  }
+  if (hash === "design") return { page: "design", view: "index", projectId: null };
+  if (hash === "about") return { page: "about", view: "index", projectId: null };
+  return { page: "home", view: "index", projectId: null };
+}
+
 export default function App() {
   const heroRef = useRef(null);
-  const [page, setPage] = useState("home");
-  const [view, setView] = useState("index");
+  const opening = openingFromHash();
+  const [page, setPage] = useState(opening.page);
+  const [view, setView] = useState(opening.view);
   const [room, setRoom] = useState(null);
   const [workCat, setWorkCat] = useState(null);
   const [from, setFrom] = useState("index");
-  const [projectId, setProjectId] = useState(null);
+  const [projectId, setProjectId] = useState(opening.projectId);
   const [roon, setRoon] = useState({ x: 0, y: 0, r: -8 });
   const [roonDodges, setRoonDodges] = useState(0);
   const [roonCaught, setRoonCaught] = useState(false);
@@ -72,13 +83,6 @@ export default function App() {
   const goArt = (e) => nav("art", e);
   const goDesign = (e) => nav("design", e);
   const goAbout = (e) => nav("about", e);
-
-  const goStudio = (e) => {
-    if (e) e.preventDefault();
-    top();
-    setPage("about");
-    setView("studio");
-  };
 
   const goRoon = (e) => {
     if (e) e.preventDefault();
@@ -273,9 +277,9 @@ export default function App() {
           <WorkView workCat={workCat} from={from} room={room} onBack={goBackFromWork} />
         )}
         {page === "about" && (
-          <AboutPage isStudio={view === "studio"} onHome={goHome} onAbout={goAbout} onStudio={goStudio} />
+          <AboutPage onHome={goHome} />
         )}
-        {page === "roon" && <RoonPage dodges={roonDodges} onStudio={goStudio} onAbout={goAbout} />}
+        {page === "roon" && <RoonPage dodges={roonDodges} onAbout={goAbout} />}
       </div>
       <Footer />
     </div>
